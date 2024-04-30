@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 2 Data cleaning | Source code and supporting information for Drivers of diurnal variation in vocal activity in a tropical bird community</title>
+  <meta name="description" content="Section 2 Data cleaning | Source code and supporting information for Drivers of diurnal variation in vocal activity in a tropical bird community" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 2 Data cleaning | Source code and supporting information for Drivers of diurnal variation in vocal activity in a tropical bird community" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="vjjan91/diurnal-Acoustics" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 2 Data cleaning | Source code and supporting information for Drivers of diurnal variation in vocal activity in a tropical bird community" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="Pavithra Sundar" />
+<meta name="author" content="Meghana P Srivathsa" />
+<meta name="author" content="Laurel Symes" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="data-cleaning.html"><a href="data-cleaning.html"><i class="fa fa-check"></i><b>2</b> Data cleaning</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="data-cleaning.html"><a href="data-cleaning.html#install-required-libraries"><i class="fa fa-check"></i><b>2.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="2.2" data-path="data-cleaning.html"><a href="data-cleaning.html#loading-acoustic-data"><i class="fa fa-check"></i><b>2.2</b> Loading acoustic data</a></li>
+<li class="chapter" data-level="2.3" data-path="data-cleaning.html"><a href="data-cleaning.html#add-standardized-ebird-species-codes-for-future-analysis"><i class="fa fa-check"></i><b>2.3</b> Add standardized eBird species codes for future analysis</a></li>
+<li class="chapter" data-level="2.4" data-path="data-cleaning.html"><a href="data-cleaning.html#how-much-data-has-been-annotated-for-dawn-and-dusk-across-sites-and-days"><i class="fa fa-check"></i><b>2.4</b> How much data has been annotated for dawn and dusk across sites and days?</a></li>
+<li class="chapter" data-level="2.5" data-path="data-cleaning.html"><a href="data-cleaning.html#more-data-cleaning"><i class="fa fa-check"></i><b>2.5</b> More data cleaning</a></li>
+<li class="chapter" data-level="2.6" data-path="data-cleaning.html"><a href="data-cleaning.html#write-to-file"><i class="fa fa-check"></i><b>2.6</b> Write to file</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code and supporting information for <em>Drivers of diurnal variation in vocal activity in a tropical bird community</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-cleaning" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Section 2</span> Data cleaning<a href="data-cleaning.html#data-cleaning" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In this script, we will ensure that the data is cleaned, and we create a single sheet for annotations at dawn and another sheet for annotations at dusk.</p>
+<div id="install-required-libraries" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Install required libraries<a href="data-cleaning.html#install-required-libraries" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data-cleaning.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="data-cleaning.html#cb1-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="data-cleaning.html#cb1-3" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-4"><a href="data-cleaning.html#cb1-4" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb1-5"><a href="data-cleaning.html#cb1-5" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-6"><a href="data-cleaning.html#cb1-6" tabindex="-1"></a><span class="fu">library</span>(scico)</span>
+<span id="cb1-7"><a href="data-cleaning.html#cb1-7" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-8"><a href="data-cleaning.html#cb1-8" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
+<span id="cb1-9"><a href="data-cleaning.html#cb1-9" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-10"><a href="data-cleaning.html#cb1-10" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb1-11"><a href="data-cleaning.html#cb1-11" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="data-cleaning.html#cb1-12" tabindex="-1"></a><span class="co"># for plotting</span></span>
+<span id="cb1-13"><a href="data-cleaning.html#cb1-13" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-14"><a href="data-cleaning.html#cb1-14" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-15"><a href="data-cleaning.html#cb1-15" tabindex="-1"></a><span class="fu">library</span>(ggspatial)</span>
+<span id="cb1-16"><a href="data-cleaning.html#cb1-16" tabindex="-1"></a><span class="fu">library</span>(colorspace)</span></code></pre></div>
+</div>
+<div id="loading-acoustic-data" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Loading acoustic data<a href="data-cleaning.html#loading-acoustic-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The acoustic data consists of annotations of 10-s chunks of audio files across summer and winter months. We will load annotation datasets for both dawn and dusk and process them further to ensure that we can quickly extract measures of vocal activity in future scripts. For the sake of future analysis, we define dawn as periods of acoustic data annotated between 6am and 10am. We define dusk as periods of acoustic data annotated between 4pm to 7pm.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data-cleaning.html#cb2-1" tabindex="-1"></a><span class="co"># These dawn and dusk annotation .csvs are not uploaded to GitHub and can be provided upon request</span></span>
+<span id="cb2-2"><a href="data-cleaning.html#cb2-2" tabindex="-1"></a><span class="co"># Please write to Vijay Ramesh if you would like to access the raw data - vr292@cornell.edu)</span></span>
+<span id="cb2-3"><a href="data-cleaning.html#cb2-3" tabindex="-1"></a><span class="co"># However, all outputs emerging from this script, which includes processed annotations are public and can be used for analysis</span></span>
+<span id="cb2-4"><a href="data-cleaning.html#cb2-4" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="data-cleaning.html#cb2-5" tabindex="-1"></a><span class="co"># dawn data</span></span>
+<span id="cb2-6"><a href="data-cleaning.html#cb2-6" tabindex="-1"></a>summer_dawn <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/summer-dawn-annotations.csv&quot;</span>)</span>
+<span id="cb2-7"><a href="data-cleaning.html#cb2-7" tabindex="-1"></a>winter_dawn <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/winter-dawn-annotations.csv&quot;</span>)</span>
+<span id="cb2-8"><a href="data-cleaning.html#cb2-8" tabindex="-1"></a>dawn <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(summer_dawn, winter_dawn)</span>
+<span id="cb2-9"><a href="data-cleaning.html#cb2-9" tabindex="-1"></a><span class="fu">names</span>(dawn)</span>
+<span id="cb2-10"><a href="data-cleaning.html#cb2-10" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="data-cleaning.html#cb2-11" tabindex="-1"></a><span class="co"># reorder columns to ensure the species codes appear one after another</span></span>
+<span id="cb2-12"><a href="data-cleaning.html#cb2-12" tabindex="-1"></a>dawn <span class="ot">&lt;-</span> dawn <span class="sc">%&gt;%</span></span>
+<span id="cb2-13"><a href="data-cleaning.html#cb2-13" tabindex="-1"></a>  <span class="fu">relocate</span>(<span class="fu">c</span>(<span class="st">&quot;BFOW&quot;</span>, <span class="st">&quot;SBEO&quot;</span>, <span class="st">&quot;JUNI&quot;</span>, <span class="st">&quot;ASKO&quot;</span>, <span class="st">&quot;HSWO&quot;</span>), <span class="at">.after =</span> <span class="st">&quot;CORO&quot;</span>)</span>
+<span id="cb2-14"><a href="data-cleaning.html#cb2-14" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="data-cleaning.html#cb2-15" tabindex="-1"></a><span class="co"># split the filename column into 4 columns : site, date, time and splits</span></span>
+<span id="cb2-16"><a href="data-cleaning.html#cb2-16" tabindex="-1"></a>dawn <span class="ot">&lt;-</span> <span class="fu">separate</span>(dawn, <span class="at">col =</span> Filename, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;site_id&quot;</span>, <span class="st">&quot;date&quot;</span>, <span class="st">&quot;time&quot;</span>, <span class="st">&quot;splits&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;_&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-17"><a href="data-cleaning.html#cb2-17" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>(Birds<span class="sc">:</span>Notes)) <span class="sc">%&gt;%</span> <span class="co"># remove columns not required &amp; rename</span></span>
+<span id="cb2-18"><a href="data-cleaning.html#cb2-18" tabindex="-1"></a>  <span class="fu">rename</span>(., <span class="at">restoration_type =</span> Restoration.Type..Benchmark.Active.Passive.) <span class="sc">%&gt;%</span></span>
+<span id="cb2-19"><a href="data-cleaning.html#cb2-19" tabindex="-1"></a>  <span class="fu">rename</span>(., <span class="at">time_of_day =</span> Time..Morning.Evening.Night.) <span class="sc">%&gt;%</span></span>
+<span id="cb2-20"><a href="data-cleaning.html#cb2-20" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_of_day =</span> <span class="st">&quot;dawn&quot;</span>)</span>
+<span id="cb2-21"><a href="data-cleaning.html#cb2-21" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="data-cleaning.html#cb2-22" tabindex="-1"></a><span class="co"># dusk data</span></span>
+<span id="cb2-23"><a href="data-cleaning.html#cb2-23" tabindex="-1"></a>summer_dusk <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/summer-dusk-annotations.csv&quot;</span>)</span>
+<span id="cb2-24"><a href="data-cleaning.html#cb2-24" tabindex="-1"></a>winter_dusk <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/winter-dusk-annotations.csv&quot;</span>)</span>
+<span id="cb2-25"><a href="data-cleaning.html#cb2-25" tabindex="-1"></a>dusk <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(summer_dusk, winter_dusk)</span>
+<span id="cb2-26"><a href="data-cleaning.html#cb2-26" tabindex="-1"></a><span class="fu">names</span>(dusk)</span>
+<span id="cb2-27"><a href="data-cleaning.html#cb2-27" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="data-cleaning.html#cb2-28" tabindex="-1"></a><span class="co"># reorder columns to ensure the species codes appear one after another</span></span>
+<span id="cb2-29"><a href="data-cleaning.html#cb2-29" tabindex="-1"></a>dusk <span class="ot">&lt;-</span> dusk <span class="sc">%&gt;%</span></span>
+<span id="cb2-30"><a href="data-cleaning.html#cb2-30" tabindex="-1"></a>  <span class="fu">relocate</span>(<span class="st">&quot;GREN&quot;</span>, <span class="at">.after =</span> <span class="st">&quot;CORO&quot;</span>)</span>
+<span id="cb2-31"><a href="data-cleaning.html#cb2-31" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="data-cleaning.html#cb2-32" tabindex="-1"></a><span class="co"># split the filename column into 4 columns : site, date, time and splits</span></span>
+<span id="cb2-33"><a href="data-cleaning.html#cb2-33" tabindex="-1"></a>dusk <span class="ot">&lt;-</span> <span class="fu">separate</span>(dusk, <span class="at">col =</span> Filename, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;site_id&quot;</span>, <span class="st">&quot;date&quot;</span>, <span class="st">&quot;time&quot;</span>, <span class="st">&quot;splits&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;_&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-34"><a href="data-cleaning.html#cb2-34" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>(Birds<span class="sc">:</span>Notes)) <span class="sc">%&gt;%</span> <span class="co"># remove columns not required &amp; rename</span></span>
+<span id="cb2-35"><a href="data-cleaning.html#cb2-35" tabindex="-1"></a>  <span class="fu">rename</span>(., <span class="at">restoration_type =</span> Restoration.Type..Benchmark.Active.Passive.) <span class="sc">%&gt;%</span></span>
+<span id="cb2-36"><a href="data-cleaning.html#cb2-36" tabindex="-1"></a>  <span class="fu">rename</span>(., <span class="at">time_of_day =</span> Time..Morning.Evening.Night.) <span class="sc">%&gt;%</span></span>
+<span id="cb2-37"><a href="data-cleaning.html#cb2-37" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_of_day =</span> <span class="st">&quot;dusk&quot;</span>)</span>
+<span id="cb2-38"><a href="data-cleaning.html#cb2-38" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="data-cleaning.html#cb2-39" tabindex="-1"></a><span class="co"># create a single dataframe </span></span>
+<span id="cb2-40"><a href="data-cleaning.html#cb2-40" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(dawn, dusk)</span></code></pre></div>
+</div>
+<div id="add-standardized-ebird-species-codes-for-future-analysis" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Add standardized eBird species codes for future analysis<a href="data-cleaning.html#add-standardized-ebird-species-codes-for-future-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data-cleaning.html#cb3-1" tabindex="-1"></a>species_codes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/species-annotation-codes.csv&quot;</span>)</span>
+<span id="cb3-2"><a href="data-cleaning.html#cb3-2" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="data-cleaning.html#cb3-3" tabindex="-1"></a><span class="do">## Using the splice operator from an example on stackOverflow</span></span>
+<span id="cb3-4"><a href="data-cleaning.html#cb3-4" tabindex="-1"></a><span class="do">## https://stackoverflow.com/questions/60113369/change-column-names-in-dataframe-based-on-matching-to-another-dataframe-by-dplyr</span></span>
+<span id="cb3-5"><a href="data-cleaning.html#cb3-5" tabindex="-1"></a>eBirdCodes <span class="ot">&lt;-</span> species_codes <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="data-cleaning.html#cb3-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(eBird_codes, species_annotation_codes) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="data-cleaning.html#cb3-7" tabindex="-1"></a>  <span class="fu">deframe</span>()</span>
+<span id="cb3-8"><a href="data-cleaning.html#cb3-8" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="data-cleaning.html#cb3-9" tabindex="-1"></a><span class="co"># replace current annotation codes with eBird codes</span></span>
+<span id="cb3-10"><a href="data-cleaning.html#cb3-10" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span>  acoustic_data <span class="sc">%&gt;%</span> </span>
+<span id="cb3-11"><a href="data-cleaning.html#cb3-11" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="sc">!!!</span>eBirdCodes)</span></code></pre></div>
+</div>
+<div id="how-much-data-has-been-annotated-for-dawn-and-dusk-across-sites-and-days" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> How much data has been annotated for dawn and dusk across sites and days?<a href="data-cleaning.html#how-much-data-has-been-annotated-for-dawn-and-dusk-across-sites-and-days" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="data-cleaning.html#cb4-1" tabindex="-1"></a><span class="co"># we observe that OLCAP5B has the least amount of data annotated (~3 unique days/visits) at dawn</span></span>
+<span id="cb4-2"><a href="data-cleaning.html#cb4-2" tabindex="-1"></a>dawnSampling <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="data-cleaning.html#cb4-3" tabindex="-1"></a>  <span class="fu">filter</span>(time_of_day <span class="sc">==</span> <span class="st">&quot;dawn&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="data-cleaning.html#cb4-4" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(site_id, date) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="data-cleaning.html#cb4-5" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="data-cleaning.html#cb4-6" tabindex="-1"></a>  <span class="fu">arrange</span>(site_id) <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="data-cleaning.html#cb4-7" tabindex="-1"></a>  <span class="fu">count</span>(site_id)</span>
+<span id="cb4-8"><a href="data-cleaning.html#cb4-8" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="data-cleaning.html#cb4-9" tabindex="-1"></a><span class="co"># we observe that OLCAP5B has the least amount of data annotated (~3 unique visits)</span></span>
+<span id="cb4-10"><a href="data-cleaning.html#cb4-10" tabindex="-1"></a>duskSampling <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
+<span id="cb4-11"><a href="data-cleaning.html#cb4-11" tabindex="-1"></a>  <span class="fu">filter</span>(time_of_day <span class="sc">==</span> <span class="st">&quot;dusk&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-12"><a href="data-cleaning.html#cb4-12" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(site_id, date) <span class="sc">%&gt;%</span></span>
+<span id="cb4-13"><a href="data-cleaning.html#cb4-13" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-14"><a href="data-cleaning.html#cb4-14" tabindex="-1"></a>  <span class="fu">arrange</span>(site_id) <span class="sc">%&gt;%</span></span>
+<span id="cb4-15"><a href="data-cleaning.html#cb4-15" tabindex="-1"></a>  <span class="fu">count</span>(site_id)</span></code></pre></div>
+</div>
+<div id="more-data-cleaning" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> More data cleaning<a href="data-cleaning.html#more-data-cleaning" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data-cleaning.html#cb5-1" tabindex="-1"></a><span class="co"># Here, we pivot the data to long format and remove NA/zero values or missing data</span></span>
+<span id="cb5-2"><a href="data-cleaning.html#cb5-2" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="data-cleaning.html#cb5-3" tabindex="-1"></a>  <span class="fu">group_by</span>(site_id, date, time, splits, time_of_day, restoration_type) <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="data-cleaning.html#cb5-4" tabindex="-1"></a>  <span class="fu">transform</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="data-cleaning.html#cb5-5" tabindex="-1"></a>  <span class="fu">replace</span>(<span class="fu">is.na</span>(.), <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="data-cleaning.html#cb5-6" tabindex="-1"></a>  <span class="fu">summarise_at</span>(<span class="at">.vars =</span> <span class="fu">vars</span>(<span class="fu">c</span>(<span class="st">&quot;compea&quot;</span><span class="sc">:</span><span class="st">&quot;grenig1&quot;</span>)), <span class="at">.funs =</span> sum) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="data-cleaning.html#cb5-7" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> compea<span class="sc">:</span>grenig1, <span class="at">names_to =</span> <span class="st">&quot;eBird_codes&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;number&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-8"><a href="data-cleaning.html#cb5-8" tabindex="-1"></a>  <span class="fu">filter</span>(number <span class="sc">!=</span> <span class="dv">0</span>) <span class="co"># one way to remove zeros</span></span>
+<span id="cb5-9"><a href="data-cleaning.html#cb5-9" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="data-cleaning.html#cb5-10" tabindex="-1"></a><span class="co"># rename the `time` column as `start_time` to distinguish from `time_of_day`</span></span>
+<span id="cb5-11"><a href="data-cleaning.html#cb5-11" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-12"><a href="data-cleaning.html#cb5-12" tabindex="-1"></a>  <span class="fu">rename</span>(., <span class="at">start_time =</span> time)</span>
+<span id="cb5-13"><a href="data-cleaning.html#cb5-13" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="data-cleaning.html#cb5-14" tabindex="-1"></a><span class="co"># add hourOfDay column to indicate time-windows for when the acoustic-visit was started</span></span>
+<span id="cb5-15"><a href="data-cleaning.html#cb5-15" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-16"><a href="data-cleaning.html#cb5-16" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-17"><a href="data-cleaning.html#cb5-17" tabindex="-1"></a>    <span class="at">hour_of_day =</span></span>
+<span id="cb5-18"><a href="data-cleaning.html#cb5-18" tabindex="-1"></a>      <span class="fu">case_when</span>(</span>
+<span id="cb5-19"><a href="data-cleaning.html#cb5-19" tabindex="-1"></a>        start_time <span class="sc">&gt;=</span> <span class="st">&quot;060000&quot;</span> <span class="sc">&amp;</span> start_time <span class="sc">&lt;</span> <span class="st">&quot;070000&quot;</span></span>
+<span id="cb5-20"><a href="data-cleaning.html#cb5-20" tabindex="-1"></a>        <span class="sc">~</span> <span class="st">&quot;6AM to 7AM&quot;</span>,</span>
+<span id="cb5-21"><a href="data-cleaning.html#cb5-21" tabindex="-1"></a>        start_time <span class="sc">&gt;=</span> <span class="st">&quot;070000&quot;</span> <span class="sc">&amp;</span> start_time <span class="sc">&lt;</span> <span class="st">&quot;080000&quot;</span></span>
+<span id="cb5-22"><a href="data-cleaning.html#cb5-22" tabindex="-1"></a>        <span class="sc">~</span> <span class="st">&quot;7AM to 8AM&quot;</span>,</span>
+<span id="cb5-23"><a href="data-cleaning.html#cb5-23" tabindex="-1"></a>        start_time <span class="sc">&gt;=</span> <span class="st">&quot;080000&quot;</span> <span class="sc">&amp;</span> start_time <span class="sc">&lt;</span> <span class="st">&quot;090000&quot;</span></span>
+<span id="cb5-24"><a href="data-cleaning.html#cb5-24" tabindex="-1"></a>        <span class="sc">~</span> <span class="st">&quot;8AM to 9AM&quot;</span>,</span>
+<span id="cb5-25"><a href="data-cleaning.html#cb5-25" tabindex="-1"></a>        start_time <span class="sc">&gt;=</span> <span class="st">&quot;090000&quot;</span> <span class="sc">&amp;</span> start_time <span class="sc">&lt;=</span> <span class="st">&quot;100000&quot;</span></span>
+<span id="cb5-26"><a href="data-cleaning.html#cb5-26" tabindex="-1"></a>        <span class="sc">~</span> <span class="st">&quot;9AM to 10AM&quot;</span>,</span>
+<span id="cb5-27"><a href="data-cleaning.html#cb5-27" tabindex="-1"></a>         start_time <span class="sc">&gt;=</span> <span class="st">&quot;160000&quot;</span> <span class="sc">&amp;</span> start_time <span class="sc">&lt;</span> <span class="st">&quot;170000&quot;</span></span>
+<span id="cb5-28"><a href="data-cleaning.html#cb5-28" tabindex="-1"></a>        <span class="sc">~</span> <span class="st">&quot;4PM to 5PM&quot;</span>,</span>
+<span id="cb5-29"><a href="data-cleaning.html#cb5-29" tabindex="-1"></a>        start_time <span class="sc">&gt;=</span> <span class="st">&quot;170000&quot;</span> <span class="sc">&amp;</span> start_time <span class="sc">&lt;=</span> <span class="st">&quot;180000&quot;</span></span>
+<span id="cb5-30"><a href="data-cleaning.html#cb5-30" tabindex="-1"></a>        <span class="sc">~</span> <span class="st">&quot;5PM to 6PM&quot;</span>,</span>
+<span id="cb5-31"><a href="data-cleaning.html#cb5-31" tabindex="-1"></a>        start_time <span class="sc">&gt;=</span> <span class="st">&quot;180000&quot;</span> <span class="sc">&amp;</span> start_time <span class="sc">&lt;=</span> <span class="st">&quot;190000&quot;</span></span>
+<span id="cb5-32"><a href="data-cleaning.html#cb5-32" tabindex="-1"></a>        <span class="sc">~</span> <span class="st">&quot;6PM to 7PM&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-33"><a href="data-cleaning.html#cb5-33" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
+</div>
+<div id="write-to-file" class="section level2 hasAnchor" number="2.6">
+<h2><span class="header-section-number">2.6</span> Write to file<a href="data-cleaning.html#write-to-file" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="data-cleaning.html#cb6-1" tabindex="-1"></a><span class="fu">write.csv</span>(acoustic_data, <span class="st">&quot;results/acoustic_data.csv&quot;</span>, <span class="at">row.names =</span> F)</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/diurnal-Acoustics/edit/master/01_data-cleaning.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

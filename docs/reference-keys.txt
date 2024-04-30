@@ -1,0 +1,11 @@
+introduction
+attribution
+data-access
+data-processing
+data-cleaning
+install-required-libraries
+loading-acoustic-data
+add-standardized-ebird-species-codes-for-future-analysis
+how-much-data-has-been-annotated-for-dawn-and-dusk-across-sites-and-days
+more-data-cleaning
+write-to-file
