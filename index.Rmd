@@ -1,0 +1,41 @@
+--- 
+knit: "bookdown::render_book"
+title: "Source code and supporting information for _Drivers of diurnal variation in vocal activity in a tropical bird community_"
+author:
+    - Vijay Ramesh
+    - Pavithra Sundar
+    - Meghana P Srivathsa
+    - Laurel Symes  
+date: "Last compiled on `r format(Sys.time(), '%d %B, %Y')`"
+site: bookdown::bookdown_site
+output: 
+  bookdown::gitbook:
+    fig_caption: yes
+  bookdown::pdf_document2:
+    documentclass: scrreprt
+    toc-depth: 1
+    secnumdepth: 2
+    geometry: "left=4cm, right=3cm, top=2.5cm, bottom=2.5cm"
+biblio-style: apalike
+link-citations: yes
+github-repo: vjjan91/diurnal-Acoustics
+---
+
+# Introduction  
+
+This is the readable version that showcases analyses examining the drivers of diurnal variation in vocal activity for a tropical bird community.    
+
+## Attribution  
+
+Please contact the following in case of interest in the project.  
+
+- Vijay Ramesh (repo maintainer)
+    - Postdoctoral Research Associate, Cornell Lab of Ornithology  
+
+## Data access  
+
+The data used in this work will be archived on Zenodo.  
+
+## Data processing  
+
+The data processing for this project is described in the following sections. Navigate through them using the links in the sidebar.      
