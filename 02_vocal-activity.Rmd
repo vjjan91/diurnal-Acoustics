@@ -69,8 +69,4 @@ ggsave(fig_percent_detections, filename = "figs/fig_percentDetections_species.pn
 dev.off() 
 ```
 
-```{r, fig.cap= "% acoustic detections for each species between dawn and dusk"}
-knitr::include_graphics("figs/fig_percentDetections_species.png")
-```
-
-
+![% acoustic detections for each species between dawn and dusk](figs/fig_percentDetections_species.png)  
