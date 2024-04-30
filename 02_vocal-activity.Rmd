@@ -1,0 +1,76 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Vocal activity
+
+In this script, we examine differences in vocal activity between dawn and dusk for each species. 
+
+## Install necessary libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+library(ggplot2)
+library(scico)
+library(data.table)
+library(extrafont)
+library(ggstatsplot)
+```
+
+## Load acoustic data
+```{r}
+acoustic_data <- read.csv("results/acoustic_data.csv")
+```
+
+## Vocal activity across time periods
+
+A number of factors need to be considered in further analysis: accounting for time_of_day, observed_identity for example. However, we run analyses that account for differences in calling activity by species for dawn and dusk.
+
+```{r}
+# total number of acoustic detections summarized across every 10-s audio file
+vocal_act <- acoustic_data %>%
+  group_by(time_of_day, eBird_codes) %>%
+  summarise(detections = sum(number)) %>%
+  group_by(eBird_codes) %>%
+  mutate(total_detections =sum(detections)) %>%
+  mutate(percent_detections = (detections/total_detections)*100) %>%
+  ungroup()
+
+# for the sake of plotting
+vocal_act$plot_percent <- ifelse(vocal_act$time_of_day == "dusk",
+                                 -1*vocal_act$percent_detections,
+                                 vocal_act$percent_detections)
+
+# figure of perecent detections
+fig_percent_detections <- ggplot(vocal_act, aes(x = eBird_codes,
+                               y = plot_percent,
+                               fill = time_of_day)) +
+  geom_text(aes(label=signif(abs(plot_percent),3)),
+            hjust = ifelse(vocal_act$plot_percent >= 0, 0, 1),
+            size = 3) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#d95f02","#1b9e77")) +
+  scale_y_continuous(labels=abs) +
+  coord_flip() +
+  labs(y = '% acoustic detections',
+       x = 'species eBird codes') +
+  theme_bw() +
+  theme(text = element_text(family = "Century Gothic", size = 10, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 15, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "bold",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 15, face = "bold"))
+
+ggsave(fig_percent_detections, filename = "figs/fig_percentDetections_species.png", width = 13, height = 20, device = png(), units = "in", dpi = 300)
+dev.off() 
+```
+
+```{r, fig.cap= "% acoustic detections for each species between dawn and dusk"}
+knitr::include_graphics("figs/fig_percent_detections_species.png")
+```
+
+
