@@ -70,7 +70,7 @@ dev.off()
 ```
 
 ```{r, fig.cap= "% acoustic detections for each species between dawn and dusk"}
-knitr::include_graphics("figs/fig_percent_detections_species.png")
+knitr::include_graphics("figs/fig_percentDetections_species.png")
 ```
 
 
