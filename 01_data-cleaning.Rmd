@@ -1,0 +1,154 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Data cleaning  
+
+In this script, we will ensure that the data is cleaned, and we create a single sheet for annotations at dawn and another sheet for annotations at dusk.  
+
+## Install required libraries  
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+library(ggplot2)
+library(scico)
+library(data.table)
+library(extrafont)
+library(sf)
+library(raster)
+
+# for plotting
+library(scales)
+library(ggplot2)
+library(ggspatial)
+library(colorspace)
+```
+
+## Loading acoustic data  
+
+The acoustic data consists of annotations of 10-s chunks of audio files across summer and winter months. We will load annotation datasets for both dawn and dusk and process them further to ensure that we can quickly extract measures of vocal activity in future scripts. For the sake of future analysis, we define dawn as periods of acoustic data annotated between 6am and 10am. We define dusk as periods of acoustic data annotated between 4pm to 7pm.    
+
+```{r}
+# These dawn and dusk annotation .csvs are not uploaded to GitHub and can be provided upon request
+# Please write to Vijay Ramesh if you would like to access the raw data - vr292@cornell.edu)
+# However, all outputs emerging from this script, which includes processed annotations are public and can be used for analysis
+
+# dawn data
+summer_dawn <- read.csv("data/summer-dawn-annotations.csv")
+winter_dawn <- read.csv("data/winter-dawn-annotations.csv")
+dawn <- bind_rows(summer_dawn, winter_dawn)
+names(dawn)
+
+# reorder columns to ensure the species codes appear one after another
+dawn <- dawn %>%
+  relocate(c("BFOW", "SBEO", "JUNI", "ASKO", "HSWO"), .after = "CORO")
+
+# split the filename column into 4 columns : site, date, time and splits
+dawn <- separate(dawn, col = Filename, into = c("site_id", "date", "time", "splits"), sep = "_") %>%
+  dplyr::select(-(Birds:Notes)) %>% # remove columns not required & rename
+  rename(., restoration_type = Restoration.Type..Benchmark.Active.Passive.) %>%
+  rename(., time_of_day = Time..Morning.Evening.Night.) %>%
+  mutate(time_of_day = "dawn")
+
+# dusk data
+summer_dusk <- read.csv("data/summer-dusk-annotations.csv")
+winter_dusk <- read.csv("data/winter-dusk-annotations.csv")
+dusk <- bind_rows(summer_dusk, winter_dusk)
+names(dusk)
+
+# reorder columns to ensure the species codes appear one after another
+dusk <- dusk %>%
+  relocate("GREN", .after = "CORO")
+
+# split the filename column into 4 columns : site, date, time and splits
+dusk <- separate(dusk, col = Filename, into = c("site_id", "date", "time", "splits"), sep = "_") %>%
+  dplyr::select(-(Birds:Notes)) %>% # remove columns not required & rename
+  rename(., restoration_type = Restoration.Type..Benchmark.Active.Passive.) %>%
+  rename(., time_of_day = Time..Morning.Evening.Night.) %>%
+  mutate(time_of_day = "dusk")
+
+# create a single dataframe 
+acoustic_data <- bind_rows(dawn, dusk)
+```
+
+## Add standardized eBird species codes for future analysis
+```{r}
+species_codes <- read.csv("data/species-annotation-codes.csv")
+
+## Using the splice operator from an example on stackOverflow
+## https://stackoverflow.com/questions/60113369/change-column-names-in-dataframe-based-on-matching-to-another-dataframe-by-dplyr
+eBirdCodes <- species_codes %>%
+  dplyr::select(eBird_codes, species_annotation_codes) %>%
+  deframe()
+
+# replace current annotation codes with eBird codes
+acoustic_data <-  acoustic_data %>% 
+  rename(!!!eBirdCodes)
+```
+
+## How much data has been annotated for dawn and dusk across sites and days?
+```{r}
+# we observe that OLCAP5B has the least amount of data annotated (~3 unique days/visits) at dawn
+dawnSampling <- acoustic_data %>%
+  filter(time_of_day == "dawn") %>%
+  dplyr::select(site_id, date) %>%
+  distinct() %>%
+  arrange(site_id) %>%
+  count(site_id)
+
+# we observe that OLCAP5B has the least amount of data annotated (~3 unique visits)
+duskSampling <- acoustic_data %>%
+  filter(time_of_day == "dusk") %>%
+  dplyr::select(site_id, date) %>%
+  distinct() %>%
+  arrange(site_id) %>%
+  count(site_id)
+```
+
+## More data cleaning
+
+```{r}
+# Here, we pivot the data to long format and remove NA/zero values or missing data
+acoustic_data <- acoustic_data %>%
+  group_by(site_id, date, time, splits, time_of_day, restoration_type) %>%
+  transform() %>%
+  replace(is.na(.), 0) %>%
+  summarise_at(.vars = vars(c("compea":"grenig1")), .funs = sum) %>%
+  pivot_longer(cols = compea:grenig1, names_to = "eBird_codes", values_to = "number") %>%
+  filter(number != 0) # one way to remove zeros
+
+# rename the `time` column as `start_time` to distinguish from `time_of_day`
+acoustic_data <- acoustic_data %>%
+  rename(., start_time = time)
+
+# add hourOfDay column to indicate time-windows for when the acoustic-visit was started
+acoustic_data <- acoustic_data %>%
+  mutate(
+    hour_of_day =
+      case_when(
+        start_time >= "060000" & start_time < "070000"
+        ~ "6AM to 7AM",
+        start_time >= "070000" & start_time < "080000"
+        ~ "7AM to 8AM",
+        start_time >= "080000" & start_time < "090000"
+        ~ "8AM to 9AM",
+        start_time >= "090000" & start_time <= "100000"
+        ~ "9AM to 10AM",
+         start_time >= "160000" & start_time < "170000"
+        ~ "4PM to 5PM",
+        start_time >= "170000" & start_time <= "180000"
+        ~ "5PM to 6PM",
+        start_time >= "180000" & start_time <= "190000"
+        ~ "6PM to 7PM")) %>%
+  ungroup()
+```
+
+## Write to file
+```{r}
+write.csv(acoustic_data, "results/acoustic_data.csv", row.names = F)
+```
+
