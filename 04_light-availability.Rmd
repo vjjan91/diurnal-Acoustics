@@ -1,0 +1,125 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Light availability
+
+In this script, we examine differences in vocal activity between dawn and dusk as a function of light availability. The expectation is that species would call much earlier in the day, closer to sunrise compared to later in the day when one could spend time foraging.  
+
+## Install necessary libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+library(ggplot2)
+library(scico)
+library(data.table)
+library(extrafont)
+library(ggstatsplot)
+library(suncalc)
+library(lutz)
+library(stringr)
+library(ggrepel)
+library(ggpubr)
+```
+
+## Load acoustic data and species scientific names data
+```{r}
+acoustic_data <- read.csv("results/acoustic_data.csv")
+sites <- read.csv("data/list-of-sites.csv")
+species_codes <- read.csv("data/species-annotation-codes.csv")
+```
+
+## Extract light availability for each date
+
+```{r}
+# add longitude and latitude to acoustic_data
+acoustic_data <- left_join(acoustic_data, sites[,c(2,4,5)],
+                   by = "site_id") 
+acoustic_data$date <- lubridate::ymd(acoustic_data$date)
+names(acoustic_data)[c(10,11)] <- c("lon","lat")
+
+# find out what time zone needs to be provided for the sunlight calculations
+acoustic_data$tz <- tz_lookup_coords(lat = acoustic_data$lat,
+                                     lon = acoustic_data$lon,
+                                     method = "accurate",
+                                     warn = FALSE)
+
+# extract nauticalDawn, nauticalDusk, sunrise and sunset times
+light_data <- getSunlightTimes(data = acoustic_data,
+                          keep = c("sunrise","sunset",
+                                   "nauticalDawn", "nauticalDusk"),
+                          tz = "Asia/Kolkata") %>%
+  distinct(.)
+
+# strip dates from new columms and keep only time
+light_data$sunrise <- as_hms(light_data$sunrise)
+light_data$sunset <- as_hms(light_data$sunset)
+light_data$nauticalDawn <- as_hms(light_data$nauticalDawn)
+light_data$nauticalDusk <- as_hms(light_data$nauticalDusk)
+
+# format the start_time column in the acoustic data to keep it as the same format as light_data
+acoustic_data <- acoustic_data %>%
+   mutate(across(start_time, str_pad, width = 6, pad = "0"))
+acoustic_data$start_time<- format(strptime(acoustic_data$start_time, 
+                         format = "%H%M%S"), format = "%H:%M:%S")
+acoustic_data$start_time <- as_hms(acoustic_data$start_time)
+
+# summarize detections of species for every 15-min window
+acoustic_data <- acoustic_data %>%
+  group_by(site_id, date, start_time, time_of_day, eBird_codes,
+           lon, lat) %>%
+  summarise(detections = sum(number)) %>%
+  ungroup()
+
+# join the two datasets
+acoustic_data <- left_join(acoustic_data, light_data,
+                   by = c("date","lon","lat"))
+
+# subtract times from sunrise, sunset, nauticalDawn and nauticalDusk from start_time of acoustic detections
+acoustic_data <- acoustic_data %>%
+  mutate(time_from_dawn = as.numeric((start_time - nauticalDawn), 
+                                     units = "hours")) %>%
+  mutate(time_from_sunrise = as.numeric((start_time - sunrise), 
+                                     units = "hours")) %>%
+  mutate(time_to_dusk = as.numeric((nauticalDusk-start_time), 
+                                     units = "hours")) %>%
+  mutate(time_to_sunset = as.numeric((sunset-start_time), 
+                                     units = "hours"))
+```
+
+## Model acoustic detections as a function of light availability  
+
+Here, we choose times of day as proxies for light availability (ie. nautical dawn, dusk for example).  
+
+```{r}
+trial <- acoustic_data %>%
+  filter(eBird_codes == "brcful1") %>%
+  #filter(time_of_day == "dawn") %>%
+  ggplot(., aes(x=time_from_dawn,
+                y= detections)) +
+  geom_point(shape = 21, colour = "black", 
+             fill = "white", size = 2, stroke = 1)+ 
+  geom_smooth(method="lm", se=TRUE, fullrange=FALSE, level=0.95,linetype="solid") +  
+  theme_bw() +
+  stat_regline_equation(label.x = 5, aes(label = ..rr.label..),
+                    label.y = 5,
+                      size = 8) +
+  labs(y="\n % acoustic detections", 
+       x="Time from Dawn\n") +
+  #geom_text_repel(aes(label = common_name), family = "Century Gothic",
+  #                fontface = "italic") +
+  theme(text = element_text(family = "Century Gothic", size = 18, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "bold",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"))
+
+trial
+
+```
+
+
