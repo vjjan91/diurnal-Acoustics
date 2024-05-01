@@ -11,5 +11,16 @@ more-data-cleaning
 write-to-file
 vocal-activity
 install-necessary-libraries
-load-acoustic-data
+load-acoustic-data-and-species-scientific-names-data
 vocal-activity-across-time-periods
+frquency
+install-necessary-libraries-1
+load-acoustic-data-and-species-scientific-names-data-1
+vocal-activity-data
+frequency-data
+visualization-of-detections-vs.-median-peak-frequency
+light-availability
+install-necessary-libraries-2
+load-acoustic-data-and-species-scientific-names-data-2
+extract-light-availability-for-each-date
+model-acoustic-detections-as-a-function-of-light-availability

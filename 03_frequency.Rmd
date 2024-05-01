@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Frquency
+# Frequency
 
 In this script, we examine differences in vocal activity between dawn and dusk for each species as a function of frequency. The expectation is that higher frequency vocalizers would call more at dawn compared to dusk, owing to better signal transmission in the morning.
 
