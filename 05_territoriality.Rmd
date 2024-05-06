@@ -68,9 +68,6 @@ vocal_terr <- vocal_act %>% left_join (territoriality, by = 'scientific_name')
 
 vocal_terr <- vocal_terr %>%
   dplyr::mutate(territory_cat = case_when (territory %in% '3' ~'Highly territorial', territory %in% '2' ~ 'Weakly territorial', territory %in% '1' ~'Non-territorial'))
-
-
-#Territoriality data for a total of 21 species was not present in Tobias et al. 2016 dataset, so a total of 79 species were included
 ```
 
 ## Testing the differences using Wilcoxon test
@@ -116,4 +113,4 @@ fig_terr_vocAct <- g + geom_boxplot(
   )
 ```
 
-#There are no significant differences in the vocal activity among non-territorial, weakly territorial and highly territorial species in both dawn and dusk. 
+#There are no significant differences in the vocal activity among non-territorial, weakly territorial and highly territorial species in both dawn & dusk. 
