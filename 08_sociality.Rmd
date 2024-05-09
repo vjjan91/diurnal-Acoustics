@@ -53,7 +53,7 @@ vocal_soc <- vocal_soc %>%
 Here, we see whether there are differences in the vocal activity among communal and non-communal signallers in dawn and dusk individually. 
 
 ```{r} 
-stat.test <- vocal_soc %>% group_by (time_of_day) %>% wilcox_test(percent_detections ~ sociality_cat)
+stat.test <- vocal_soc %>% group_by (time_of_day) %>% wilcox_test (percent_detections ~ sociality_cat)
 ```
 #There are 78 non-communal signallers and 21 communal signallers in dawn, and 69 non-communal and 20 communal signallers in dusk. 
 
