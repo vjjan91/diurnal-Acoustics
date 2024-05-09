@@ -111,4 +111,4 @@ fig_terr_vocAct <- g + geom_boxplot(
   )
 ```
 
-#There are significant differences (p = 0.039) in % acoustic detections between weakly and non-territorial species in dawn. No other significant differences seen. 
+#There are significant differences (p = 0.039) in % acoustic detections between weakly and non-territorial species in dawn. No other significant differences observed. 
