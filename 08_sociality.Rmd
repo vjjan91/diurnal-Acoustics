@@ -1,0 +1,94 @@
+---
+  editor_options: 
+  chunk_output_type: console
+---
+  
+  
+# Sociality
+  
+In this script, we examine differences in vocal activity between dawn and dusk for each species in terms of their sociality. The expectation is that communal signallers would have a higher vocal activity, irrespective of dawn or dusk, than non-communal signallers.
+
+Communal signallers are species that produces long-range acoustic signals in groups, in either duets (two individuals) or choruses (three or more individuals) by both males and females. Non-communal signallers are species that sing as single individuals and not communally.
+
+## Install necessary libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+library(ggplot2)
+library(scico)
+library(data.table)
+library(extrafont)
+library(ggstatsplot)
+library(ggpubr)
+library(ggrepel)
+library(ggdist)
+library(gghalves)     
+library(rstatix)
+```
+
+## Loading sociality data
+```{r}
+sociality <- read.csv("data/Tobias_et_al_2016_dataset.csv")
+```
+
+## Extracting sociality data from Tobias et al. 2016 dataset 
+```{r}
+sociality <- sociality %>% dplyr::select (Species, Communal)
+colnames (sociality) <- c("scientific_name", "sociality")
+
+#Updating the scientific names of Tobias et al. 2016 as per our dataset- see 05_territoriality.Rmd
+
+sociality <- sociality %>% mutate(scientific_name = recode (scientific_name, 'Pycnonotus gularis' = 'Rubigula gularis', 'Ictinaetus malayensis' = 'Ictinaetus malaiensis', 'Dendrocopos nanus' = 'Yungipicus nanus', 'Megalaima malabarica' = 'Psilopogon malabaricus', 'Rhopocichla atriceps' = 'Dumetia atriceps', 'Chrysocolaptes lucidus' = 'Chrysocolaptes guttacristatus', 'Luscinia brunnea' = 'Larvivora brunnea', 'Parus aplonotus' = 'Machlolophus aplonotus', 'Turdoides striata' = 'Argya striata', 'Zoothera citrina' = 'Geokichla citrina', 'Turdoides subrufa' = 'Argya subrufa', 'Celeus brachyurus' = 'Micropternus brachyurus', 'Muscicapa ruficauda' = 'Ficedula ruficauda', 'Bubo nipalensis' = 'Ketupa nipalensis', 'Stigmatopelia chinensis' = 'Spilopelia chinensis', 'Hypsipetes ganeesa' = 'Hypsipetes ganeesa ganeesa', 'Acrocephalus aedon' = 'Arundinax aedon', 'Cyornis pallipes' = 'Cyornis pallidipes', 'Megalaima viridis' = 'Psilopogon viridis', 'Garrulax delesserti' = 'Pterorhinus delesserti', 'Acritillas indica' = 'Iole indica' ))
+
+vocal_soc <- vocal_act %>% left_join (sociality, by = 'scientific_name')
+
+vocal_soc <- vocal_soc %>%
+  dplyr::mutate(sociality_cat = case_when (sociality %in% '0' ~ 'Non-communal signallers', sociality %in% '1' ~ 'Communal signallers'))
+```
+
+## Testing the differences using Wilcoxon test
+
+Here, we see whether there are differences in the vocal activity among communal and non-communal signallers in dawn and dusk individually. 
+
+```{r} 
+stat.test <- vocal_soc %>% group_by (time_of_day) %>% wilcox_test(percent_detections ~ sociality_cat)
+```
+#There are 78 non-communal signallers and 21 communal signallers in dawn, and 69 non-communal and 20 communal signallers in dusk. 
+
+## Visualization of % detections vs. sociality
+
+```{r}
+#Colour-blind friendly pallete for plotting
+cbp1 <- c("#999999", "#E69F00", "#56B4E9", "#009E73",
+          "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+g <- ggplot(vocal_soc, aes(x = sociality_cat, y = percent_detections, fill = sociality_cat)) + 
+  geom_violin () +
+  theme_minimal() +
+  labs(x = "", y = "percent detections",
+       fill = "sociality category") +
+  theme(axis.text = element_text(size = 22),
+        axis.title = element_text(size = 22)) + facet_grid (~time_of_day) + 
+  geom_signif(comparisons = list(c("Communal signallers", "Non-communal signallers")), 
+              map_signif_level = c("***"=0.001,"**"=0.01, "*"=0.05, " "=2),
+              textsize = 10)+
+  scale_color_manual(name = "sociality", values = cbp1,
+                     labels=c('Communal signallers', 'Non-communal signallers'))+
+  scale_fill_manual(name = "sociality", values = cbp1, 
+                    labels=c('Communal signallers', 'Non-communal signallers'))
+
+
+fig_soc_vocAct <- g + geom_boxplot(
+    width = .2, fill = "white",
+    size = 1.5, outlier.shape = NA
+  )  +
+  gghalves::geom_half_point(
+    side = "l", 
+    range_scale = .3, 
+    alpha = .5, size = 3
+  )
+```
+
+#There are no significant differences in % acoustic detections between communal and non-communal singing species in both dawn and dusk. 
