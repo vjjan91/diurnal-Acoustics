@@ -8,8 +8,9 @@
   
 In this script, we examine differences in vocal activity between dawn and dusk for each species in terms of their territoriality. The expectation is that highly territorial species would have a higher vocal activity, irrespective of dawn or dusk, than weakly and non-territorial species.
 
-## Install necessary libraries
+Highly territorial species are those which defend and maintain their territories throughout the year. Weakly territorial species are those which have broadly overlapping home ranges, or sometimes join mixed flocks without defined spatial ranges. Non-territorial species are those which do not defend territories, or defend very small areas around nest sites, or defend song or display posts only.
 
+## Loading necessary libraries
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -27,14 +28,12 @@ library(gghalves)
 library(rstatix)
 ```
 
-## Load acoustic data and species scientific names data
+## Loading territoriality data
 ```{r}
-acoustic_data <- read.csv("results/acoustic_data.csv")
-species_codes <- read.csv("data/species-annotation-codes.csv")
 territoriality <- read.csv("data/Tobias_et_al_2016_dataset.csv")
 ```
 
-## Extracting species whose territoriality data is present in Tobias et al. 2016 dataset and 
+## Extracting territoriality data from Tobias et al. 2016 dataset
 ```{r}
 territoriality <- territoriality %>% dplyr::select (Species, Territory)
 colnames (territoriality) <- c("scientific_name", "territory")
@@ -77,10 +76,9 @@ Here, we see whether there are differences in the vocal activity among highly te
 ```{r}
 stat.test <- vocal_terr %>% group_by (time_of_day) %>% wilcox_test(percent_detections ~ territory_cat)
 ```
-
+#There are 28 highly territorial, 15 non-territorial and 56 weakly territorial species in dawn, and 26 highly territorial, 14 non-territorial, and 49 weakly territorial species in dusk.
 
 ## Visualization of % detections vs. territoriality
-
 ```{r}
 #Colour-blind friendly pallete for plotting
 cbp1 <- c("#999999", "#E69F00", "#56B4E9", "#009E73",
@@ -93,9 +91,9 @@ g <- ggplot(vocal_terr, aes(x = territory_cat, y = percent_detections, fill = te
        fill = "territory category") +
   theme(axis.text = element_text(size = 22),
         axis.title = element_text(size = 22)) + facet_grid (~time_of_day) + 
-  geom_signif(comparisons = list(c("Highly territorial", "Weakly territorial"), c("Weakly territorial", "Non-territorial"),  c("Non-territorial", "Highly territorial"), 
+  geom_signif(comparisons = list(c("Highly territorial", "Weakly territorial"), c("Weakly territorial", "Non-territorial"),  c("Non-territorial", "Highly territorial")), 
               map_signif_level = c("***"=0.001,"**"=0.01, "*"=0.05, " "=2),
-              textsize = 10))+
+              textsize = 10)+
   scale_color_manual(name = "Territoriality", values = cbp1,
                      labels=c('Highly territorial', 'Non-territorial', 'Weakly territorial'))+
   scale_fill_manual(name = "Territoriality", values = cbp1, 
@@ -113,4 +111,4 @@ fig_terr_vocAct <- g + geom_boxplot(
   )
 ```
 
-#There are no significant differences in the vocal activity among non-territorial, weakly territorial and highly territorial species in both dawn & dusk. 
+#There are significant differences (p = 0.039) in % acoustic detections between weakly and non-territorial species in dawn. No other significant differences observed. 
