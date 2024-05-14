@@ -1,5 +1,5 @@
 ---
-  editor_options: 
+editor_options: 
   chunk_output_type: console
 ---
   
@@ -30,42 +30,67 @@ library(rstatix)
 
 ## Loading territoriality data
 ```{r}
-territoriality <- read.csv("data/Tobias_et_al_2016_dataset.csv")
-```
+territoriality <- read.csv("data/territoriality-data.csv")
 
-## Extracting territoriality data from Tobias et al. 2016 dataset
-```{r}
 territoriality <- territoriality %>% dplyr::select (Species, Territory)
 colnames (territoriality) <- c("scientific_name", "territory")
 
-#Updating the scientific names of following species as per our dataset:
-#Flame-throated bulbul- Rubigula gularis (earlier Pycnonotus gularis)
-#Black eagle- Ictinaetus malaiensis (earlier Ictinaetus malayensis)
-#Brown-capped pygmy woodpecker- Yungipicus nanus (earlier Dendrocopos nanus)
-#Malabar barbet- Psilopogon malabaricus (earlier Megalaima malabarica)
-#Dark-fronted babbler- Dumetia atriceps (earlier Rhopocichla atriceps)
-#Greater flameback- Chrysocolaptes guttacristatus (earlier Chrysocolaptes lucidus)
-#Indian blue robin- Larvivora brunnea (earlier Luscinia brunnea)
-#Indian yellow tit- Machlolophus aplonotus (earlier Parus aplonotus)
-#Jungle babbler- Argya striata (earlier Turdoides striata)
-#Orange-headed thrush- Geokichla citrina (earlier Zoothera citrina)
-#Rufous babbler- Argya subrufa (earlier Turdoides subrufa)
-#Rufous woodpecker- Micropternus brachyurus (earlier Celeus brachyurus)
-#Rusty-tailed flycatcher- Ficedula ruficauda (earlier Muscicapa ruficauda
-#Spot-bellied eagle owl- Ketupa nipalensis (earlier Bubo nipalensis)
-#Spotted dove- Spilopelia chinensis (earlier Stigmatopelia chinensis)
-#Square-tailed bulbul- Hypsipetes ganeesa ganeesa (earlier Hypsipetes ganeesa)
-#Thick-billed warbler- Arundinax aedon (earlier Acrocephalus aedon)
-#White-bellied flycatcher- Cyornis pallidipes (earlier Cyornis pallipes)
-#White-cheeked barbet- Psilopogon viridis (earlier Megalaima viridis)
-#Wayanad laughingthrush- Pterorhinus delesserti (earlier Garrulax delesserti)
-#Yellow-browed bulbul- Iole indica (earlier Acritillas indica)
+# Updating the scientific names of following species as per our dataset:
+# Flame-throated bulbul- Rubigula gularis (earlier Pycnonotus gularis)
+# Black eagle- Ictinaetus malaiensis (earlier Ictinaetus malayensis)
+# Brown-capped pygmy woodpecker- Yungipicus nanus (earlier Dendrocopos nanus)
+# Malabar barbet- Psilopogon malabaricus (earlier Megalaima malabarica)
+# Dark-fronted babbler- Dumetia atriceps (earlier Rhopocichla atriceps)
+# Greater flameback- Chrysocolaptes guttacristatus (earlier Chrysocolaptes lucidus)
+# Indian blue robin- Larvivora brunnea (earlier Luscinia brunnea)
+# Indian yellow tit- Machlolophus aplonotus (earlier Parus aplonotus)
+# Jungle babbler- Argya striata (earlier Turdoides striata)
+# Orange-headed thrush- Geokichla citrina (earlier Zoothera citrina)
+# Rufous babbler- Argya subrufa (earlier Turdoides subrufa)
+# Rufous woodpecker- Micropternus brachyurus (earlier Celeus brachyurus)
+# Rusty-tailed flycatcher- Ficedula ruficauda (earlier Muscicapa ruficauda
+# Spot-bellied eagle owl- Ketupa nipalensis (earlier Bubo nipalensis)
+# Spotted dove- Spilopelia chinensis (earlier Stigmatopelia chinensis)
+# Square-tailed bulbul- Hypsipetes ganeesa ganeesa (earlier Hypsipetes ganeesa)
+# Thick-billed warbler- Arundinax aedon (earlier Acrocephalus aedon)
+# White-bellied flycatcher- Cyornis pallidipes (earlier Cyornis pallipes)
+# White-cheeked barbet- Psilopogon viridis (earlier Megalaima viridis)
+# Wayanad laughingthrush- Pterorhinus delesserti (earlier Garrulax delesserti)
+# Yellow-browed bulbul- Iole indica (earlier Acritillas indica)
 
 territoriality <- territoriality %>% mutate(scientific_name = recode (scientific_name, 'Pycnonotus gularis' = 'Rubigula gularis', 'Ictinaetus malayensis' = 'Ictinaetus malaiensis', 'Dendrocopos nanus' = 'Yungipicus nanus', 'Megalaima malabarica' = 'Psilopogon malabaricus', 'Rhopocichla atriceps' = 'Dumetia atriceps', 'Chrysocolaptes lucidus' = 'Chrysocolaptes guttacristatus', 'Luscinia brunnea' = 'Larvivora brunnea', 'Parus aplonotus' = 'Machlolophus aplonotus', 'Turdoides striata' = 'Argya striata', 'Zoothera citrina' = 'Geokichla citrina', 'Turdoides subrufa' = 'Argya subrufa', 'Celeus brachyurus' = 'Micropternus brachyurus', 'Muscicapa ruficauda' = 'Ficedula ruficauda', 'Bubo nipalensis' = 'Ketupa nipalensis', 'Stigmatopelia chinensis' = 'Spilopelia chinensis', 'Hypsipetes ganeesa' = 'Hypsipetes ganeesa ganeesa', 'Acrocephalus aedon' = 'Arundinax aedon', 'Cyornis pallipes' = 'Cyornis pallidipes', 'Megalaima viridis' = 'Psilopogon viridis', 'Garrulax delesserti' = 'Pterorhinus delesserti', 'Acritillas indica' = 'Iole indica' ))
+```
 
-vocal_terr <- vocal_act %>% left_join (territoriality, by = 'scientific_name')
+## Load acoustic data and species scientific names data
+```{r}
+acoustic_data <- read.csv("results/acoustic_data.csv")
+species_codes <- read.csv("data/species-annotation-codes.csv")
+```
 
-vocal_terr <- vocal_terr %>%
+## Vocal activity data
+```{r}
+# total number of acoustic detections summarized across every 10-s audio file
+vocal_act <- acoustic_data %>%
+  group_by(time_of_day, eBird_codes) %>%
+  summarise(detections = sum(number)) %>%
+  left_join(., species_codes[,c(1,2,5)], 
+                       by = "eBird_codes") %>%
+   group_by(eBird_codes) %>%
+  mutate(total_detections =sum(detections)) %>%
+  mutate(percent_detections = (detections/total_detections)*100) %>%
+  ungroup()
+
+# for further analysis, we remove species that were detected less than 20 times cumulatively across dawn and dusk
+# this ensures that we keep species that called very few times in the morning and perhaps more times in the evening, or vice-versa
+
+vocal_act <- vocal_act %>%
+  filter(total_detections > 20)
+```
+
+## Join the vocal_activity data and territoriality data
+```{r}
+vocal_act <- vocal_act %>% 
+  left_join(territoriality, by = 'scientific_name') %>%
   dplyr::mutate(territory_cat = case_when (territory %in% '3' ~'Highly territorial', territory %in% '2' ~ 'Weakly territorial', territory %in% '1' ~'Non-territorial'))
 ```
 
@@ -74,41 +99,44 @@ vocal_terr <- vocal_terr %>%
 Here, we see whether there are differences in the vocal activity among highly territorial, weakly territorial and non-territorial species in dawn and dusk individually. 
 
 ```{r}
-stat.test <- vocal_terr %>% group_by (time_of_day) %>% wilcox_test(percent_detections ~ territory_cat)
+stat.test <- vocal_act %>% 
+  group_by(time_of_day) %>% 
+  wilcox_test(percent_detections ~ territory_cat) # fix this script to get percent detections
 ```
-#There are 28 highly territorial, 15 non-territorial and 56 weakly territorial species in dawn, and 26 highly territorial, 14 non-territorial, and 49 weakly territorial species in dusk.
+
+There are 28 highly territorial, 15 non-territorial and 56 weakly territorial species in dawn, and 26 highly territorial, 14 non-territorial, and 49 weakly territorial species in dusk.
 
 ## Visualization of % detections vs. territoriality
 ```{r}
-#Colour-blind friendly pallete for plotting
-cbp1 <- c("#999999", "#E69F00", "#56B4E9", "#009E73",
-          "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-
-g <- ggplot(vocal_terr, aes(x = territory_cat, y = percent_detections, fill = territory_cat)) + 
-  geom_violin () +
-  theme_minimal() +
-  labs(x = "", y = "percent detections",
-       fill = "territory category") +
-  theme(axis.text = element_text(size = 22),
-        axis.title = element_text(size = 22)) + facet_grid (~time_of_day) + 
-  geom_signif(comparisons = list(c("Highly territorial", "Weakly territorial"), c("Weakly territorial", "Non-territorial"),  c("Non-territorial", "Highly territorial")), 
-              map_signif_level = c("***"=0.001,"**"=0.01, "*"=0.05, " "=2),
-              textsize = 10)+
-  scale_color_manual(name = "Territoriality", values = cbp1,
-                     labels=c('Highly territorial', 'Non-territorial', 'Weakly territorial'))+
-  scale_fill_manual(name = "Territoriality", values = cbp1, 
-                    labels=c('Highly territorial', 'Non-territorial', 'Weakly territorial'))
-
-
-fig_terr_vocAct <- g + geom_boxplot(
-    width = .2, fill = "white",
+fig_terr_vocAct <- ggplot(vocal_act, aes(x = territory_cat, y = percent_detections, fill = territory_cat)) + 
+   geom_boxplot(
+    width = .2,
     size = 1.5, outlier.shape = NA
   )  +
   gghalves::geom_half_point(
     side = "l", 
     range_scale = .3, 
     alpha = .5, size = 3
-  )
+  ) +
+  labs(x = "", y = "Percent detections",
+       fill = "Territoriality Category") +
+  facet_grid (~time_of_day) + 
+  geom_signif(comparisons = list(c("Highly territorial", "Weakly territorial"), c("Weakly territorial", "Non-territorial"),  c("Non-territorial", "Highly territorial")), 
+              map_signif_level = c("***"=0.001,"**"=0.01, "*"=0.05, " "=2),
+              textsize = 5)+
+  scale_color_manual(name = "Territoriality", values = c("#0072B2", "#D55E00", "#CC79A7"),labels=c('Highly territorial', 'Non-territorial', 'Weakly territorial'))+
+  scale_fill_manual(name = "Territoriality", values = c("#0072B2", "#D55E00", "#CC79A7"), labels=c('Highly territorial', 'Non-territorial', 'Weakly territorial')) +
+  theme_bw()+
+  theme(legend.position = "none")+
+  theme(text = element_text(family = "Century Gothic", size = 18, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "italic",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"))
+
+ggsave(fig_terr_vocAct, filename = "figs/fig_territoriality_vs_perecentDetections.png", width = 14, height = 16, device = png(), units = "in", dpi = 300)
+dev.off() 
 ```
 
-#There are significant differences (p = 0.039) in % acoustic detections between weakly and non-territorial species in dawn. No other significant differences observed. 
+There are significant differences (p = 0.039) in % acoustic detections between weakly and non-territorial species in dawn. No other significant differences observed. 
