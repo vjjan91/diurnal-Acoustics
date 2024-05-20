@@ -67,8 +67,7 @@ dusk <- dusk %>%
 # split the filename column into 4 columns : site, date, time and splits
 dusk <- separate(dusk, col = Filename, into = c("site_id", "date", "time", "splits"), sep = "_") %>%
   dplyr::select(-(Birds:Notes)) %>% # remove columns not required & rename
-  rename(., restoration_type = Restoration.Type..Benchmark.Active.Passive.) %>%
-  rename(., time_of_day = Time..Morning.Evening.Night.) %>%
+  rename(., restoration_type = Restoration.Type..Benchmark.Active.Passive.) %>% rename(., time_of_day = Time..Morning.Evening.Night.) %>%
   mutate(time_of_day = "dusk")
 
 # create a single dataframe 
@@ -145,6 +144,10 @@ acoustic_data <- acoustic_data %>%
         start_time >= "180000" & start_time <= "190000"
         ~ "6PM to 7PM")) %>%
   ungroup()
+
+# add a zero before the start_time to ensure its all 6 digits of time atleast
+acoustic_data <- acoustic_data %>%
+   mutate(across(start_time, str_pad, width = 6, pad = "0"))
 ```
 
 ## Write to file
