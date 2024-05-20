@@ -31,6 +31,19 @@ species_codes <- read.csv("data/species-annotation-codes.csv")
 A number of factors need to be considered in further analysis: accounting for time_of_day, observed_identity for example. However, we run analyses that account for differences in calling activity by species for dawn and dusk.
 
 ```{r}
+# keep only species that vocalize atleast across a minimum of 20 different/unique dates and times
+# we chose this random arbitrary threshold to include only species that are highly vocal and can be used for comparative analyses
+trial <- acoustic_data %>%
+  group_by(site_id, date, eBird_codes) %>%
+  summarise(unique_voc = sum(number)) %>%
+  ungroup() 
+
+trial2 <- trial %>%
+  group_by(eBird_codes) %>%
+  summarise(n = n())
+
+
+
 # total number of acoustic detections summarized across every 10-s audio file
 vocal_act <- acoustic_data %>%
   group_by(time_of_day, eBird_codes) %>%
