@@ -88,49 +88,28 @@ vocal_act <- vocal_act %>%
   dplyr::mutate(territory_cat = case_when (territory %in% '3' ~'Highly territorial', territory %in% '2' ~ 'Weakly territorial', territory %in% '1' ~'Non-territorial'))
 ```
 
-## Testing the differences using Wilcoxon test
-
-Here, we see whether there are differences in the vocal activity among highly territorial, weakly territorial and non-territorial species in dawn and dusk individually. 
-
-```{r}
-stat.test <- vocal_act %>% 
-  group_by(time_of_day) %>% 
-  wilcox_test(percent_detections ~ territory_cat) 
-```
-
-There are 19 highly territorial, 11 non-territorial and 39 weakly territorial species in dawn, and 19 highly territorial, 11 non-territorial, and 36 weakly territorial species in dusk.
-
 ## Visualization of % detections vs. territoriality
 ```{r}
-fig_terr_vocAct <- ggplot(vocal_act, aes(x = territory_cat, y = percent_detections, fill = territory_cat)) + 
-   geom_boxplot(
-    width = .2,
-    size = 1.5, outlier.shape = NA
-  )  +
-  gghalves::geom_half_point(
-    side = "l", 
-    range_scale = .3, 
-    alpha = .5, size = 3
-  ) +
-  labs(x = "", y = "Percent detections",
-       fill = "Territoriality Category") +
-  facet_grid (~time_of_day) + 
-  geom_signif(comparisons = list(c("Highly territorial", "Weakly territorial"), c("Weakly territorial", "Non-territorial"),  c("Non-territorial", "Highly territorial")), 
-              map_signif_level = c("***"=0.001,"**"=0.01, "*"=0.05, " "=2),
-              textsize = 5)+
-  scale_color_manual(name = "Territoriality", values = c("#0072B2", "#D55E00", "#CC79A7"),labels=c('Highly territorial', 'Non-territorial', 'Weakly territorial'))+
-  scale_fill_manual(name = "Territoriality", values = c("#0072B2", "#D55E00", "#CC79A7"), labels=c('Highly territorial', 'Non-territorial', 'Weakly territorial')) +
-  theme_bw()+
-  theme(legend.position = "none")+
-  theme(text = element_text(family = "Century Gothic", size = 18, face = "bold"),plot.title = element_text(family = "Century Gothic",
+## between dawn and dusk
+fig_terr_vocAct <- vocal_act %>%
+  grouped_ggbetweenstats(x = time_of_day,
+                         y = percent_detections,
+                         grouping.var = territory_cat,
+                         xlab = "Territoriality",
+                         ylab = "% Acoustic Detections", 
+                         pairwise.display = "significant",
+                         package = "ggsci",
+                         palette = "default_jco",
+                         violin.args = list(width = 0),
+ggplot.component = list(theme(text = element_text(family = "Century Gothic", size = 15, face = "bold"),plot.title = element_text(family = "Century Gothic",
       size = 18, face = "bold"),
       plot.subtitle = element_text(family = "Century Gothic", 
-      size = 15, face = "italic",color="#1b2838"),
+      size = 15, face = "bold",color="#1b2838"),
       axis.title = element_text(family = "Century Gothic",
-      size = 18, face = "bold"))
+      size = 15, face = "bold")))) 
 
-ggsave(fig_terr_vocAct, filename = "figs/fig_territoriality_vs_perecentDetections.png", width = 14, height = 16, device = png(), units = "in", dpi = 300)
+ggsave(fig_terr_vocAct, filename = "figs/fig_percentDetections_territoriality.png", width = 24, height = 14, device = png(), units = "in", dpi = 300)
 dev.off() 
 ```
 
-There are significant differences (p = 0.039) in % acoustic detections between weakly and non-territorial species in dawn. No other significant differences observed. 
+![% acoustic detections at dawn and dusk across categories of territoriality](figs/fig_percentDetections_territoriality.png) 
