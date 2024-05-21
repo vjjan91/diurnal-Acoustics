@@ -79,12 +79,6 @@ vocal_act <- acoustic_data %>%
   mutate(total_detections =sum(detections)) %>%
   mutate(percent_detections = (detections/total_detections)*100) %>%
   ungroup()
-
-# for further analysis, we remove species that were detected less than 20 times cumulatively across dawn and dusk
-# this ensures that we keep species that called very few times in the morning and perhaps more times in the evening, or vice-versa
-
-vocal_act <- vocal_act %>%
-  filter(total_detections > 20)
 ```
 
 ## Join the vocal_activity data and territoriality data
@@ -101,10 +95,10 @@ Here, we see whether there are differences in the vocal activity among highly te
 ```{r}
 stat.test <- vocal_act %>% 
   group_by(time_of_day) %>% 
-  wilcox_test(percent_detections ~ territory_cat) # fix this script to get percent detections
+  wilcox_test(percent_detections ~ territory_cat) 
 ```
 
-There are 28 highly territorial, 15 non-territorial and 56 weakly territorial species in dawn, and 26 highly territorial, 14 non-territorial, and 49 weakly territorial species in dusk.
+There are 19 highly territorial, 11 non-territorial and 39 weakly territorial species in dawn, and 19 highly territorial, 11 non-territorial, and 36 weakly territorial species in dusk.
 
 ## Visualization of % detections vs. territoriality
 ```{r}

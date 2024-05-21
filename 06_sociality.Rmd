@@ -79,12 +79,6 @@ vocal_act <- acoustic_data %>%
   mutate(total_detections =sum(detections)) %>%
   mutate(percent_detections = (detections/total_detections)*100) %>%
   ungroup()
-
-# for further analysis, we remove species that were detected less than 20 times cumulatively across dawn and dusk
-# this ensures that we keep species that called very few times in the morning and perhaps more times in the evening, or vice-versa
-
-vocal_act <- vocal_act %>%
-  filter(total_detections > 20)
 ```
 
 ## Join the vocal_activity data and sociality data
