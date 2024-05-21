@@ -1,0 +1,98 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Trophic niche  
+
+Here, we ask if species of a certain foraging guild have higher vocal activity at dawn compared to dusk. Our null hypothesis/expectation is that there would be no differences in vocal activity across foraging guilds irrespective of time of day.  
+
+## Install necessary libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+library(ggplot2)
+library(scico)
+library(data.table)
+library(extrafont)
+library(ggstatsplot)
+library(ggpubr)
+library(ggrepel)
+library(patchwork)
+library(rstatix)
+```
+
+## Load acoustic data and species scientific names data
+```{r}
+acoustic_data <- read.csv("results/acoustic_data.csv")
+species_codes <- read.csv("data/species-annotation-codes.csv")
+trait <- read.csv("data/species-trait-dat.csv")
+```
+
+## Vocal activity data
+```{r}
+# total number of acoustic detections summarized across every 10-s audio file
+vocal_act <- acoustic_data %>%
+  group_by(time_of_day, eBird_codes) %>%
+  summarise(detections = sum(number)) %>%
+  left_join(., species_codes[,c(1,2,5)], 
+                       by = "eBird_codes") %>%
+   group_by(eBird_codes) %>%
+  mutate(total_detections =sum(detections)) %>%
+  mutate(percent_detections = (detections/total_detections)*100) %>%
+  ungroup()
+```
+
+## Join the vocal_activity data and species trait data
+```{r}
+vocal_act <- vocal_act %>% 
+  left_join(trait[,c(1,2,29)], by = c('scientific_name',
+                          'common_name')) 
+
+## remove species that are poorly represented by a particular trophic niche
+## we get rid of nectarivore species, aquatic predator and granivore
+vocal_act <- vocal_act %>%
+  filter(trophic_niche != "Aquatic predator") %>%
+  filter(trophic_niche != "Granivore") %>%
+  filter(trophic_niche != "Nectarivore")
+
+## We retained 65 out of 69 species after the above filters
+```
+
+## Testing the differences using Wilcoxon test
+
+Here, we see whether there are differences in the vocal activity among highly territorial, weakly territorial and non-territorial species in dawn and dusk individually. 
+
+```{r}
+stat.test <- vocal_act %>% 
+  group_by(time_of_day) %>% 
+  wilcox_test(percent_detections ~ trophic_niche) 
+```
+
+No significant differences in percent detections across categories between dawn and dusk.
+
+## Visualization of % detections vs. trophic niche
+```{r}
+fig_trophicNiche_vocAct <- vocal_act %>%
+  filter(time_of_day == "dawn") %>%
+  ggbetweenstats(x = trophic_niche,
+                         y = percent_detections,
+                         xlab = "Trophic Niche",
+                         ylab = "% Acoustic Detections at Dawn", 
+                         pairwise.display = "significant",
+                         package = "ggsci",
+                         palette = "default_jco",
+                         violin.args = list(width = 0),
+ggplot.component = list(theme(text = element_text(family = "Century Gothic", size = 15, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "bold",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 15, face = "bold")))) 
+
+ggsave(fig_trophicNiche_vocAct, filename = "figs/fig_percentDetections_trophicNiche.png", width = 14, height = 16, device = png(), units = "in", dpi = 300)
+dev.off() 
+```
+
