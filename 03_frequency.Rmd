@@ -41,12 +41,6 @@ vocal_act <- acoustic_data %>%
   mutate(total_detections =sum(detections)) %>%
   mutate(percent_detections = (detections/total_detections)*100) %>%
   ungroup()
-
-# for further analysis, we remove species that were detected less than 20 times cumulatively across dawn and dusk
-# this ensures that we keep species that called very few times in the morning and perhaps more times in the evening, or vice-versa
-
-vocal_act <- vocal_act %>%
-  filter(total_detections > 20) 
 ```
 
 ## Frequency data
@@ -62,7 +56,8 @@ freq <-left_join (freq, species_codes[c(3,5)],
 nTemplates_5 <- freq %>%
   group_by(eBird_codes) %>%
   count() %>%
-  filter(n >= 5)
+  filter(n >= 5) %>%
+  drop_na()
 
 # left-join to remove species with less than 10 templates in the frequency dataset
 freq_5 <- left_join(nTemplates_5[,1], freq)
@@ -76,7 +71,7 @@ median_pf <- freq_5 %>%
 voc_freq <- left_join(vocal_act, median_pf, by = "eBird_codes") %>%
   drop_na()
 
-# A total of 92 species were included and eight species were excluded.
+# A total of 66 species were included and three species were excluded due to lack of data. 
 ```
 
 ## Visualization of % detections vs. median peak frequency
@@ -86,24 +81,24 @@ Here, we model the % of detections at dawn as a function of median peak frequenc
 ```{r}
 # we will filter the data to only include dawn
 dawn <- voc_freq %>%
-  filter(time_of_day == "dawn") %>%
-  filter(eBird_codes != "pabflo1")
+  mutate(log_freq = log10(median_peak_freq)) %>%
+  filter(time_of_day == "dawn") 
 
 # the only species that was excluded above was pied bushchat, which was reported only from dusk
 
-fig_freq_vocAct <- ggplot(dawn, aes(x=median_peak_freq,
+fig_freq_vocAct <- ggplot(dawn, aes(x=log_freq,
                                         y= percent_detections)) +
   geom_point(shape = 21, colour = "black", 
              fill = "white", size = 2, stroke = 1)+ 
   geom_smooth(method="lm", se=TRUE, fullrange=FALSE, level=0.95,linetype="solid") +  
   theme_bw() +
-  stat_regline_equation(label.x = 6000, aes(label = ..eq.label..),
-                        label.y = 10, size = 8) +
-  stat_regline_equation(label.x = 4000, aes(label = ..rr.label..),
-                        label.y = 10,
+  stat_regline_equation(label.x = 2.4, aes(label = ..eq.label..),
+                        label.y = 25, size = 8) +
+  stat_regline_equation(label.x = 2.8, aes(label = ..rr.label..),
+                        label.y = 25,
                         size = 8) +
-  labs(y="\n % acoustic detections at dawn", 
-       x="Median Peak Frequency\n") +
+  labs(y="\n % Acoustic detections at Dawn", 
+       x=" log (Median Peak Frequency)\n") +
   geom_text_repel(aes(label = common_name), family = "Century Gothic",
                   fontface = "italic") +
   theme(text = element_text(family = "Century Gothic", size = 18, face = "bold"),plot.title = element_text(family = "Century Gothic",
