@@ -76,11 +76,11 @@ No significant differences in percent detections across categories between dawn 
 ## Visualization of % detections vs. trophic niche
 ```{r}
 fig_trophicNiche_vocAct <- vocal_act %>%
-  filter(time_of_day == "dawn") %>%
-  ggbetweenstats(x = trophic_niche,
+  grouped_ggbetweenstats(x = time_of_day,
                          y = percent_detections,
+                         grouping.var = trophic_niche,
                          xlab = "Trophic Niche",
-                         ylab = "% Acoustic Detections at Dawn", 
+                         ylab = "% Acoustic Detections", 
                          pairwise.display = "significant",
                          package = "ggsci",
                          palette = "default_jco",
