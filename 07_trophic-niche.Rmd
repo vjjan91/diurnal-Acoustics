@@ -61,17 +61,6 @@ vocal_act <- vocal_act %>%
 ## We retained 65 out of 69 species after the above filters
 ```
 
-## Testing the differences using Wilcoxon test
-
-Here, we see whether there are differences in the vocal activity among highly territorial, weakly territorial and non-territorial species in dawn and dusk individually. 
-
-```{r}
-stat.test <- vocal_act %>% 
-  group_by(time_of_day) %>% 
-  wilcox_test(percent_detections ~ trophic_niche) 
-```
-
-No significant differences in percent detections across categories between dawn and dusk.
 
 ## Visualization of % detections vs. trophic niche
 ```{r}
@@ -96,3 +85,4 @@ ggsave(fig_trophicNiche_vocAct, filename = "figs/fig_percentDetections_trophicNi
 dev.off() 
 ```
 
+![% acoustic detections at dawn and dusk across foraging guilds](figs/fig_percentDetections_trophicNiche.png) 
