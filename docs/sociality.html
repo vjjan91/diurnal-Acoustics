@@ -159,6 +159,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1" data-path="vocal-activity.html"><a href="vocal-activity.html#install-necessary-libraries"><i class="fa fa-check"></i><b>3.1</b> Install necessary libraries</a></li>
 <li class="chapter" data-level="3.2" data-path="vocal-activity.html"><a href="vocal-activity.html#load-acoustic-data-and-species-scientific-names-data"><i class="fa fa-check"></i><b>3.2</b> Load acoustic data and species scientific names data</a></li>
 <li class="chapter" data-level="3.3" data-path="vocal-activity.html"><a href="vocal-activity.html#vocal-activity-across-time-periods"><i class="fa fa-check"></i><b>3.3</b> Vocal activity across time periods</a></li>
+<li class="chapter" data-level="3.4" data-path="vocal-activity.html"><a href="vocal-activity.html#is-overall-vocal-activity-much-higher-at-dawn-compared-to-dusk-across-species"><i class="fa fa-check"></i><b>3.4</b> Is overall vocal activity much higher at dawn compared to dusk, across species?</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="frequency.html"><a href="frequency.html"><i class="fa fa-check"></i><b>4</b> Frequency</a>
 <ul>
@@ -182,8 +183,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3" data-path="territoriality.html"><a href="territoriality.html#load-acoustic-data-and-species-scientific-names-data-3"><i class="fa fa-check"></i><b>6.3</b> Load acoustic data and species scientific names data</a></li>
 <li class="chapter" data-level="6.4" data-path="territoriality.html"><a href="territoriality.html#vocal-activity-data-1"><i class="fa fa-check"></i><b>6.4</b> Vocal activity data</a></li>
 <li class="chapter" data-level="6.5" data-path="territoriality.html"><a href="territoriality.html#join-the-vocal_activity-data-and-territoriality-data"><i class="fa fa-check"></i><b>6.5</b> Join the vocal_activity data and territoriality data</a></li>
-<li class="chapter" data-level="6.6" data-path="territoriality.html"><a href="territoriality.html#testing-the-differences-using-wilcoxon-test"><i class="fa fa-check"></i><b>6.6</b> Testing the differences using Wilcoxon test</a></li>
-<li class="chapter" data-level="6.7" data-path="territoriality.html"><a href="territoriality.html#visualization-of-detections-vs.-territoriality"><i class="fa fa-check"></i><b>6.7</b> Visualization of % detections vs. territoriality</a></li>
+<li class="chapter" data-level="6.6" data-path="territoriality.html"><a href="territoriality.html#visualization-of-detections-vs.-territoriality"><i class="fa fa-check"></i><b>6.6</b> Visualization of % detections vs. territoriality</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="sociality.html"><a href="sociality.html"><i class="fa fa-check"></i><b>7</b> Sociality</a>
 <ul>
@@ -192,8 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.3" data-path="sociality.html"><a href="sociality.html#load-acoustic-data-and-species-scientific-names-data-4"><i class="fa fa-check"></i><b>7.3</b> Load acoustic data and species scientific names data</a></li>
 <li class="chapter" data-level="7.4" data-path="sociality.html"><a href="sociality.html#vocal-activity-data-2"><i class="fa fa-check"></i><b>7.4</b> Vocal activity data</a></li>
 <li class="chapter" data-level="7.5" data-path="sociality.html"><a href="sociality.html#join-the-vocal_activity-data-and-sociality-data"><i class="fa fa-check"></i><b>7.5</b> Join the vocal_activity data and sociality data</a></li>
-<li class="chapter" data-level="7.6" data-path="sociality.html"><a href="sociality.html#testing-the-differences-using-wilcoxon-test-1"><i class="fa fa-check"></i><b>7.6</b> Testing the differences using Wilcoxon test</a></li>
-<li class="chapter" data-level="7.7" data-path="sociality.html"><a href="sociality.html#visualization-of-detections-vs.-sociality"><i class="fa fa-check"></i><b>7.7</b> Visualization of % detections vs. sociality</a></li>
+<li class="chapter" data-level="7.6" data-path="sociality.html"><a href="sociality.html#visualization-of-detections-vs.-sociality"><i class="fa fa-check"></i><b>7.6</b> Visualization of % detections vs. sociality</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="trophic-niche.html"><a href="trophic-niche.html"><i class="fa fa-check"></i><b>8</b> Trophic niche</a>
 <ul>
@@ -297,46 +296,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb30-2"><a href="sociality.html#cb30-2" tabindex="-1"></a>  <span class="fu">left_join</span>(sociality, <span class="at">by =</span> <span class="st">&#39;scientific_name&#39;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb30-3"><a href="sociality.html#cb30-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">sociality_cat =</span> <span class="fu">case_when</span> (sociality <span class="sc">%in%</span> <span class="st">&#39;0&#39;</span> <span class="sc">~</span> <span class="st">&#39;Non-communal signallers&#39;</span>, sociality <span class="sc">%in%</span> <span class="st">&#39;1&#39;</span> <span class="sc">~</span> <span class="st">&#39;Communal signallers&#39;</span>))</span></code></pre></div>
 </div>
-<div id="testing-the-differences-using-wilcoxon-test-1" class="section level2 hasAnchor" number="7.6">
-<h2><span class="header-section-number">7.6</span> Testing the differences using Wilcoxon test<a href="sociality.html#testing-the-differences-using-wilcoxon-test-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Here, we see whether there are differences in the vocal activity between communal and non-communal signallers in dawn and dusk individually.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="sociality.html#cb31-1" tabindex="-1"></a>stat.test <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span> </span>
-<span id="cb31-2"><a href="sociality.html#cb31-2" tabindex="-1"></a>  <span class="fu">group_by</span> (time_of_day) <span class="sc">%&gt;%</span> </span>
-<span id="cb31-3"><a href="sociality.html#cb31-3" tabindex="-1"></a>  <span class="fu">wilcox_test</span> (percent_detections <span class="sc">~</span> sociality_cat)</span></code></pre></div>
-<p>There are 78 non-communal signallers and 21 communal signallers in dawn, and 69 non-communal and 20 communal signallers in dusk.</p>
+<div id="visualization-of-detections-vs.-sociality" class="section level2 hasAnchor" number="7.6">
+<h2><span class="header-section-number">7.6</span> Visualization of % detections vs. sociality<a href="sociality.html#visualization-of-detections-vs.-sociality" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="sociality.html#cb31-1" tabindex="-1"></a><span class="do">## between dawn and dusk</span></span>
+<span id="cb31-2"><a href="sociality.html#cb31-2" tabindex="-1"></a>fig_soc_vocAct <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span></span>
+<span id="cb31-3"><a href="sociality.html#cb31-3" tabindex="-1"></a>  <span class="fu">grouped_ggbetweenstats</span>(<span class="at">x =</span> time_of_day,</span>
+<span id="cb31-4"><a href="sociality.html#cb31-4" tabindex="-1"></a>                         <span class="at">y =</span> percent_detections,</span>
+<span id="cb31-5"><a href="sociality.html#cb31-5" tabindex="-1"></a>                         <span class="at">grouping.var =</span> sociality_cat,</span>
+<span id="cb31-6"><a href="sociality.html#cb31-6" tabindex="-1"></a>                         <span class="at">xlab =</span> <span class="st">&quot;Sociality&quot;</span>,</span>
+<span id="cb31-7"><a href="sociality.html#cb31-7" tabindex="-1"></a>                         <span class="at">ylab =</span> <span class="st">&quot;% Acoustic Detections&quot;</span>, </span>
+<span id="cb31-8"><a href="sociality.html#cb31-8" tabindex="-1"></a>                         <span class="at">pairwise.display =</span> <span class="st">&quot;significant&quot;</span>,</span>
+<span id="cb31-9"><a href="sociality.html#cb31-9" tabindex="-1"></a>                         <span class="at">package =</span> <span class="st">&quot;ggsci&quot;</span>,</span>
+<span id="cb31-10"><a href="sociality.html#cb31-10" tabindex="-1"></a>                         <span class="at">palette =</span> <span class="st">&quot;default_jco&quot;</span>,</span>
+<span id="cb31-11"><a href="sociality.html#cb31-11" tabindex="-1"></a>                         <span class="at">violin.args =</span> <span class="fu">list</span>(<span class="at">width =</span> <span class="dv">0</span>),</span>
+<span id="cb31-12"><a href="sociality.html#cb31-12" tabindex="-1"></a><span class="at">ggplot.component =</span> <span class="fu">list</span>(<span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb31-13"><a href="sociality.html#cb31-13" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb31-14"><a href="sociality.html#cb31-14" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
+<span id="cb31-15"><a href="sociality.html#cb31-15" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
+<span id="cb31-16"><a href="sociality.html#cb31-16" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb31-17"><a href="sociality.html#cb31-17" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>)))) </span>
+<span id="cb31-18"><a href="sociality.html#cb31-18" tabindex="-1"></a></span>
+<span id="cb31-19"><a href="sociality.html#cb31-19" tabindex="-1"></a><span class="fu">ggsave</span>(fig_soc_vocAct, <span class="at">filename =</span> <span class="st">&quot;figs/fig_percentDetections_vs_sociality.png&quot;</span>, <span class="at">width =</span> <span class="dv">18</span>, <span class="at">height =</span> <span class="dv">14</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb31-20"><a href="sociality.html#cb31-20" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+<div class="float">
+<img src="figs/fig_percentDetections_vs_sociality.png" alt="% acoustic detections at dawn and dusk across categories of sociality" />
+<div class="figcaption">% acoustic detections at dawn and dusk across categories of sociality</div>
 </div>
-<div id="visualization-of-detections-vs.-sociality" class="section level2 hasAnchor" number="7.7">
-<h2><span class="header-section-number">7.7</span> Visualization of % detections vs. sociality<a href="sociality.html#visualization-of-detections-vs.-sociality" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="sociality.html#cb32-1" tabindex="-1"></a>fig_soc_vocAct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(vocal_act, <span class="fu">aes</span>(<span class="at">x =</span> sociality_cat, <span class="at">y =</span> percent_detections, <span class="at">fill =</span> sociality_cat)) <span class="sc">+</span> </span>
-<span id="cb32-2"><a href="sociality.html#cb32-2" tabindex="-1"></a>   <span class="fu">geom_boxplot</span>(</span>
-<span id="cb32-3"><a href="sociality.html#cb32-3" tabindex="-1"></a>    <span class="at">width =</span> .<span class="dv">2</span>,</span>
-<span id="cb32-4"><a href="sociality.html#cb32-4" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span></span>
-<span id="cb32-5"><a href="sociality.html#cb32-5" tabindex="-1"></a>  )  <span class="sc">+</span></span>
-<span id="cb32-6"><a href="sociality.html#cb32-6" tabindex="-1"></a>  gghalves<span class="sc">::</span><span class="fu">geom_half_point</span>(</span>
-<span id="cb32-7"><a href="sociality.html#cb32-7" tabindex="-1"></a>    <span class="at">side =</span> <span class="st">&quot;l&quot;</span>, </span>
-<span id="cb32-8"><a href="sociality.html#cb32-8" tabindex="-1"></a>    <span class="at">range_scale =</span> .<span class="dv">3</span>, </span>
-<span id="cb32-9"><a href="sociality.html#cb32-9" tabindex="-1"></a>    <span class="at">alpha =</span> .<span class="dv">5</span>, <span class="at">size =</span> <span class="dv">3</span></span>
-<span id="cb32-10"><a href="sociality.html#cb32-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb32-11"><a href="sociality.html#cb32-11" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Percent detections&quot;</span>,</span>
-<span id="cb32-12"><a href="sociality.html#cb32-12" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">&quot;Sociality Category&quot;</span>) <span class="sc">+</span></span>
-<span id="cb32-13"><a href="sociality.html#cb32-13" tabindex="-1"></a>  <span class="fu">facet_grid</span> (<span class="sc">~</span>time_of_day) <span class="sc">+</span> </span>
-<span id="cb32-14"><a href="sociality.html#cb32-14" tabindex="-1"></a>  <span class="fu">geom_signif</span>(<span class="at">comparisons =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;Non-communal signallers&quot;</span>, <span class="st">&quot;Communal Signallers&quot;</span>)), </span>
-<span id="cb32-15"><a href="sociality.html#cb32-15" tabindex="-1"></a>              <span class="at">map_signif_level =</span> <span class="fu">c</span>(<span class="st">&quot;***&quot;</span><span class="ot">=</span><span class="fl">0.001</span>,<span class="st">&quot;**&quot;</span><span class="ot">=</span><span class="fl">0.01</span>, <span class="st">&quot;*&quot;</span><span class="ot">=</span><span class="fl">0.05</span>, <span class="st">&quot; &quot;</span><span class="ot">=</span><span class="dv">2</span>),</span>
-<span id="cb32-16"><a href="sociality.html#cb32-16" tabindex="-1"></a>              <span class="at">textsize =</span> <span class="dv">5</span>)<span class="sc">+</span></span>
-<span id="cb32-17"><a href="sociality.html#cb32-17" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">name =</span> <span class="st">&quot;Sociality&quot;</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#0072B2&quot;</span>, <span class="st">&quot;#D55E00&quot;</span>),<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&#39;Non-communal signallers&#39;</span>, <span class="st">&#39;Communal Signallers&#39;</span>))<span class="sc">+</span></span>
-<span id="cb32-18"><a href="sociality.html#cb32-18" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">name =</span> <span class="st">&quot;Sociality&quot;</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#0072B2&quot;</span>, <span class="st">&quot;#D55E00&quot;</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&#39;Non-communal signallers&#39;</span>, <span class="st">&#39;Communal Signallers&#39;</span>)) <span class="sc">+</span></span>
-<span id="cb32-19"><a href="sociality.html#cb32-19" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
-<span id="cb32-20"><a href="sociality.html#cb32-20" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
-<span id="cb32-21"><a href="sociality.html#cb32-21" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb32-22"><a href="sociality.html#cb32-22" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb32-23"><a href="sociality.html#cb32-23" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
-<span id="cb32-24"><a href="sociality.html#cb32-24" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;italic&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
-<span id="cb32-25"><a href="sociality.html#cb32-25" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb32-26"><a href="sociality.html#cb32-26" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>))</span>
-<span id="cb32-27"><a href="sociality.html#cb32-27" tabindex="-1"></a></span>
-<span id="cb32-28"><a href="sociality.html#cb32-28" tabindex="-1"></a><span class="fu">ggsave</span>(fig_soc_vocAct, <span class="at">filename =</span> <span class="st">&quot;figs/fig_sociality_vs_percentDetections.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">16</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
-<span id="cb32-29"><a href="sociality.html#cb32-29" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
-<p>There are no significant differences in % acoustic detections between communal and non-communal signllers in both dawn and dusk.</p>
 
 </div>
 </div>

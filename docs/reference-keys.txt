@@ -13,6 +13,7 @@ vocal-activity
 install-necessary-libraries
 load-acoustic-data-and-species-scientific-names-data
 vocal-activity-across-time-periods
+is-overall-vocal-activity-much-higher-at-dawn-compared-to-dusk-across-species
 frequency
 install-necessary-libraries-1
 load-acoustic-data-and-species-scientific-names-data-1
@@ -30,7 +31,6 @@ loading-territoriality-data
 load-acoustic-data-and-species-scientific-names-data-3
 vocal-activity-data-1
 join-the-vocal_activity-data-and-territoriality-data
-testing-the-differences-using-wilcoxon-test
 visualization-of-detections-vs.-territoriality
 sociality
 loading-necessary-libraries-1
@@ -38,7 +38,6 @@ loading-sociality-data
 load-acoustic-data-and-species-scientific-names-data-4
 vocal-activity-data-2
 join-the-vocal_activity-data-and-sociality-data
-testing-the-differences-using-wilcoxon-test-1
 visualization-of-detections-vs.-sociality
 trophic-niche
 install-necessary-libraries-3

@@ -159,6 +159,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1" data-path="vocal-activity.html"><a href="vocal-activity.html#install-necessary-libraries"><i class="fa fa-check"></i><b>3.1</b> Install necessary libraries</a></li>
 <li class="chapter" data-level="3.2" data-path="vocal-activity.html"><a href="vocal-activity.html#load-acoustic-data-and-species-scientific-names-data"><i class="fa fa-check"></i><b>3.2</b> Load acoustic data and species scientific names data</a></li>
 <li class="chapter" data-level="3.3" data-path="vocal-activity.html"><a href="vocal-activity.html#vocal-activity-across-time-periods"><i class="fa fa-check"></i><b>3.3</b> Vocal activity across time periods</a></li>
+<li class="chapter" data-level="3.4" data-path="vocal-activity.html"><a href="vocal-activity.html#is-overall-vocal-activity-much-higher-at-dawn-compared-to-dusk-across-species"><i class="fa fa-check"></i><b>3.4</b> Is overall vocal activity much higher at dawn compared to dusk, across species?</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="frequency.html"><a href="frequency.html"><i class="fa fa-check"></i><b>4</b> Frequency</a>
 <ul>
@@ -182,8 +183,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3" data-path="territoriality.html"><a href="territoriality.html#load-acoustic-data-and-species-scientific-names-data-3"><i class="fa fa-check"></i><b>6.3</b> Load acoustic data and species scientific names data</a></li>
 <li class="chapter" data-level="6.4" data-path="territoriality.html"><a href="territoriality.html#vocal-activity-data-1"><i class="fa fa-check"></i><b>6.4</b> Vocal activity data</a></li>
 <li class="chapter" data-level="6.5" data-path="territoriality.html"><a href="territoriality.html#join-the-vocal_activity-data-and-territoriality-data"><i class="fa fa-check"></i><b>6.5</b> Join the vocal_activity data and territoriality data</a></li>
-<li class="chapter" data-level="6.6" data-path="territoriality.html"><a href="territoriality.html#testing-the-differences-using-wilcoxon-test"><i class="fa fa-check"></i><b>6.6</b> Testing the differences using Wilcoxon test</a></li>
-<li class="chapter" data-level="6.7" data-path="territoriality.html"><a href="territoriality.html#visualization-of-detections-vs.-territoriality"><i class="fa fa-check"></i><b>6.7</b> Visualization of % detections vs. territoriality</a></li>
+<li class="chapter" data-level="6.6" data-path="territoriality.html"><a href="territoriality.html#visualization-of-detections-vs.-territoriality"><i class="fa fa-check"></i><b>6.6</b> Visualization of % detections vs. territoriality</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="sociality.html"><a href="sociality.html"><i class="fa fa-check"></i><b>7</b> Sociality</a>
 <ul>
@@ -192,8 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.3" data-path="sociality.html"><a href="sociality.html#load-acoustic-data-and-species-scientific-names-data-4"><i class="fa fa-check"></i><b>7.3</b> Load acoustic data and species scientific names data</a></li>
 <li class="chapter" data-level="7.4" data-path="sociality.html"><a href="sociality.html#vocal-activity-data-2"><i class="fa fa-check"></i><b>7.4</b> Vocal activity data</a></li>
 <li class="chapter" data-level="7.5" data-path="sociality.html"><a href="sociality.html#join-the-vocal_activity-data-and-sociality-data"><i class="fa fa-check"></i><b>7.5</b> Join the vocal_activity data and sociality data</a></li>
-<li class="chapter" data-level="7.6" data-path="sociality.html"><a href="sociality.html#testing-the-differences-using-wilcoxon-test-1"><i class="fa fa-check"></i><b>7.6</b> Testing the differences using Wilcoxon test</a></li>
-<li class="chapter" data-level="7.7" data-path="sociality.html"><a href="sociality.html#visualization-of-detections-vs.-sociality"><i class="fa fa-check"></i><b>7.7</b> Visualization of % detections vs. sociality</a></li>
+<li class="chapter" data-level="7.6" data-path="sociality.html"><a href="sociality.html#visualization-of-detections-vs.-sociality"><i class="fa fa-check"></i><b>7.6</b> Visualization of % detections vs. sociality</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="trophic-niche.html"><a href="trophic-niche.html"><i class="fa fa-check"></i><b>8</b> Trophic niche</a>
 <ul>
@@ -285,6 +284,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-40"><a href="vocal-activity.html#cb9-40" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
 <div class="float">
 <img src="figs/fig_percentDetections_species.png" alt="% acoustic detections for each species between dawn and dusk" />
+<div class="figcaption">% acoustic detections for each species between dawn and dusk</div>
+</div>
+</div>
+<div id="is-overall-vocal-activity-much-higher-at-dawn-compared-to-dusk-across-species" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Is overall vocal activity much higher at dawn compared to dusk, across species?<a href="vocal-activity.html#is-overall-vocal-activity-much-higher-at-dawn-compared-to-dusk-across-species" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="vocal-activity.html#cb10-1" tabindex="-1"></a>fig_overall_vocal_act <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="vocal-activity.html#cb10-2" tabindex="-1"></a>  <span class="fu">ggbetweenstats</span>(<span class="at">x =</span> time_of_day,</span>
+<span id="cb10-3"><a href="vocal-activity.html#cb10-3" tabindex="-1"></a>                         <span class="at">y =</span> percent_detections,</span>
+<span id="cb10-4"><a href="vocal-activity.html#cb10-4" tabindex="-1"></a>                         <span class="at">xlab =</span> <span class="st">&quot;Time of Day&quot;</span>,</span>
+<span id="cb10-5"><a href="vocal-activity.html#cb10-5" tabindex="-1"></a>                         <span class="at">ylab =</span> <span class="st">&quot;% Acoustic Detections&quot;</span>, </span>
+<span id="cb10-6"><a href="vocal-activity.html#cb10-6" tabindex="-1"></a>                         <span class="at">pairwise.display =</span> <span class="st">&quot;significant&quot;</span>,</span>
+<span id="cb10-7"><a href="vocal-activity.html#cb10-7" tabindex="-1"></a>                         <span class="at">package =</span> <span class="st">&quot;ggsci&quot;</span>,</span>
+<span id="cb10-8"><a href="vocal-activity.html#cb10-8" tabindex="-1"></a>                         <span class="at">palette =</span> <span class="st">&quot;default_jco&quot;</span>,</span>
+<span id="cb10-9"><a href="vocal-activity.html#cb10-9" tabindex="-1"></a>                         <span class="at">violin.args =</span> <span class="fu">list</span>(<span class="at">width =</span> <span class="dv">0</span>),</span>
+<span id="cb10-10"><a href="vocal-activity.html#cb10-10" tabindex="-1"></a><span class="at">ggplot.component =</span> <span class="fu">list</span>(<span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb10-11"><a href="vocal-activity.html#cb10-11" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb10-12"><a href="vocal-activity.html#cb10-12" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
+<span id="cb10-13"><a href="vocal-activity.html#cb10-13" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
+<span id="cb10-14"><a href="vocal-activity.html#cb10-14" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb10-15"><a href="vocal-activity.html#cb10-15" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>)))) </span>
+<span id="cb10-16"><a href="vocal-activity.html#cb10-16" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="vocal-activity.html#cb10-17" tabindex="-1"></a><span class="fu">ggsave</span>(fig_overall_vocal_act, <span class="at">filename =</span> <span class="st">&quot;figs/fig_percentDetections_overall.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">16</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb10-18"><a href="vocal-activity.html#cb10-18" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+<p>Overall, higher vocal activity was detected at dawn compared to dusk, across species.</p>
+<div class="float">
+<img src="figs/fig_percentDetections_overall.png" alt="% acoustic detections for each species between dawn and dusk" />
 <div class="figcaption">% acoustic detections for each species between dawn and dusk</div>
 </div>
 
