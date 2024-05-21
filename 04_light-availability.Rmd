@@ -33,29 +33,6 @@ sites <- read.csv("data/list-of-sites.csv")
 species_codes <- read.csv("data/species-annotation-codes.csv")
 ```
 
-## Remove species with very few total detections across dawn and dusk  
-
-We create a filter to remove species that had very few total detections at dawn and dusk. 
-```{r}
-spp_subset <- acoustic_data %>%
-  group_by(time_of_day, eBird_codes) %>%
-  summarise(detections = sum(number)) %>%
-  left_join(., species_codes[,c(1,2,5)], 
-                       by = "eBird_codes") %>%
-   group_by(eBird_codes) %>%
-  mutate(total_detections =sum(detections)) %>%
-  ungroup()
-
-# for further analysis, we remove species that were detected less than 20 times cumulatively across dawn and dusk
-# this ensures that we keep species that called very few times in the morning and perhaps more times in the evening, or vice-versa
-
-spp_subset <- spp_subset %>%
-  filter(total_detections > 20) 
-
-# subset data
-acoustic_data <- acoustic_data %>%
-  filter(eBird_codes %in% spp_subset$eBird_codes)
-```
 
 ## Extract light availability for each date
 ```{r}
@@ -179,8 +156,6 @@ cairo_pdf(
 )
 plots
 dev.off()
-
-
 ```
 
 
