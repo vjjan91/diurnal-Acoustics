@@ -201,8 +201,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.2" data-path="trophic-niche.html"><a href="trophic-niche.html#load-acoustic-data-and-species-scientific-names-data-5"><i class="fa fa-check"></i><b>8.2</b> Load acoustic data and species scientific names data</a></li>
 <li class="chapter" data-level="8.3" data-path="trophic-niche.html"><a href="trophic-niche.html#vocal-activity-data-3"><i class="fa fa-check"></i><b>8.3</b> Vocal activity data</a></li>
 <li class="chapter" data-level="8.4" data-path="trophic-niche.html"><a href="trophic-niche.html#join-the-vocal_activity-data-and-species-trait-data"><i class="fa fa-check"></i><b>8.4</b> Join the vocal_activity data and species trait data</a></li>
-<li class="chapter" data-level="8.5" data-path="trophic-niche.html"><a href="trophic-niche.html#testing-the-differences-using-wilcoxon-test-2"><i class="fa fa-check"></i><b>8.5</b> Testing the differences using Wilcoxon test</a></li>
-<li class="chapter" data-level="8.6" data-path="trophic-niche.html"><a href="trophic-niche.html#visualization-of-detections-vs.-trophic-niche"><i class="fa fa-check"></i><b>8.6</b> Visualization of % detections vs. trophic niche</a></li>
+<li class="chapter" data-level="8.5" data-path="trophic-niche.html"><a href="trophic-niche.html#visualization-of-detections-vs.-trophic-niche"><i class="fa fa-check"></i><b>8.5</b> Visualization of % detections vs. trophic niche</a></li>
 </ul></li>
 </ul>
 
@@ -274,35 +273,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb36-11"><a href="trophic-niche.html#cb36-11" tabindex="-1"></a></span>
 <span id="cb36-12"><a href="trophic-niche.html#cb36-12" tabindex="-1"></a><span class="do">## We retained 65 out of 69 species after the above filters</span></span></code></pre></div>
 </div>
-<div id="testing-the-differences-using-wilcoxon-test-2" class="section level2 hasAnchor" number="8.5">
-<h2><span class="header-section-number">8.5</span> Testing the differences using Wilcoxon test<a href="trophic-niche.html#testing-the-differences-using-wilcoxon-test-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Here, we see whether there are differences in the vocal activity among highly territorial, weakly territorial and non-territorial species in dawn and dusk individually.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="trophic-niche.html#cb37-1" tabindex="-1"></a>stat.test <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span> </span>
-<span id="cb37-2"><a href="trophic-niche.html#cb37-2" tabindex="-1"></a>  <span class="fu">group_by</span>(time_of_day) <span class="sc">%&gt;%</span> </span>
-<span id="cb37-3"><a href="trophic-niche.html#cb37-3" tabindex="-1"></a>  <span class="fu">wilcox_test</span>(percent_detections <span class="sc">~</span> trophic_niche) </span></code></pre></div>
-<p>No significant differences in percent detections across categories between dawn and dusk.</p>
+<div id="visualization-of-detections-vs.-trophic-niche" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Visualization of % detections vs. trophic niche<a href="trophic-niche.html#visualization-of-detections-vs.-trophic-niche" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="trophic-niche.html#cb37-1" tabindex="-1"></a>fig_trophicNiche_vocAct <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span></span>
+<span id="cb37-2"><a href="trophic-niche.html#cb37-2" tabindex="-1"></a>  <span class="fu">grouped_ggbetweenstats</span>(<span class="at">x =</span> time_of_day,</span>
+<span id="cb37-3"><a href="trophic-niche.html#cb37-3" tabindex="-1"></a>                         <span class="at">y =</span> percent_detections,</span>
+<span id="cb37-4"><a href="trophic-niche.html#cb37-4" tabindex="-1"></a>                         <span class="at">grouping.var =</span> trophic_niche,</span>
+<span id="cb37-5"><a href="trophic-niche.html#cb37-5" tabindex="-1"></a>                         <span class="at">xlab =</span> <span class="st">&quot;Trophic Niche&quot;</span>,</span>
+<span id="cb37-6"><a href="trophic-niche.html#cb37-6" tabindex="-1"></a>                         <span class="at">ylab =</span> <span class="st">&quot;% Acoustic Detections&quot;</span>, </span>
+<span id="cb37-7"><a href="trophic-niche.html#cb37-7" tabindex="-1"></a>                         <span class="at">pairwise.display =</span> <span class="st">&quot;significant&quot;</span>,</span>
+<span id="cb37-8"><a href="trophic-niche.html#cb37-8" tabindex="-1"></a>                         <span class="at">package =</span> <span class="st">&quot;ggsci&quot;</span>,</span>
+<span id="cb37-9"><a href="trophic-niche.html#cb37-9" tabindex="-1"></a>                         <span class="at">palette =</span> <span class="st">&quot;default_jco&quot;</span>,</span>
+<span id="cb37-10"><a href="trophic-niche.html#cb37-10" tabindex="-1"></a>                         <span class="at">violin.args =</span> <span class="fu">list</span>(<span class="at">width =</span> <span class="dv">0</span>),</span>
+<span id="cb37-11"><a href="trophic-niche.html#cb37-11" tabindex="-1"></a><span class="at">ggplot.component =</span> <span class="fu">list</span>(<span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb37-12"><a href="trophic-niche.html#cb37-12" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb37-13"><a href="trophic-niche.html#cb37-13" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
+<span id="cb37-14"><a href="trophic-niche.html#cb37-14" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
+<span id="cb37-15"><a href="trophic-niche.html#cb37-15" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb37-16"><a href="trophic-niche.html#cb37-16" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>)))) </span>
+<span id="cb37-17"><a href="trophic-niche.html#cb37-17" tabindex="-1"></a></span>
+<span id="cb37-18"><a href="trophic-niche.html#cb37-18" tabindex="-1"></a><span class="fu">ggsave</span>(fig_trophicNiche_vocAct, <span class="at">filename =</span> <span class="st">&quot;figs/fig_percentDetections_trophicNiche.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">16</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb37-19"><a href="trophic-niche.html#cb37-19" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+<div class="float">
+<img src="figs/fig_percentDetections_trophicNiche.png" alt="% acoustic detections at dawn and dusk across foraging guilds" />
+<div class="figcaption">% acoustic detections at dawn and dusk across foraging guilds</div>
 </div>
-<div id="visualization-of-detections-vs.-trophic-niche" class="section level2 hasAnchor" number="8.6">
-<h2><span class="header-section-number">8.6</span> Visualization of % detections vs. trophic niche<a href="trophic-niche.html#visualization-of-detections-vs.-trophic-niche" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="trophic-niche.html#cb38-1" tabindex="-1"></a>fig_trophicNiche_vocAct <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span></span>
-<span id="cb38-2"><a href="trophic-niche.html#cb38-2" tabindex="-1"></a>  <span class="fu">filter</span>(time_of_day <span class="sc">==</span> <span class="st">&quot;dawn&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb38-3"><a href="trophic-niche.html#cb38-3" tabindex="-1"></a>  <span class="fu">ggbetweenstats</span>(<span class="at">x =</span> trophic_niche,</span>
-<span id="cb38-4"><a href="trophic-niche.html#cb38-4" tabindex="-1"></a>                         <span class="at">y =</span> percent_detections,</span>
-<span id="cb38-5"><a href="trophic-niche.html#cb38-5" tabindex="-1"></a>                         <span class="at">xlab =</span> <span class="st">&quot;Trophic Niche&quot;</span>,</span>
-<span id="cb38-6"><a href="trophic-niche.html#cb38-6" tabindex="-1"></a>                         <span class="at">ylab =</span> <span class="st">&quot;% Acoustic Detections at Dawn&quot;</span>, </span>
-<span id="cb38-7"><a href="trophic-niche.html#cb38-7" tabindex="-1"></a>                         <span class="at">pairwise.display =</span> <span class="st">&quot;significant&quot;</span>,</span>
-<span id="cb38-8"><a href="trophic-niche.html#cb38-8" tabindex="-1"></a>                         <span class="at">package =</span> <span class="st">&quot;ggsci&quot;</span>,</span>
-<span id="cb38-9"><a href="trophic-niche.html#cb38-9" tabindex="-1"></a>                         <span class="at">palette =</span> <span class="st">&quot;default_jco&quot;</span>,</span>
-<span id="cb38-10"><a href="trophic-niche.html#cb38-10" tabindex="-1"></a>                         <span class="at">violin.args =</span> <span class="fu">list</span>(<span class="at">width =</span> <span class="dv">0</span>),</span>
-<span id="cb38-11"><a href="trophic-niche.html#cb38-11" tabindex="-1"></a><span class="at">ggplot.component =</span> <span class="fu">list</span>(<span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb38-12"><a href="trophic-niche.html#cb38-12" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb38-13"><a href="trophic-niche.html#cb38-13" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
-<span id="cb38-14"><a href="trophic-niche.html#cb38-14" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
-<span id="cb38-15"><a href="trophic-niche.html#cb38-15" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb38-16"><a href="trophic-niche.html#cb38-16" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>)))) </span>
-<span id="cb38-17"><a href="trophic-niche.html#cb38-17" tabindex="-1"></a></span>
-<span id="cb38-18"><a href="trophic-niche.html#cb38-18" tabindex="-1"></a><span class="fu">ggsave</span>(fig_trophicNiche_vocAct, <span class="at">filename =</span> <span class="st">&quot;figs/fig_percentDetections_trophicNiche.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">16</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
-<span id="cb38-19"><a href="trophic-niche.html#cb38-19" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
 
 </div>
 </div>

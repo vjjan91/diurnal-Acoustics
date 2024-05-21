@@ -45,5 +45,4 @@ install-necessary-libraries-3
 load-acoustic-data-and-species-scientific-names-data-5
 vocal-activity-data-3
 join-the-vocal_activity-data-and-species-trait-data
-testing-the-differences-using-wilcoxon-test-2
 visualization-of-detections-vs.-trophic-niche
