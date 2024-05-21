@@ -22,7 +22,6 @@ visualization-of-detections-vs.-median-peak-frequency
 light-availability
 install-necessary-libraries-2
 load-acoustic-data-and-species-scientific-names-data-2
-remove-species-with-very-few-total-detections-across-dawn-and-dusk
 extract-light-availability-for-each-date
 model-acoustic-detections-as-a-function-of-light-availability
 territoriality
@@ -41,3 +40,10 @@ vocal-activity-data-2
 join-the-vocal_activity-data-and-sociality-data
 testing-the-differences-using-wilcoxon-test-1
 visualization-of-detections-vs.-sociality
+trophic-niche
+install-necessary-libraries-3
+load-acoustic-data-and-species-scientific-names-data-5
+vocal-activity-data-3
+join-the-vocal_activity-data-and-species-trait-data
+testing-the-differences-using-wilcoxon-test-2
+visualization-of-detections-vs.-trophic-niche

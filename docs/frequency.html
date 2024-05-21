@@ -172,9 +172,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path="light-availability.html"><a href="light-availability.html#install-necessary-libraries-2"><i class="fa fa-check"></i><b>5.1</b> Install necessary libraries</a></li>
 <li class="chapter" data-level="5.2" data-path="light-availability.html"><a href="light-availability.html#load-acoustic-data-and-species-scientific-names-data-2"><i class="fa fa-check"></i><b>5.2</b> Load acoustic data and species scientific names data</a></li>
-<li class="chapter" data-level="5.3" data-path="light-availability.html"><a href="light-availability.html#remove-species-with-very-few-total-detections-across-dawn-and-dusk"><i class="fa fa-check"></i><b>5.3</b> Remove species with very few total detections across dawn and dusk</a></li>
-<li class="chapter" data-level="5.4" data-path="light-availability.html"><a href="light-availability.html#extract-light-availability-for-each-date"><i class="fa fa-check"></i><b>5.4</b> Extract light availability for each date</a></li>
-<li class="chapter" data-level="5.5" data-path="light-availability.html"><a href="light-availability.html#model-acoustic-detections-as-a-function-of-light-availability"><i class="fa fa-check"></i><b>5.5</b> Model acoustic detections as a function of light availability</a></li>
+<li class="chapter" data-level="5.3" data-path="light-availability.html"><a href="light-availability.html#extract-light-availability-for-each-date"><i class="fa fa-check"></i><b>5.3</b> Extract light availability for each date</a></li>
+<li class="chapter" data-level="5.4" data-path="light-availability.html"><a href="light-availability.html#model-acoustic-detections-as-a-function-of-light-availability"><i class="fa fa-check"></i><b>5.4</b> Model acoustic detections as a function of light availability</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="territoriality.html"><a href="territoriality.html"><i class="fa fa-check"></i><b>6</b> Territoriality</a>
 <ul>
@@ -195,6 +194,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.5" data-path="sociality.html"><a href="sociality.html#join-the-vocal_activity-data-and-sociality-data"><i class="fa fa-check"></i><b>7.5</b> Join the vocal_activity data and sociality data</a></li>
 <li class="chapter" data-level="7.6" data-path="sociality.html"><a href="sociality.html#testing-the-differences-using-wilcoxon-test-1"><i class="fa fa-check"></i><b>7.6</b> Testing the differences using Wilcoxon test</a></li>
 <li class="chapter" data-level="7.7" data-path="sociality.html"><a href="sociality.html#visualization-of-detections-vs.-sociality"><i class="fa fa-check"></i><b>7.7</b> Visualization of % detections vs. sociality</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="trophic-niche.html"><a href="trophic-niche.html"><i class="fa fa-check"></i><b>8</b> Trophic niche</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="trophic-niche.html"><a href="trophic-niche.html#install-necessary-libraries-3"><i class="fa fa-check"></i><b>8.1</b> Install necessary libraries</a></li>
+<li class="chapter" data-level="8.2" data-path="trophic-niche.html"><a href="trophic-niche.html#load-acoustic-data-and-species-scientific-names-data-5"><i class="fa fa-check"></i><b>8.2</b> Load acoustic data and species scientific names data</a></li>
+<li class="chapter" data-level="8.3" data-path="trophic-niche.html"><a href="trophic-niche.html#vocal-activity-data-3"><i class="fa fa-check"></i><b>8.3</b> Vocal activity data</a></li>
+<li class="chapter" data-level="8.4" data-path="trophic-niche.html"><a href="trophic-niche.html#join-the-vocal_activity-data-and-species-trait-data"><i class="fa fa-check"></i><b>8.4</b> Join the vocal_activity data and species trait data</a></li>
+<li class="chapter" data-level="8.5" data-path="trophic-niche.html"><a href="trophic-niche.html#testing-the-differences-using-wilcoxon-test-2"><i class="fa fa-check"></i><b>8.5</b> Testing the differences using Wilcoxon test</a></li>
+<li class="chapter" data-level="8.6" data-path="trophic-niche.html"><a href="trophic-niche.html#visualization-of-detections-vs.-trophic-niche"><i class="fa fa-check"></i><b>8.6</b> Visualization of % detections vs. trophic niche</a></li>
 </ul></li>
 </ul>
 
@@ -247,13 +255,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb12-7"><a href="frequency.html#cb12-7" tabindex="-1"></a>   <span class="fu">group_by</span>(eBird_codes) <span class="sc">%&gt;%</span></span>
 <span id="cb12-8"><a href="frequency.html#cb12-8" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_detections =</span><span class="fu">sum</span>(detections)) <span class="sc">%&gt;%</span></span>
 <span id="cb12-9"><a href="frequency.html#cb12-9" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_detections =</span> (detections<span class="sc">/</span>total_detections)<span class="sc">*</span><span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-10"><a href="frequency.html#cb12-10" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb12-11"><a href="frequency.html#cb12-11" tabindex="-1"></a></span>
-<span id="cb12-12"><a href="frequency.html#cb12-12" tabindex="-1"></a><span class="co"># for further analysis, we remove species that were detected less than 20 times cumulatively across dawn and dusk</span></span>
-<span id="cb12-13"><a href="frequency.html#cb12-13" tabindex="-1"></a><span class="co"># this ensures that we keep species that called very few times in the morning and perhaps more times in the evening, or vice-versa</span></span>
-<span id="cb12-14"><a href="frequency.html#cb12-14" tabindex="-1"></a></span>
-<span id="cb12-15"><a href="frequency.html#cb12-15" tabindex="-1"></a>vocal_act <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span></span>
-<span id="cb12-16"><a href="frequency.html#cb12-16" tabindex="-1"></a>  <span class="fu">filter</span>(total_detections <span class="sc">&gt;</span> <span class="dv">20</span>) </span></code></pre></div>
+<span id="cb12-10"><a href="frequency.html#cb12-10" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
 </div>
 <div id="frequency-data" class="section level2 hasAnchor" number="4.4">
 <h2><span class="header-section-number">4.4</span> Frequency data<a href="frequency.html#frequency-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -266,45 +268,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-6"><a href="frequency.html#cb13-6" tabindex="-1"></a>nTemplates_5 <span class="ot">&lt;-</span> freq <span class="sc">%&gt;%</span></span>
 <span id="cb13-7"><a href="frequency.html#cb13-7" tabindex="-1"></a>  <span class="fu">group_by</span>(eBird_codes) <span class="sc">%&gt;%</span></span>
 <span id="cb13-8"><a href="frequency.html#cb13-8" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb13-9"><a href="frequency.html#cb13-9" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;=</span> <span class="dv">5</span>)</span>
-<span id="cb13-10"><a href="frequency.html#cb13-10" tabindex="-1"></a></span>
-<span id="cb13-11"><a href="frequency.html#cb13-11" tabindex="-1"></a><span class="co"># left-join to remove species with less than 10 templates in the frequency dataset</span></span>
-<span id="cb13-12"><a href="frequency.html#cb13-12" tabindex="-1"></a>freq_5 <span class="ot">&lt;-</span> <span class="fu">left_join</span>(nTemplates_5[,<span class="dv">1</span>], freq)</span>
-<span id="cb13-13"><a href="frequency.html#cb13-13" tabindex="-1"></a></span>
-<span id="cb13-14"><a href="frequency.html#cb13-14" tabindex="-1"></a><span class="co"># calculate median peak frequency</span></span>
-<span id="cb13-15"><a href="frequency.html#cb13-15" tabindex="-1"></a>median_pf <span class="ot">&lt;-</span> freq_5 <span class="sc">%&gt;%</span></span>
-<span id="cb13-16"><a href="frequency.html#cb13-16" tabindex="-1"></a>  <span class="fu">group_by</span>(eBird_codes) <span class="sc">%&gt;%</span></span>
-<span id="cb13-17"><a href="frequency.html#cb13-17" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_peak_freq =</span>  <span class="fu">median</span>(peak_freq_in_Hz))</span>
-<span id="cb13-18"><a href="frequency.html#cb13-18" tabindex="-1"></a></span>
-<span id="cb13-19"><a href="frequency.html#cb13-19" tabindex="-1"></a><span class="do">## join the frequency data to the vocal activity data</span></span>
-<span id="cb13-20"><a href="frequency.html#cb13-20" tabindex="-1"></a>voc_freq <span class="ot">&lt;-</span> <span class="fu">left_join</span>(vocal_act, median_pf, <span class="at">by =</span> <span class="st">&quot;eBird_codes&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb13-21"><a href="frequency.html#cb13-21" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
-<span id="cb13-22"><a href="frequency.html#cb13-22" tabindex="-1"></a></span>
-<span id="cb13-23"><a href="frequency.html#cb13-23" tabindex="-1"></a><span class="co"># A total of 92 species were included and eight species were excluded.</span></span></code></pre></div>
+<span id="cb13-9"><a href="frequency.html#cb13-9" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;=</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-10"><a href="frequency.html#cb13-10" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb13-11"><a href="frequency.html#cb13-11" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="frequency.html#cb13-12" tabindex="-1"></a><span class="co"># left-join to remove species with less than 10 templates in the frequency dataset</span></span>
+<span id="cb13-13"><a href="frequency.html#cb13-13" tabindex="-1"></a>freq_5 <span class="ot">&lt;-</span> <span class="fu">left_join</span>(nTemplates_5[,<span class="dv">1</span>], freq)</span>
+<span id="cb13-14"><a href="frequency.html#cb13-14" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="frequency.html#cb13-15" tabindex="-1"></a><span class="co"># calculate median peak frequency</span></span>
+<span id="cb13-16"><a href="frequency.html#cb13-16" tabindex="-1"></a>median_pf <span class="ot">&lt;-</span> freq_5 <span class="sc">%&gt;%</span></span>
+<span id="cb13-17"><a href="frequency.html#cb13-17" tabindex="-1"></a>  <span class="fu">group_by</span>(eBird_codes) <span class="sc">%&gt;%</span></span>
+<span id="cb13-18"><a href="frequency.html#cb13-18" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_peak_freq =</span>  <span class="fu">median</span>(peak_freq_in_Hz))</span>
+<span id="cb13-19"><a href="frequency.html#cb13-19" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="frequency.html#cb13-20" tabindex="-1"></a><span class="do">## join the frequency data to the vocal activity data</span></span>
+<span id="cb13-21"><a href="frequency.html#cb13-21" tabindex="-1"></a>voc_freq <span class="ot">&lt;-</span> <span class="fu">left_join</span>(vocal_act, median_pf, <span class="at">by =</span> <span class="st">&quot;eBird_codes&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-22"><a href="frequency.html#cb13-22" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb13-23"><a href="frequency.html#cb13-23" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="frequency.html#cb13-24" tabindex="-1"></a><span class="co"># A total of 66 species were included and three species were excluded due to lack of data. </span></span></code></pre></div>
 </div>
 <div id="visualization-of-detections-vs.-median-peak-frequency" class="section level2 hasAnchor" number="4.5">
 <h2><span class="header-section-number">4.5</span> Visualization of % detections vs. median peak frequency<a href="frequency.html#visualization-of-detections-vs.-median-peak-frequency" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Here, we model the % of detections at dawn as a function of median peak frequency.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="frequency.html#cb14-1" tabindex="-1"></a><span class="co"># we will filter the data to only include dawn</span></span>
 <span id="cb14-2"><a href="frequency.html#cb14-2" tabindex="-1"></a>dawn <span class="ot">&lt;-</span> voc_freq <span class="sc">%&gt;%</span></span>
-<span id="cb14-3"><a href="frequency.html#cb14-3" tabindex="-1"></a>  <span class="fu">filter</span>(time_of_day <span class="sc">==</span> <span class="st">&quot;dawn&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb14-4"><a href="frequency.html#cb14-4" tabindex="-1"></a>  <span class="fu">filter</span>(eBird_codes <span class="sc">!=</span> <span class="st">&quot;pabflo1&quot;</span>)</span>
+<span id="cb14-3"><a href="frequency.html#cb14-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log_freq =</span> <span class="fu">log10</span>(median_peak_freq)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-4"><a href="frequency.html#cb14-4" tabindex="-1"></a>  <span class="fu">filter</span>(time_of_day <span class="sc">==</span> <span class="st">&quot;dawn&quot;</span>) </span>
 <span id="cb14-5"><a href="frequency.html#cb14-5" tabindex="-1"></a></span>
 <span id="cb14-6"><a href="frequency.html#cb14-6" tabindex="-1"></a><span class="co"># the only species that was excluded above was pied bushchat, which was reported only from dusk</span></span>
 <span id="cb14-7"><a href="frequency.html#cb14-7" tabindex="-1"></a></span>
-<span id="cb14-8"><a href="frequency.html#cb14-8" tabindex="-1"></a>fig_freq_vocAct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dawn, <span class="fu">aes</span>(<span class="at">x=</span>median_peak_freq,</span>
+<span id="cb14-8"><a href="frequency.html#cb14-8" tabindex="-1"></a>fig_freq_vocAct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dawn, <span class="fu">aes</span>(<span class="at">x=</span>log_freq,</span>
 <span id="cb14-9"><a href="frequency.html#cb14-9" tabindex="-1"></a>                                        <span class="at">y=</span> percent_detections)) <span class="sc">+</span></span>
 <span id="cb14-10"><a href="frequency.html#cb14-10" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">21</span>, <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, </span>
 <span id="cb14-11"><a href="frequency.html#cb14-11" tabindex="-1"></a>             <span class="at">fill =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">stroke =</span> <span class="dv">1</span>)<span class="sc">+</span> </span>
 <span id="cb14-12"><a href="frequency.html#cb14-12" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;lm&quot;</span>, <span class="at">se=</span><span class="cn">TRUE</span>, <span class="at">fullrange=</span><span class="cn">FALSE</span>, <span class="at">level=</span><span class="fl">0.95</span>,<span class="at">linetype=</span><span class="st">&quot;solid&quot;</span>) <span class="sc">+</span>  </span>
 <span id="cb14-13"><a href="frequency.html#cb14-13" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb14-14"><a href="frequency.html#cb14-14" tabindex="-1"></a>  <span class="fu">stat_regline_equation</span>(<span class="at">label.x =</span> <span class="dv">6000</span>, <span class="fu">aes</span>(<span class="at">label =</span> ..eq.label..),</span>
-<span id="cb14-15"><a href="frequency.html#cb14-15" tabindex="-1"></a>                        <span class="at">label.y =</span> <span class="dv">10</span>, <span class="at">size =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
-<span id="cb14-16"><a href="frequency.html#cb14-16" tabindex="-1"></a>  <span class="fu">stat_regline_equation</span>(<span class="at">label.x =</span> <span class="dv">4000</span>, <span class="fu">aes</span>(<span class="at">label =</span> ..rr.label..),</span>
-<span id="cb14-17"><a href="frequency.html#cb14-17" tabindex="-1"></a>                        <span class="at">label.y =</span> <span class="dv">10</span>,</span>
+<span id="cb14-14"><a href="frequency.html#cb14-14" tabindex="-1"></a>  <span class="fu">stat_regline_equation</span>(<span class="at">label.x =</span> <span class="fl">2.4</span>, <span class="fu">aes</span>(<span class="at">label =</span> ..eq.label..),</span>
+<span id="cb14-15"><a href="frequency.html#cb14-15" tabindex="-1"></a>                        <span class="at">label.y =</span> <span class="dv">25</span>, <span class="at">size =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb14-16"><a href="frequency.html#cb14-16" tabindex="-1"></a>  <span class="fu">stat_regline_equation</span>(<span class="at">label.x =</span> <span class="fl">2.8</span>, <span class="fu">aes</span>(<span class="at">label =</span> ..rr.label..),</span>
+<span id="cb14-17"><a href="frequency.html#cb14-17" tabindex="-1"></a>                        <span class="at">label.y =</span> <span class="dv">25</span>,</span>
 <span id="cb14-18"><a href="frequency.html#cb14-18" tabindex="-1"></a>                        <span class="at">size =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
-<span id="cb14-19"><a href="frequency.html#cb14-19" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st"> % acoustic detections at dawn&quot;</span>, </span>
-<span id="cb14-20"><a href="frequency.html#cb14-20" tabindex="-1"></a>       <span class="at">x=</span><span class="st">&quot;Median Peak Frequency</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
+<span id="cb14-19"><a href="frequency.html#cb14-19" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st"> % Acoustic detections at Dawn&quot;</span>, </span>
+<span id="cb14-20"><a href="frequency.html#cb14-20" tabindex="-1"></a>       <span class="at">x=</span><span class="st">&quot; log (Median Peak Frequency)</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
 <span id="cb14-21"><a href="frequency.html#cb14-21" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> common_name), <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
 <span id="cb14-22"><a href="frequency.html#cb14-22" tabindex="-1"></a>                  <span class="at">fontface =</span> <span class="st">&quot;italic&quot;</span>) <span class="sc">+</span></span>
 <span id="cb14-23"><a href="frequency.html#cb14-23" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>

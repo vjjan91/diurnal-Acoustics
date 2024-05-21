@@ -33,7 +33,7 @@
   
   
 <link rel="prev" href="territoriality.html"/>
-
+<link rel="next" href="trophic-niche.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -172,9 +172,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path="light-availability.html"><a href="light-availability.html#install-necessary-libraries-2"><i class="fa fa-check"></i><b>5.1</b> Install necessary libraries</a></li>
 <li class="chapter" data-level="5.2" data-path="light-availability.html"><a href="light-availability.html#load-acoustic-data-and-species-scientific-names-data-2"><i class="fa fa-check"></i><b>5.2</b> Load acoustic data and species scientific names data</a></li>
-<li class="chapter" data-level="5.3" data-path="light-availability.html"><a href="light-availability.html#remove-species-with-very-few-total-detections-across-dawn-and-dusk"><i class="fa fa-check"></i><b>5.3</b> Remove species with very few total detections across dawn and dusk</a></li>
-<li class="chapter" data-level="5.4" data-path="light-availability.html"><a href="light-availability.html#extract-light-availability-for-each-date"><i class="fa fa-check"></i><b>5.4</b> Extract light availability for each date</a></li>
-<li class="chapter" data-level="5.5" data-path="light-availability.html"><a href="light-availability.html#model-acoustic-detections-as-a-function-of-light-availability"><i class="fa fa-check"></i><b>5.5</b> Model acoustic detections as a function of light availability</a></li>
+<li class="chapter" data-level="5.3" data-path="light-availability.html"><a href="light-availability.html#extract-light-availability-for-each-date"><i class="fa fa-check"></i><b>5.3</b> Extract light availability for each date</a></li>
+<li class="chapter" data-level="5.4" data-path="light-availability.html"><a href="light-availability.html#model-acoustic-detections-as-a-function-of-light-availability"><i class="fa fa-check"></i><b>5.4</b> Model acoustic detections as a function of light availability</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="territoriality.html"><a href="territoriality.html"><i class="fa fa-check"></i><b>6</b> Territoriality</a>
 <ul>
@@ -195,6 +194,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.5" data-path="sociality.html"><a href="sociality.html#join-the-vocal_activity-data-and-sociality-data"><i class="fa fa-check"></i><b>7.5</b> Join the vocal_activity data and sociality data</a></li>
 <li class="chapter" data-level="7.6" data-path="sociality.html"><a href="sociality.html#testing-the-differences-using-wilcoxon-test-1"><i class="fa fa-check"></i><b>7.6</b> Testing the differences using Wilcoxon test</a></li>
 <li class="chapter" data-level="7.7" data-path="sociality.html"><a href="sociality.html#visualization-of-detections-vs.-sociality"><i class="fa fa-check"></i><b>7.7</b> Visualization of % detections vs. sociality</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="trophic-niche.html"><a href="trophic-niche.html"><i class="fa fa-check"></i><b>8</b> Trophic niche</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="trophic-niche.html"><a href="trophic-niche.html#install-necessary-libraries-3"><i class="fa fa-check"></i><b>8.1</b> Install necessary libraries</a></li>
+<li class="chapter" data-level="8.2" data-path="trophic-niche.html"><a href="trophic-niche.html#load-acoustic-data-and-species-scientific-names-data-5"><i class="fa fa-check"></i><b>8.2</b> Load acoustic data and species scientific names data</a></li>
+<li class="chapter" data-level="8.3" data-path="trophic-niche.html"><a href="trophic-niche.html#vocal-activity-data-3"><i class="fa fa-check"></i><b>8.3</b> Vocal activity data</a></li>
+<li class="chapter" data-level="8.4" data-path="trophic-niche.html"><a href="trophic-niche.html#join-the-vocal_activity-data-and-species-trait-data"><i class="fa fa-check"></i><b>8.4</b> Join the vocal_activity data and species trait data</a></li>
+<li class="chapter" data-level="8.5" data-path="trophic-niche.html"><a href="trophic-niche.html#testing-the-differences-using-wilcoxon-test-2"><i class="fa fa-check"></i><b>8.5</b> Testing the differences using Wilcoxon test</a></li>
+<li class="chapter" data-level="8.6" data-path="trophic-niche.html"><a href="trophic-niche.html#visualization-of-detections-vs.-trophic-niche"><i class="fa fa-check"></i><b>8.6</b> Visualization of % detections vs. trophic niche</a></li>
 </ul></li>
 </ul>
 
@@ -219,122 +227,116 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Communal signallers are species that produce long-range acoustic signals in groups, either duets (two individuals) or choruses (three or more individuals) by both males and females. Non-communal signallers are species that sing as single individuals and not communally.</p>
 <div id="loading-necessary-libraries-1" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> Loading necessary libraries<a href="sociality.html#loading-necessary-libraries-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="sociality.html#cb27-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb27-2"><a href="sociality.html#cb27-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb27-3"><a href="sociality.html#cb27-3" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb27-4"><a href="sociality.html#cb27-4" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
-<span id="cb27-5"><a href="sociality.html#cb27-5" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb27-6"><a href="sociality.html#cb27-6" tabindex="-1"></a><span class="fu">library</span>(scico)</span>
-<span id="cb27-7"><a href="sociality.html#cb27-7" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb27-8"><a href="sociality.html#cb27-8" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
-<span id="cb27-9"><a href="sociality.html#cb27-9" tabindex="-1"></a><span class="fu">library</span>(ggstatsplot)</span>
-<span id="cb27-10"><a href="sociality.html#cb27-10" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
-<span id="cb27-11"><a href="sociality.html#cb27-11" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
-<span id="cb27-12"><a href="sociality.html#cb27-12" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span>
-<span id="cb27-13"><a href="sociality.html#cb27-13" tabindex="-1"></a><span class="fu">library</span>(gghalves)     </span>
-<span id="cb27-14"><a href="sociality.html#cb27-14" tabindex="-1"></a><span class="fu">library</span>(rstatix)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="sociality.html#cb26-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb26-2"><a href="sociality.html#cb26-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb26-3"><a href="sociality.html#cb26-3" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb26-4"><a href="sociality.html#cb26-4" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb26-5"><a href="sociality.html#cb26-5" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb26-6"><a href="sociality.html#cb26-6" tabindex="-1"></a><span class="fu">library</span>(scico)</span>
+<span id="cb26-7"><a href="sociality.html#cb26-7" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb26-8"><a href="sociality.html#cb26-8" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
+<span id="cb26-9"><a href="sociality.html#cb26-9" tabindex="-1"></a><span class="fu">library</span>(ggstatsplot)</span>
+<span id="cb26-10"><a href="sociality.html#cb26-10" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
+<span id="cb26-11"><a href="sociality.html#cb26-11" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb26-12"><a href="sociality.html#cb26-12" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span>
+<span id="cb26-13"><a href="sociality.html#cb26-13" tabindex="-1"></a><span class="fu">library</span>(gghalves)     </span>
+<span id="cb26-14"><a href="sociality.html#cb26-14" tabindex="-1"></a><span class="fu">library</span>(rstatix)</span></code></pre></div>
 </div>
 <div id="loading-sociality-data" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> Loading sociality data<a href="sociality.html#loading-sociality-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="sociality.html#cb28-1" tabindex="-1"></a>sociality <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/sociality-data.csv&quot;</span>)</span>
-<span id="cb28-2"><a href="sociality.html#cb28-2" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="sociality.html#cb28-3" tabindex="-1"></a>sociality <span class="ot">&lt;-</span> sociality <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span> (Species, Communal)</span>
-<span id="cb28-4"><a href="sociality.html#cb28-4" tabindex="-1"></a><span class="fu">colnames</span> (sociality) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;scientific_name&quot;</span>, <span class="st">&quot;sociality&quot;</span>)</span>
-<span id="cb28-5"><a href="sociality.html#cb28-5" tabindex="-1"></a></span>
-<span id="cb28-6"><a href="sociality.html#cb28-6" tabindex="-1"></a><span class="co"># Updating the scientific names of following species as per our dataset:</span></span>
-<span id="cb28-7"><a href="sociality.html#cb28-7" tabindex="-1"></a><span class="co"># Flame-throated bulbul- Rubigula gularis (earlier Pycnonotus gularis)</span></span>
-<span id="cb28-8"><a href="sociality.html#cb28-8" tabindex="-1"></a><span class="co"># Black eagle- Ictinaetus malaiensis (earlier Ictinaetus malayensis)</span></span>
-<span id="cb28-9"><a href="sociality.html#cb28-9" tabindex="-1"></a><span class="co"># Brown-capped pygmy woodpecker- Yungipicus nanus (earlier Dendrocopos nanus)</span></span>
-<span id="cb28-10"><a href="sociality.html#cb28-10" tabindex="-1"></a><span class="co"># Malabar barbet- Psilopogon malabaricus (earlier Megalaima malabarica)</span></span>
-<span id="cb28-11"><a href="sociality.html#cb28-11" tabindex="-1"></a><span class="co"># Dark-fronted babbler- Dumetia atriceps (earlier Rhopocichla atriceps)</span></span>
-<span id="cb28-12"><a href="sociality.html#cb28-12" tabindex="-1"></a><span class="co"># Greater flameback- Chrysocolaptes guttacristatus (earlier Chrysocolaptes lucidus)</span></span>
-<span id="cb28-13"><a href="sociality.html#cb28-13" tabindex="-1"></a><span class="co"># Indian blue robin- Larvivora brunnea (earlier Luscinia brunnea)</span></span>
-<span id="cb28-14"><a href="sociality.html#cb28-14" tabindex="-1"></a><span class="co"># Indian yellow tit- Machlolophus aplonotus (earlier Parus aplonotus)</span></span>
-<span id="cb28-15"><a href="sociality.html#cb28-15" tabindex="-1"></a><span class="co"># Jungle babbler- Argya striata (earlier Turdoides striata)</span></span>
-<span id="cb28-16"><a href="sociality.html#cb28-16" tabindex="-1"></a><span class="co"># Orange-headed thrush- Geokichla citrina (earlier Zoothera citrina)</span></span>
-<span id="cb28-17"><a href="sociality.html#cb28-17" tabindex="-1"></a><span class="co"># Rufous babbler- Argya subrufa (earlier Turdoides subrufa)</span></span>
-<span id="cb28-18"><a href="sociality.html#cb28-18" tabindex="-1"></a><span class="co"># Rufous woodpecker- Micropternus brachyurus (earlier Celeus brachyurus)</span></span>
-<span id="cb28-19"><a href="sociality.html#cb28-19" tabindex="-1"></a><span class="co"># Rusty-tailed flycatcher- Ficedula ruficauda (earlier Muscicapa ruficauda</span></span>
-<span id="cb28-20"><a href="sociality.html#cb28-20" tabindex="-1"></a><span class="co"># Spot-bellied eagle owl- Ketupa nipalensis (earlier Bubo nipalensis)</span></span>
-<span id="cb28-21"><a href="sociality.html#cb28-21" tabindex="-1"></a><span class="co"># Spotted dove- Spilopelia chinensis (earlier Stigmatopelia chinensis)</span></span>
-<span id="cb28-22"><a href="sociality.html#cb28-22" tabindex="-1"></a><span class="co"># Square-tailed bulbul- Hypsipetes ganeesa ganeesa (earlier Hypsipetes ganeesa)</span></span>
-<span id="cb28-23"><a href="sociality.html#cb28-23" tabindex="-1"></a><span class="co"># Thick-billed warbler- Arundinax aedon (earlier Acrocephalus aedon)</span></span>
-<span id="cb28-24"><a href="sociality.html#cb28-24" tabindex="-1"></a><span class="co"># White-bellied flycatcher- Cyornis pallidipes (earlier Cyornis pallipes)</span></span>
-<span id="cb28-25"><a href="sociality.html#cb28-25" tabindex="-1"></a><span class="co"># White-cheeked barbet- Psilopogon viridis (earlier Megalaima viridis)</span></span>
-<span id="cb28-26"><a href="sociality.html#cb28-26" tabindex="-1"></a><span class="co"># Wayanad laughingthrush- Pterorhinus delesserti (earlier Garrulax delesserti)</span></span>
-<span id="cb28-27"><a href="sociality.html#cb28-27" tabindex="-1"></a><span class="co"># Yellow-browed bulbul- Iole indica (earlier Acritillas indica)</span></span>
-<span id="cb28-28"><a href="sociality.html#cb28-28" tabindex="-1"></a></span>
-<span id="cb28-29"><a href="sociality.html#cb28-29" tabindex="-1"></a>sociality <span class="ot">&lt;-</span> sociality <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">scientific_name =</span> <span class="fu">recode</span> (scientific_name, <span class="st">&#39;Pycnonotus gularis&#39;</span> <span class="ot">=</span> <span class="st">&#39;Rubigula gularis&#39;</span>, <span class="st">&#39;Ictinaetus malayensis&#39;</span> <span class="ot">=</span> <span class="st">&#39;Ictinaetus malaiensis&#39;</span>, <span class="st">&#39;Dendrocopos nanus&#39;</span> <span class="ot">=</span> <span class="st">&#39;Yungipicus nanus&#39;</span>, <span class="st">&#39;Megalaima malabarica&#39;</span> <span class="ot">=</span> <span class="st">&#39;Psilopogon malabaricus&#39;</span>, <span class="st">&#39;Rhopocichla atriceps&#39;</span> <span class="ot">=</span> <span class="st">&#39;Dumetia atriceps&#39;</span>, <span class="st">&#39;Chrysocolaptes lucidus&#39;</span> <span class="ot">=</span> <span class="st">&#39;Chrysocolaptes guttacristatus&#39;</span>, <span class="st">&#39;Luscinia brunnea&#39;</span> <span class="ot">=</span> <span class="st">&#39;Larvivora brunnea&#39;</span>, <span class="st">&#39;Parus aplonotus&#39;</span> <span class="ot">=</span> <span class="st">&#39;Machlolophus aplonotus&#39;</span>, <span class="st">&#39;Turdoides striata&#39;</span> <span class="ot">=</span> <span class="st">&#39;Argya striata&#39;</span>, <span class="st">&#39;Zoothera citrina&#39;</span> <span class="ot">=</span> <span class="st">&#39;Geokichla citrina&#39;</span>, <span class="st">&#39;Turdoides subrufa&#39;</span> <span class="ot">=</span> <span class="st">&#39;Argya subrufa&#39;</span>, <span class="st">&#39;Celeus brachyurus&#39;</span> <span class="ot">=</span> <span class="st">&#39;Micropternus brachyurus&#39;</span>, <span class="st">&#39;Muscicapa ruficauda&#39;</span> <span class="ot">=</span> <span class="st">&#39;Ficedula ruficauda&#39;</span>, <span class="st">&#39;Bubo nipalensis&#39;</span> <span class="ot">=</span> <span class="st">&#39;Ketupa nipalensis&#39;</span>, <span class="st">&#39;Stigmatopelia chinensis&#39;</span> <span class="ot">=</span> <span class="st">&#39;Spilopelia chinensis&#39;</span>, <span class="st">&#39;Hypsipetes ganeesa&#39;</span> <span class="ot">=</span> <span class="st">&#39;Hypsipetes ganeesa ganeesa&#39;</span>, <span class="st">&#39;Acrocephalus aedon&#39;</span> <span class="ot">=</span> <span class="st">&#39;Arundinax aedon&#39;</span>, <span class="st">&#39;Cyornis pallipes&#39;</span> <span class="ot">=</span> <span class="st">&#39;Cyornis pallidipes&#39;</span>, <span class="st">&#39;Megalaima viridis&#39;</span> <span class="ot">=</span> <span class="st">&#39;Psilopogon viridis&#39;</span>, <span class="st">&#39;Garrulax delesserti&#39;</span> <span class="ot">=</span> <span class="st">&#39;Pterorhinus delesserti&#39;</span>, <span class="st">&#39;Acritillas indica&#39;</span> <span class="ot">=</span> <span class="st">&#39;Iole indica&#39;</span> ))</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="sociality.html#cb27-1" tabindex="-1"></a>sociality <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/sociality-data.csv&quot;</span>)</span>
+<span id="cb27-2"><a href="sociality.html#cb27-2" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="sociality.html#cb27-3" tabindex="-1"></a>sociality <span class="ot">&lt;-</span> sociality <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span> (Species, Communal)</span>
+<span id="cb27-4"><a href="sociality.html#cb27-4" tabindex="-1"></a><span class="fu">colnames</span> (sociality) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;scientific_name&quot;</span>, <span class="st">&quot;sociality&quot;</span>)</span>
+<span id="cb27-5"><a href="sociality.html#cb27-5" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="sociality.html#cb27-6" tabindex="-1"></a><span class="co"># Updating the scientific names of following species as per our dataset:</span></span>
+<span id="cb27-7"><a href="sociality.html#cb27-7" tabindex="-1"></a><span class="co"># Flame-throated bulbul- Rubigula gularis (earlier Pycnonotus gularis)</span></span>
+<span id="cb27-8"><a href="sociality.html#cb27-8" tabindex="-1"></a><span class="co"># Black eagle- Ictinaetus malaiensis (earlier Ictinaetus malayensis)</span></span>
+<span id="cb27-9"><a href="sociality.html#cb27-9" tabindex="-1"></a><span class="co"># Brown-capped pygmy woodpecker- Yungipicus nanus (earlier Dendrocopos nanus)</span></span>
+<span id="cb27-10"><a href="sociality.html#cb27-10" tabindex="-1"></a><span class="co"># Malabar barbet- Psilopogon malabaricus (earlier Megalaima malabarica)</span></span>
+<span id="cb27-11"><a href="sociality.html#cb27-11" tabindex="-1"></a><span class="co"># Dark-fronted babbler- Dumetia atriceps (earlier Rhopocichla atriceps)</span></span>
+<span id="cb27-12"><a href="sociality.html#cb27-12" tabindex="-1"></a><span class="co"># Greater flameback- Chrysocolaptes guttacristatus (earlier Chrysocolaptes lucidus)</span></span>
+<span id="cb27-13"><a href="sociality.html#cb27-13" tabindex="-1"></a><span class="co"># Indian blue robin- Larvivora brunnea (earlier Luscinia brunnea)</span></span>
+<span id="cb27-14"><a href="sociality.html#cb27-14" tabindex="-1"></a><span class="co"># Indian yellow tit- Machlolophus aplonotus (earlier Parus aplonotus)</span></span>
+<span id="cb27-15"><a href="sociality.html#cb27-15" tabindex="-1"></a><span class="co"># Jungle babbler- Argya striata (earlier Turdoides striata)</span></span>
+<span id="cb27-16"><a href="sociality.html#cb27-16" tabindex="-1"></a><span class="co"># Orange-headed thrush- Geokichla citrina (earlier Zoothera citrina)</span></span>
+<span id="cb27-17"><a href="sociality.html#cb27-17" tabindex="-1"></a><span class="co"># Rufous babbler- Argya subrufa (earlier Turdoides subrufa)</span></span>
+<span id="cb27-18"><a href="sociality.html#cb27-18" tabindex="-1"></a><span class="co"># Rufous woodpecker- Micropternus brachyurus (earlier Celeus brachyurus)</span></span>
+<span id="cb27-19"><a href="sociality.html#cb27-19" tabindex="-1"></a><span class="co"># Rusty-tailed flycatcher- Ficedula ruficauda (earlier Muscicapa ruficauda</span></span>
+<span id="cb27-20"><a href="sociality.html#cb27-20" tabindex="-1"></a><span class="co"># Spot-bellied eagle owl- Ketupa nipalensis (earlier Bubo nipalensis)</span></span>
+<span id="cb27-21"><a href="sociality.html#cb27-21" tabindex="-1"></a><span class="co"># Spotted dove- Spilopelia chinensis (earlier Stigmatopelia chinensis)</span></span>
+<span id="cb27-22"><a href="sociality.html#cb27-22" tabindex="-1"></a><span class="co"># Square-tailed bulbul- Hypsipetes ganeesa ganeesa (earlier Hypsipetes ganeesa)</span></span>
+<span id="cb27-23"><a href="sociality.html#cb27-23" tabindex="-1"></a><span class="co"># Thick-billed warbler- Arundinax aedon (earlier Acrocephalus aedon)</span></span>
+<span id="cb27-24"><a href="sociality.html#cb27-24" tabindex="-1"></a><span class="co"># White-bellied flycatcher- Cyornis pallidipes (earlier Cyornis pallipes)</span></span>
+<span id="cb27-25"><a href="sociality.html#cb27-25" tabindex="-1"></a><span class="co"># White-cheeked barbet- Psilopogon viridis (earlier Megalaima viridis)</span></span>
+<span id="cb27-26"><a href="sociality.html#cb27-26" tabindex="-1"></a><span class="co"># Wayanad laughingthrush- Pterorhinus delesserti (earlier Garrulax delesserti)</span></span>
+<span id="cb27-27"><a href="sociality.html#cb27-27" tabindex="-1"></a><span class="co"># Yellow-browed bulbul- Iole indica (earlier Acritillas indica)</span></span>
+<span id="cb27-28"><a href="sociality.html#cb27-28" tabindex="-1"></a></span>
+<span id="cb27-29"><a href="sociality.html#cb27-29" tabindex="-1"></a>sociality <span class="ot">&lt;-</span> sociality <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">scientific_name =</span> <span class="fu">recode</span> (scientific_name, <span class="st">&#39;Pycnonotus gularis&#39;</span> <span class="ot">=</span> <span class="st">&#39;Rubigula gularis&#39;</span>, <span class="st">&#39;Ictinaetus malayensis&#39;</span> <span class="ot">=</span> <span class="st">&#39;Ictinaetus malaiensis&#39;</span>, <span class="st">&#39;Dendrocopos nanus&#39;</span> <span class="ot">=</span> <span class="st">&#39;Yungipicus nanus&#39;</span>, <span class="st">&#39;Megalaima malabarica&#39;</span> <span class="ot">=</span> <span class="st">&#39;Psilopogon malabaricus&#39;</span>, <span class="st">&#39;Rhopocichla atriceps&#39;</span> <span class="ot">=</span> <span class="st">&#39;Dumetia atriceps&#39;</span>, <span class="st">&#39;Chrysocolaptes lucidus&#39;</span> <span class="ot">=</span> <span class="st">&#39;Chrysocolaptes guttacristatus&#39;</span>, <span class="st">&#39;Luscinia brunnea&#39;</span> <span class="ot">=</span> <span class="st">&#39;Larvivora brunnea&#39;</span>, <span class="st">&#39;Parus aplonotus&#39;</span> <span class="ot">=</span> <span class="st">&#39;Machlolophus aplonotus&#39;</span>, <span class="st">&#39;Turdoides striata&#39;</span> <span class="ot">=</span> <span class="st">&#39;Argya striata&#39;</span>, <span class="st">&#39;Zoothera citrina&#39;</span> <span class="ot">=</span> <span class="st">&#39;Geokichla citrina&#39;</span>, <span class="st">&#39;Turdoides subrufa&#39;</span> <span class="ot">=</span> <span class="st">&#39;Argya subrufa&#39;</span>, <span class="st">&#39;Celeus brachyurus&#39;</span> <span class="ot">=</span> <span class="st">&#39;Micropternus brachyurus&#39;</span>, <span class="st">&#39;Muscicapa ruficauda&#39;</span> <span class="ot">=</span> <span class="st">&#39;Ficedula ruficauda&#39;</span>, <span class="st">&#39;Bubo nipalensis&#39;</span> <span class="ot">=</span> <span class="st">&#39;Ketupa nipalensis&#39;</span>, <span class="st">&#39;Stigmatopelia chinensis&#39;</span> <span class="ot">=</span> <span class="st">&#39;Spilopelia chinensis&#39;</span>, <span class="st">&#39;Hypsipetes ganeesa&#39;</span> <span class="ot">=</span> <span class="st">&#39;Hypsipetes ganeesa ganeesa&#39;</span>, <span class="st">&#39;Acrocephalus aedon&#39;</span> <span class="ot">=</span> <span class="st">&#39;Arundinax aedon&#39;</span>, <span class="st">&#39;Cyornis pallipes&#39;</span> <span class="ot">=</span> <span class="st">&#39;Cyornis pallidipes&#39;</span>, <span class="st">&#39;Megalaima viridis&#39;</span> <span class="ot">=</span> <span class="st">&#39;Psilopogon viridis&#39;</span>, <span class="st">&#39;Garrulax delesserti&#39;</span> <span class="ot">=</span> <span class="st">&#39;Pterorhinus delesserti&#39;</span>, <span class="st">&#39;Acritillas indica&#39;</span> <span class="ot">=</span> <span class="st">&#39;Iole indica&#39;</span> ))</span></code></pre></div>
 </div>
 <div id="load-acoustic-data-and-species-scientific-names-data-4" class="section level2 hasAnchor" number="7.3">
 <h2><span class="header-section-number">7.3</span> Load acoustic data and species scientific names data<a href="sociality.html#load-acoustic-data-and-species-scientific-names-data-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="sociality.html#cb29-1" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;results/acoustic_data.csv&quot;</span>)</span>
-<span id="cb29-2"><a href="sociality.html#cb29-2" tabindex="-1"></a>species_codes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/species-annotation-codes.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="sociality.html#cb28-1" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;results/acoustic_data.csv&quot;</span>)</span>
+<span id="cb28-2"><a href="sociality.html#cb28-2" tabindex="-1"></a>species_codes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/species-annotation-codes.csv&quot;</span>)</span></code></pre></div>
 </div>
 <div id="vocal-activity-data-2" class="section level2 hasAnchor" number="7.4">
 <h2><span class="header-section-number">7.4</span> Vocal activity data<a href="sociality.html#vocal-activity-data-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="sociality.html#cb30-1" tabindex="-1"></a><span class="co"># total number of acoustic detections summarized across every 10-s audio file</span></span>
-<span id="cb30-2"><a href="sociality.html#cb30-2" tabindex="-1"></a>vocal_act <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
-<span id="cb30-3"><a href="sociality.html#cb30-3" tabindex="-1"></a>  <span class="fu">group_by</span>(time_of_day, eBird_codes) <span class="sc">%&gt;%</span></span>
-<span id="cb30-4"><a href="sociality.html#cb30-4" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">detections =</span> <span class="fu">sum</span>(number)) <span class="sc">%&gt;%</span></span>
-<span id="cb30-5"><a href="sociality.html#cb30-5" tabindex="-1"></a>  <span class="fu">left_join</span>(., species_codes[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>)], </span>
-<span id="cb30-6"><a href="sociality.html#cb30-6" tabindex="-1"></a>                       <span class="at">by =</span> <span class="st">&quot;eBird_codes&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb30-7"><a href="sociality.html#cb30-7" tabindex="-1"></a>   <span class="fu">group_by</span>(eBird_codes) <span class="sc">%&gt;%</span></span>
-<span id="cb30-8"><a href="sociality.html#cb30-8" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_detections =</span><span class="fu">sum</span>(detections)) <span class="sc">%&gt;%</span></span>
-<span id="cb30-9"><a href="sociality.html#cb30-9" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_detections =</span> (detections<span class="sc">/</span>total_detections)<span class="sc">*</span><span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb30-10"><a href="sociality.html#cb30-10" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb30-11"><a href="sociality.html#cb30-11" tabindex="-1"></a></span>
-<span id="cb30-12"><a href="sociality.html#cb30-12" tabindex="-1"></a><span class="co"># for further analysis, we remove species that were detected less than 20 times cumulatively across dawn and dusk</span></span>
-<span id="cb30-13"><a href="sociality.html#cb30-13" tabindex="-1"></a><span class="co"># this ensures that we keep species that called very few times in the morning and perhaps more times in the evening, or vice-versa</span></span>
-<span id="cb30-14"><a href="sociality.html#cb30-14" tabindex="-1"></a></span>
-<span id="cb30-15"><a href="sociality.html#cb30-15" tabindex="-1"></a>vocal_act <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span></span>
-<span id="cb30-16"><a href="sociality.html#cb30-16" tabindex="-1"></a>  <span class="fu">filter</span>(total_detections <span class="sc">&gt;</span> <span class="dv">20</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="sociality.html#cb29-1" tabindex="-1"></a><span class="co"># total number of acoustic detections summarized across every 10-s audio file</span></span>
+<span id="cb29-2"><a href="sociality.html#cb29-2" tabindex="-1"></a>vocal_act <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
+<span id="cb29-3"><a href="sociality.html#cb29-3" tabindex="-1"></a>  <span class="fu">group_by</span>(time_of_day, eBird_codes) <span class="sc">%&gt;%</span></span>
+<span id="cb29-4"><a href="sociality.html#cb29-4" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">detections =</span> <span class="fu">sum</span>(number)) <span class="sc">%&gt;%</span></span>
+<span id="cb29-5"><a href="sociality.html#cb29-5" tabindex="-1"></a>  <span class="fu">left_join</span>(., species_codes[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>)], </span>
+<span id="cb29-6"><a href="sociality.html#cb29-6" tabindex="-1"></a>                       <span class="at">by =</span> <span class="st">&quot;eBird_codes&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb29-7"><a href="sociality.html#cb29-7" tabindex="-1"></a>   <span class="fu">group_by</span>(eBird_codes) <span class="sc">%&gt;%</span></span>
+<span id="cb29-8"><a href="sociality.html#cb29-8" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_detections =</span><span class="fu">sum</span>(detections)) <span class="sc">%&gt;%</span></span>
+<span id="cb29-9"><a href="sociality.html#cb29-9" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_detections =</span> (detections<span class="sc">/</span>total_detections)<span class="sc">*</span><span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb29-10"><a href="sociality.html#cb29-10" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
 </div>
 <div id="join-the-vocal_activity-data-and-sociality-data" class="section level2 hasAnchor" number="7.5">
 <h2><span class="header-section-number">7.5</span> Join the vocal_activity data and sociality data<a href="sociality.html#join-the-vocal_activity-data-and-sociality-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="sociality.html#cb31-1" tabindex="-1"></a>vocal_act <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span> </span>
-<span id="cb31-2"><a href="sociality.html#cb31-2" tabindex="-1"></a>  <span class="fu">left_join</span>(sociality, <span class="at">by =</span> <span class="st">&#39;scientific_name&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb31-3"><a href="sociality.html#cb31-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">sociality_cat =</span> <span class="fu">case_when</span> (sociality <span class="sc">%in%</span> <span class="st">&#39;0&#39;</span> <span class="sc">~</span> <span class="st">&#39;Non-communal signallers&#39;</span>, sociality <span class="sc">%in%</span> <span class="st">&#39;1&#39;</span> <span class="sc">~</span> <span class="st">&#39;Communal signallers&#39;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="sociality.html#cb30-1" tabindex="-1"></a>vocal_act <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span> </span>
+<span id="cb30-2"><a href="sociality.html#cb30-2" tabindex="-1"></a>  <span class="fu">left_join</span>(sociality, <span class="at">by =</span> <span class="st">&#39;scientific_name&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb30-3"><a href="sociality.html#cb30-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">sociality_cat =</span> <span class="fu">case_when</span> (sociality <span class="sc">%in%</span> <span class="st">&#39;0&#39;</span> <span class="sc">~</span> <span class="st">&#39;Non-communal signallers&#39;</span>, sociality <span class="sc">%in%</span> <span class="st">&#39;1&#39;</span> <span class="sc">~</span> <span class="st">&#39;Communal signallers&#39;</span>))</span></code></pre></div>
 </div>
 <div id="testing-the-differences-using-wilcoxon-test-1" class="section level2 hasAnchor" number="7.6">
 <h2><span class="header-section-number">7.6</span> Testing the differences using Wilcoxon test<a href="sociality.html#testing-the-differences-using-wilcoxon-test-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Here, we see whether there are differences in the vocal activity between communal and non-communal signallers in dawn and dusk individually.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="sociality.html#cb32-1" tabindex="-1"></a>stat.test <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span> </span>
-<span id="cb32-2"><a href="sociality.html#cb32-2" tabindex="-1"></a>  <span class="fu">group_by</span> (time_of_day) <span class="sc">%&gt;%</span> </span>
-<span id="cb32-3"><a href="sociality.html#cb32-3" tabindex="-1"></a>  <span class="fu">wilcox_test</span> (percent_detections <span class="sc">~</span> sociality_cat)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="sociality.html#cb31-1" tabindex="-1"></a>stat.test <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span> </span>
+<span id="cb31-2"><a href="sociality.html#cb31-2" tabindex="-1"></a>  <span class="fu">group_by</span> (time_of_day) <span class="sc">%&gt;%</span> </span>
+<span id="cb31-3"><a href="sociality.html#cb31-3" tabindex="-1"></a>  <span class="fu">wilcox_test</span> (percent_detections <span class="sc">~</span> sociality_cat)</span></code></pre></div>
 <p>There are 78 non-communal signallers and 21 communal signallers in dawn, and 69 non-communal and 20 communal signallers in dusk.</p>
 </div>
 <div id="visualization-of-detections-vs.-sociality" class="section level2 hasAnchor" number="7.7">
 <h2><span class="header-section-number">7.7</span> Visualization of % detections vs. sociality<a href="sociality.html#visualization-of-detections-vs.-sociality" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="sociality.html#cb33-1" tabindex="-1"></a>fig_soc_vocAct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(vocal_act, <span class="fu">aes</span>(<span class="at">x =</span> sociality_cat, <span class="at">y =</span> percent_detections, <span class="at">fill =</span> sociality_cat)) <span class="sc">+</span> </span>
-<span id="cb33-2"><a href="sociality.html#cb33-2" tabindex="-1"></a>   <span class="fu">geom_boxplot</span>(</span>
-<span id="cb33-3"><a href="sociality.html#cb33-3" tabindex="-1"></a>    <span class="at">width =</span> .<span class="dv">2</span>,</span>
-<span id="cb33-4"><a href="sociality.html#cb33-4" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span></span>
-<span id="cb33-5"><a href="sociality.html#cb33-5" tabindex="-1"></a>  )  <span class="sc">+</span></span>
-<span id="cb33-6"><a href="sociality.html#cb33-6" tabindex="-1"></a>  gghalves<span class="sc">::</span><span class="fu">geom_half_point</span>(</span>
-<span id="cb33-7"><a href="sociality.html#cb33-7" tabindex="-1"></a>    <span class="at">side =</span> <span class="st">&quot;l&quot;</span>, </span>
-<span id="cb33-8"><a href="sociality.html#cb33-8" tabindex="-1"></a>    <span class="at">range_scale =</span> .<span class="dv">3</span>, </span>
-<span id="cb33-9"><a href="sociality.html#cb33-9" tabindex="-1"></a>    <span class="at">alpha =</span> .<span class="dv">5</span>, <span class="at">size =</span> <span class="dv">3</span></span>
-<span id="cb33-10"><a href="sociality.html#cb33-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb33-11"><a href="sociality.html#cb33-11" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Percent detections&quot;</span>,</span>
-<span id="cb33-12"><a href="sociality.html#cb33-12" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">&quot;Sociality Category&quot;</span>) <span class="sc">+</span></span>
-<span id="cb33-13"><a href="sociality.html#cb33-13" tabindex="-1"></a>  <span class="fu">facet_grid</span> (<span class="sc">~</span>time_of_day) <span class="sc">+</span> </span>
-<span id="cb33-14"><a href="sociality.html#cb33-14" tabindex="-1"></a>  <span class="fu">geom_signif</span>(<span class="at">comparisons =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;Non-communal signallers&quot;</span>, <span class="st">&quot;Communal Signallers&quot;</span>)), </span>
-<span id="cb33-15"><a href="sociality.html#cb33-15" tabindex="-1"></a>              <span class="at">map_signif_level =</span> <span class="fu">c</span>(<span class="st">&quot;***&quot;</span><span class="ot">=</span><span class="fl">0.001</span>,<span class="st">&quot;**&quot;</span><span class="ot">=</span><span class="fl">0.01</span>, <span class="st">&quot;*&quot;</span><span class="ot">=</span><span class="fl">0.05</span>, <span class="st">&quot; &quot;</span><span class="ot">=</span><span class="dv">2</span>),</span>
-<span id="cb33-16"><a href="sociality.html#cb33-16" tabindex="-1"></a>              <span class="at">textsize =</span> <span class="dv">5</span>)<span class="sc">+</span></span>
-<span id="cb33-17"><a href="sociality.html#cb33-17" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">name =</span> <span class="st">&quot;Sociality&quot;</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#0072B2&quot;</span>, <span class="st">&quot;#D55E00&quot;</span>),<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&#39;Non-communal signallers&#39;</span>, <span class="st">&#39;Communal Signallers&#39;</span>))<span class="sc">+</span></span>
-<span id="cb33-18"><a href="sociality.html#cb33-18" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">name =</span> <span class="st">&quot;Sociality&quot;</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#0072B2&quot;</span>, <span class="st">&quot;#D55E00&quot;</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&#39;Non-communal signallers&#39;</span>, <span class="st">&#39;Communal Signallers&#39;</span>)) <span class="sc">+</span></span>
-<span id="cb33-19"><a href="sociality.html#cb33-19" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
-<span id="cb33-20"><a href="sociality.html#cb33-20" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
-<span id="cb33-21"><a href="sociality.html#cb33-21" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb33-22"><a href="sociality.html#cb33-22" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb33-23"><a href="sociality.html#cb33-23" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
-<span id="cb33-24"><a href="sociality.html#cb33-24" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;italic&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
-<span id="cb33-25"><a href="sociality.html#cb33-25" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb33-26"><a href="sociality.html#cb33-26" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>))</span>
-<span id="cb33-27"><a href="sociality.html#cb33-27" tabindex="-1"></a></span>
-<span id="cb33-28"><a href="sociality.html#cb33-28" tabindex="-1"></a><span class="fu">ggsave</span>(fig_soc_vocAct, <span class="at">filename =</span> <span class="st">&quot;figs/fig_sociality_vs_percentDetections.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">16</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
-<span id="cb33-29"><a href="sociality.html#cb33-29" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="sociality.html#cb32-1" tabindex="-1"></a>fig_soc_vocAct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(vocal_act, <span class="fu">aes</span>(<span class="at">x =</span> sociality_cat, <span class="at">y =</span> percent_detections, <span class="at">fill =</span> sociality_cat)) <span class="sc">+</span> </span>
+<span id="cb32-2"><a href="sociality.html#cb32-2" tabindex="-1"></a>   <span class="fu">geom_boxplot</span>(</span>
+<span id="cb32-3"><a href="sociality.html#cb32-3" tabindex="-1"></a>    <span class="at">width =</span> .<span class="dv">2</span>,</span>
+<span id="cb32-4"><a href="sociality.html#cb32-4" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span></span>
+<span id="cb32-5"><a href="sociality.html#cb32-5" tabindex="-1"></a>  )  <span class="sc">+</span></span>
+<span id="cb32-6"><a href="sociality.html#cb32-6" tabindex="-1"></a>  gghalves<span class="sc">::</span><span class="fu">geom_half_point</span>(</span>
+<span id="cb32-7"><a href="sociality.html#cb32-7" tabindex="-1"></a>    <span class="at">side =</span> <span class="st">&quot;l&quot;</span>, </span>
+<span id="cb32-8"><a href="sociality.html#cb32-8" tabindex="-1"></a>    <span class="at">range_scale =</span> .<span class="dv">3</span>, </span>
+<span id="cb32-9"><a href="sociality.html#cb32-9" tabindex="-1"></a>    <span class="at">alpha =</span> .<span class="dv">5</span>, <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb32-10"><a href="sociality.html#cb32-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb32-11"><a href="sociality.html#cb32-11" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Percent detections&quot;</span>,</span>
+<span id="cb32-12"><a href="sociality.html#cb32-12" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">&quot;Sociality Category&quot;</span>) <span class="sc">+</span></span>
+<span id="cb32-13"><a href="sociality.html#cb32-13" tabindex="-1"></a>  <span class="fu">facet_grid</span> (<span class="sc">~</span>time_of_day) <span class="sc">+</span> </span>
+<span id="cb32-14"><a href="sociality.html#cb32-14" tabindex="-1"></a>  <span class="fu">geom_signif</span>(<span class="at">comparisons =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;Non-communal signallers&quot;</span>, <span class="st">&quot;Communal Signallers&quot;</span>)), </span>
+<span id="cb32-15"><a href="sociality.html#cb32-15" tabindex="-1"></a>              <span class="at">map_signif_level =</span> <span class="fu">c</span>(<span class="st">&quot;***&quot;</span><span class="ot">=</span><span class="fl">0.001</span>,<span class="st">&quot;**&quot;</span><span class="ot">=</span><span class="fl">0.01</span>, <span class="st">&quot;*&quot;</span><span class="ot">=</span><span class="fl">0.05</span>, <span class="st">&quot; &quot;</span><span class="ot">=</span><span class="dv">2</span>),</span>
+<span id="cb32-16"><a href="sociality.html#cb32-16" tabindex="-1"></a>              <span class="at">textsize =</span> <span class="dv">5</span>)<span class="sc">+</span></span>
+<span id="cb32-17"><a href="sociality.html#cb32-17" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">name =</span> <span class="st">&quot;Sociality&quot;</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#0072B2&quot;</span>, <span class="st">&quot;#D55E00&quot;</span>),<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&#39;Non-communal signallers&#39;</span>, <span class="st">&#39;Communal Signallers&#39;</span>))<span class="sc">+</span></span>
+<span id="cb32-18"><a href="sociality.html#cb32-18" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">name =</span> <span class="st">&quot;Sociality&quot;</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#0072B2&quot;</span>, <span class="st">&quot;#D55E00&quot;</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&#39;Non-communal signallers&#39;</span>, <span class="st">&#39;Communal Signallers&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb32-19"><a href="sociality.html#cb32-19" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb32-20"><a href="sociality.html#cb32-20" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
+<span id="cb32-21"><a href="sociality.html#cb32-21" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb32-22"><a href="sociality.html#cb32-22" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb32-23"><a href="sociality.html#cb32-23" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
+<span id="cb32-24"><a href="sociality.html#cb32-24" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;italic&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
+<span id="cb32-25"><a href="sociality.html#cb32-25" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb32-26"><a href="sociality.html#cb32-26" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>))</span>
+<span id="cb32-27"><a href="sociality.html#cb32-27" tabindex="-1"></a></span>
+<span id="cb32-28"><a href="sociality.html#cb32-28" tabindex="-1"></a><span class="fu">ggsave</span>(fig_soc_vocAct, <span class="at">filename =</span> <span class="st">&quot;figs/fig_sociality_vs_percentDetections.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">16</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb32-29"><a href="sociality.html#cb32-29" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
 <p>There are no significant differences in % acoustic detections between communal and non-communal signllers in both dawn and dusk.</p>
 
 </div>
@@ -344,8 +346,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="territoriality.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="territoriality.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="trophic-niche.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -366,7 +368,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/vjjan91/diurnal-Acoustics/edit/master/08_sociality.Rmd",
+"link": "https://github.com/vjjan91/diurnal-Acoustics/edit/master/06_sociality.Rmd",
 "text": "Edit"
 },
 "history": {
