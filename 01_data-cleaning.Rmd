@@ -160,9 +160,7 @@ spp_subset <- acoustic_data %>%
 # keep only species with n > 20
 spp_subset <- spp_subset %>%
   group_by(eBird_codes) %>%
-  summarise(n = n()) 
-
-
+  summarise(n = n()) %>%  
   filter(n > 20)
 
 ## subset to only include species that were detected atleast across 20 unique data/time combinations
