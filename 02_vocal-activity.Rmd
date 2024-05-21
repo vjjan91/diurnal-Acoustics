@@ -74,3 +74,30 @@ dev.off()
 ```
 
 ![% acoustic detections for each species between dawn and dusk](figs/fig_percentDetections_species.png)  
+
+## Is overall vocal activity much higher at dawn compared to dusk, across species?
+
+```{r}
+fig_overall_vocal_act <- vocal_act %>%
+  ggbetweenstats(x = time_of_day,
+                         y = percent_detections,
+                         xlab = "Time of Day",
+                         ylab = "% Acoustic Detections", 
+                         pairwise.display = "significant",
+                         package = "ggsci",
+                         palette = "default_jco",
+                         violin.args = list(width = 0),
+ggplot.component = list(theme(text = element_text(family = "Century Gothic", size = 15, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "bold",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 15, face = "bold")))) 
+
+ggsave(fig_overall_vocal_act, filename = "figs/fig_percentDetections_overall.png", width = 14, height = 16, device = png(), units = "in", dpi = 300)
+dev.off() 
+```
+
+Overall, higher vocal activity was detected at dawn compared to dusk, across species.
+
+![% acoustic detections for each species between dawn and dusk](figs/fig_percentDetections_overall.png)
