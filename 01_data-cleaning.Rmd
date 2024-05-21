@@ -110,6 +110,7 @@ duskSampling <- acoustic_data %>%
 
 ## More data cleaning
 
+Removing NAs and renaming columns
 ```{r}
 # Here, we pivot the data to long format and remove NA/zero values or missing data
 acoustic_data <- acoustic_data %>%
@@ -148,6 +149,27 @@ acoustic_data <- acoustic_data %>%
 # add a zero before the start_time to ensure its all 6 digits of time atleast
 acoustic_data <- acoustic_data %>%
    mutate(across(start_time, str_pad, width = 6, pad = "0"))
+
+# keep only species that vocalize atleast across a minimum of 20 different/unique dates and times
+# we chose this random arbitrary threshold to include only species that are highly vocal and can be used for comparative analyses
+spp_subset <- acoustic_data %>%
+  group_by(site_id, date, eBird_codes) %>%
+  summarise(unique_voc = sum(number)) %>%
+  ungroup() 
+
+# keep only species with n > 20
+spp_subset <- spp_subset %>%
+  group_by(eBird_codes) %>%
+  summarise(n = n()) 
+
+
+  filter(n > 20)
+
+## subset to only include species that were detected atleast across 20 unique data/time combinations
+acoustic_data <- acoustic_data %>%
+  filter(eBird_codes %in% spp_subset$eBird_codes)
+
+## Only 69 species remain after including highly vocal species alone
 ```
 
 ## Write to file
