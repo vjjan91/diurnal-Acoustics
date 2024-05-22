@@ -96,16 +96,29 @@ vocal_act <- vocal_act %>%
 
 There are 19 highly territorial, 11 non-territorial and 39 weakly territorial species in both dawn and dusk.
 
+## Testing the differences using Wilcoxon test
+
+Here, we see whether there are differences in the vocal activity among highly territorial, weakly territorial and non-territorial species in dawn and dusk individually. 
+
+```{r}
+stat.test <- vocal_act %>% 
+  group_by(time_of_day) %>% 
+  wilcox_test(percent_detections ~ territory_cat) 
+```
+
+Marginal significant differences were observed between non-territorial and weakly territorial species at dawn (p = 0.039)
+
 ## Visualization of % detections vs. territoriality
 ```{r}
 ## between dawn and dusk
-fig_terr_vocAct <- vocal_act %>% mutate(territory_cat = fct_relevel(territory_cat, 
+fig_terr_vocAct <- vocal_act %>% 
+  filter(time_of_day == "dawn") %>%
+  mutate(territory_cat = fct_relevel(territory_cat, 
             "Highly territorial", "Weakly territorial", "Non-territorial")) %>%
-  grouped_ggbetweenstats(x = time_of_day,
+  ggbetweenstats(x = territory_cat,
                          y = percent_detections,
-                         grouping.var = territory_cat,
                          xlab = "Territoriality",
-                         ylab = "% Acoustic Detections", 
+                         ylab = "% Acoustic Detections at Dawn", 
                          pairwise.display = "significant",
                          package = "ggsci",
                          palette = "default_jco",
@@ -117,9 +130,9 @@ ggplot.component = list(theme(text = element_text(family = "Century Gothic", siz
       axis.title = element_text(family = "Century Gothic",
       size = 15, face = "bold")))) 
 
-ggsave(fig_terr_vocAct, filename = "figs/fig_percentDetections_territoriality.png", width = 24, height = 14, device = png(), units = "in", dpi = 300)
+ggsave(fig_terr_vocAct, filename = "figs/fig_percentDetections_territoriality.png", width = 16, height = 14, device = png(), units = "in", dpi = 300)
 dev.off() 
 ```
-# There are significant differences in vocal activity of highly territorial, weakly territorial and non-territorial species between dawn and dusk. Vocal activity is significantly higher in dawn than dusk in all territorial categories. 
+# Vocal activity is significantly higher in dawn than dusk in all territorial categories. 
 
-![% acoustic detections at dawn and dusk across categories of territoriality](figs/fig_percentDetections_territoriality.png) 
+![% acoustic detections at dawn across categories of territoriality](figs/fig_percentDetections_territoriality.png) 
