@@ -99,7 +99,8 @@ There are 19 highly territorial, 11 non-territorial and 39 weakly territorial sp
 ## Visualization of % detections vs. territoriality
 ```{r}
 ## between dawn and dusk
-fig_terr_vocAct <- vocal_act %>%
+fig_terr_vocAct <- vocal_act %>% mutate(territory_cat = fct_relevel(territory_cat, 
+            "Highly territorial", "Weakly territorial", "Non-territorial")) %>%
   grouped_ggbetweenstats(x = time_of_day,
                          y = percent_detections,
                          grouping.var = territory_cat,
