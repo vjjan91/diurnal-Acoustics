@@ -40,7 +40,13 @@ vocal_act <- acoustic_data %>%
    group_by(eBird_codes) %>%
   mutate(total_detections =sum(detections)) %>%
   mutate(percent_detections = (detections/total_detections)*100) %>%
-  ungroup()
+  ungroup() %>%
+
+# in our case, we have 3 species which have 100% detections in dawn, Indian blackbird, Little spiderhunter and Purple sunbird. For these, we add a additional row specifying no detections in dusk.
+  
+  add_row(time_of_day= 'dusk', eBird_codes = 'pursun4', detections = 0, scientific_name = 'Cinnyris asiaticus', common_name = 'Purple Sunbird', total_detections = 315, percent_detections = 0) %>%
+  add_row(time_of_day= 'dusk', eBird_codes = 'eurbla2', detections = 0, scientific_name = 'Turdus simillimus', common_name = 'Indian Blackbird', total_detections = 236, percent_detections = 0) %>%
+  add_row(time_of_day= 'dusk', eBird_codes = 'litspi1', detections = 0, scientific_name = 'Arachnothera longirostra', common_name = 'Little Spiderhunter', total_detections = 417, percent_detections = 0)
 
 # for the sake of plotting, we will create a new variable 
 vocal_act$plot_percent <- ifelse(vocal_act$time_of_day == "dawn",
@@ -69,7 +75,7 @@ fig_percent_detections <- ggplot(vocal_act, aes(
       axis.title = element_text(family = "Century Gothic",
       size = 15, face = "bold"))
 
-ggsave(fig_percent_detections, filename = "figs/fig_percentDetections_species.png", width = 14, height = 18, device = png(), units = "in", dpi = 300)
+ggsave(fig_percent_detections, filename = "figs/fig_percentDetections_species.png", width = 14, height = 16, device = png(), units = "in", dpi = 300)
 dev.off() 
 ```
 
@@ -101,3 +107,17 @@ dev.off()
 Overall, higher vocal activity was detected at dawn compared to dusk, across species.
 
 ![% acoustic detections for each species between dawn and dusk](figs/fig_percentDetections_overall.png)
+## Testing for differences in acoustic detections between dawn and dusk
+
+Here, we see whether there are differences in the acoustic detections for each species between dawn and dusk. 
+```{r}
+stat.test <- vocal_act %>%  
+  pairwise_wilcox_test(detections ~ time_of_day)
+
+# We observe significant differences in acoustic detections across species between dawn and dusk
+
+# A tibble: 1 × 9
+#  .y.        group1 group2    n1    n2 statistic        p    p.adj p.adj.signif
+# <chr>      <chr>  <chr>  <int> <int>     <dbl>    <dbl>    <dbl> <chr>       
+# detections dawn   dusk      69    69     3192. 0.000549 0.000549 ***  
+```
