@@ -6,7 +6,7 @@ editor_options:
   
 # PGLS regression (Phylogenetic Generalized Least Squares) analysis
   
-In this script, we understand which driver/hypothesis (light availability, peak frequency, trophic niche, territoriality, and sociality) best explains the variation in vocal activity. We use linear regresssion to understand which of these variables bet predicts the vocal activity (response variable), while controlling for potential phylogenetic signals/relationships.
+In this script, we understand which driver/hypothesis (light availability, peak frequency, trophic niche, territoriality, and sociality) best explains the variation in vocal activity. We use linear regresssion to understand which of these variables best predicts the vocal activity (response variable), while controlling for potential phylogenetic signals/relationships.
 
 ## Loading necessary libraries
 ```{r}
