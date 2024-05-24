@@ -4,9 +4,9 @@ editor_options:
 ---
  
   
-# PGLS regression (Phylogenetic Generalized Least Squares) analysis
+# Phylogenetic Generalized Least Squares (PGLS) regressions
   
-In this script, we understand which driver/hypothesis (light availability, peak frequency, trophic niche, territoriality, and sociality) best explains the variation in vocal activity. We use linear regresssion to understand which of these variables best predicts the vocal activity (response variable), while controlling for potential phylogenetic signals/relationships.
+In this script, we examine which predictor/hypothesis (light availability, peak frequency, trophic niche, territoriality, and sociality) best explains the variation in vocal activity between dawn and dusk. We use linear regresssions while controlling for potential phylogenetic signals/relationships.
 
 ## Loading necessary libraries
 ```{r}
@@ -48,7 +48,9 @@ tree <- read.nexus("data/birdtree.nex") #obtained 100 trees using Hackett all sp
 tree <- mcc(tree)
 ```
 
-## Vocal Activity/Percent Detections- Response variable
+## Vocal Activity
+
+We use percent detections as a response variable in our PGLS analysis.
 ```{r}
 # total number of acoustic detections summarized across every 10-s audio file
 vocal_act <- acoustic_data %>%
@@ -62,7 +64,9 @@ vocal_act <- acoustic_data %>%
   ungroup() 
 ```
 
-## Light availability- Predictor variable 1
+## Light availability  
+
+Here, we prepare a predictor for light availability or time to darkness for the PGLS analysis
 ```{r}
 # add longitude and latitude to acoustic_data
 acoustic_data <- left_join(acoustic_data, sites[,c(2,4,5)],
@@ -145,7 +149,9 @@ vocal_act <- vocal_act %>%
   left_join(light, by = c('eBird_codes', 'time_of_day')) #adding median time from dawn and time to dusk to vocal activity data
 ```
 
-## Territoriality- Preditor variable 2
+## Territoriality  
+
+We prepare territoriality as a predictor for the PGLS analysis
 ```{r}
 territoriality <- territoriality %>% dplyr::select (Species, Territory)
 colnames (territoriality) <- c("scientific_name", "territory")
@@ -178,12 +184,14 @@ vocal_act <- vocal_act %>%
   left_join(territoriality, by = 'scientific_name') 
 ```
 
-## Sociality- Predictor variable 3
+## Sociality  
+
+We prepare sociality as a predictor for the PGLS analysis  
 ```{r}
 sociality <- sociality %>% dplyr::select (Species, Communal)
 colnames (sociality) <- c("scientific_name", "sociality")
 
-# Updating the scientific names of following species as per our dataset: see list in Chunk 5: 'Territoriality- Predictor variable 2'
+# Updating the scientific names of following species as per our dataset: see list in the code chunk for Territoriality
 
 sociality <- sociality %>% mutate(scientific_name = recode (scientific_name, 'Pycnonotus gularis' = 'Rubigula gularis', 'Ictinaetus malayensis' = 'Ictinaetus malaiensis', 'Dendrocopos nanus' = 'Yungipicus nanus', 'Megalaima malabarica' = 'Psilopogon malabaricus', 'Rhopocichla atriceps' = 'Dumetia atriceps', 'Chrysocolaptes lucidus' = 'Chrysocolaptes guttacristatus', 'Luscinia brunnea' = 'Larvivora brunnea', 'Parus aplonotus' = 'Machlolophus aplonotus', 'Turdoides striata' = 'Argya striata', 'Zoothera citrina' = 'Geokichla citrina', 'Turdoides subrufa' = 'Argya subrufa', 'Celeus brachyurus' = 'Micropternus brachyurus', 'Muscicapa ruficauda' = 'Ficedula ruficauda', 'Bubo nipalensis' = 'Ketupa nipalensis', 'Stigmatopelia chinensis' = 'Spilopelia chinensis','Acrocephalus aedon' = 'Arundinax aedon', 'Cyornis pallipes' = 'Cyornis pallidipes', 'Megalaima viridis' = 'Psilopogon viridis', 'Garrulax delesserti' = 'Pterorhinus delesserti', 'Acritillas indica' = 'Iole indica'))
 
@@ -191,7 +199,9 @@ vocal_act <- vocal_act %>%
   left_join(sociality, by = 'scientific_name') 
 ```
 
-## Peak frequency- Predictor variable 4
+## Peak frequency  
+
+We prepare peak frequency as a predictor for the PGLS analysis
 ```{r}
 # add standardized eBird codes to the frequency data
 freq <-left_join (freq, species_codes[c(3,5)],
@@ -214,16 +224,19 @@ median_pf <- separate(freq_5, col = filename, into = c("site_id", "date", "time"
       case_when(time >= '060000' & time <= '100000' ~ 'dawn', 
                 time >= '160000' & time <= '190000' ~ 'dusk')) %>%
   group_by(eBird_codes, time_of_day) %>%
-  summarise(median_peak_freq =  log10(median(peak_freq_in_Hz)))
+  summarise(median_peak_freq =  median(peak_freq_in_Hz))
 
 ## join the frequency data to the vocal activity data
-vocal_act <- vocal_act %>% left_join(median_pf, by = c('eBird_codes', 'time_of_day')) %>%
+vocal_act <- vocal_act %>% 
+  left_join(median_pf, by = c('eBird_codes', 'time_of_day')) %>%
   drop_na() 
 
 # A total of 66 species were included and three species were excluded from final analysis.
 ```
  
-## Predictor variable 5- Trophic niche
+## Trophic niche  
+
+We prepare trophic niche categories for the PGLS analysis
 ```{r}
 vocal_act <- vocal_act %>% 
   left_join(trait[,c(1,2,29)], by = c('scientific_name',
@@ -232,17 +245,26 @@ vocal_act <- vocal_act %>%
 ## remove species that are poorly represented by a particular trophic niche
 ## we get rid of nectarivore species, aquatic predator and granivore
 vocal_act <- vocal_act %>%
-  filter(trophic_niche != "Aquatic predator") %>%
-  filter(trophic_niche != "Granivore") %>%
-  filter(trophic_niche != "Nectarivore") 
+  filter(trophic_niche != "Vertivore")
 
-vocal_act <- vocal_act %>% mutate(trophic_niche = case_when (trophic_niche %in% 'Invertivore' ~ '1', trophic_niche %in% 'Frugivore' ~ '2', trophic_niche %in% 'Omnivore' ~'3', trophic_niche %in% 'Vertivore' ~ '4'))
+vocal_act <- vocal_act %>% mutate(trophic_niche = case_when (trophic_niche %in% 'Frugivore' ~ 'Frugivore, Granivore, Nectarivore', 
+trophic_niche %in% 'Aquatic predator' ~ 'Frugivore, Granivore, Nectarivore', trophic_niche %in% 'Granivore' ~'Frugivore, Granivore, Nectarivore',
+trophic_niche %in% 'Nectarivore' ~ 'Frugivore, Granivore, Nectarivore',
+trophic_niche %in% 'Invertivore' ~'Invertivore',
+trophic_niche %in% 'Omnivore' ~'Omnivore'))
+
+vocal_act <- vocal_act %>% mutate(trophic_niche = case_when (trophic_niche %in% 'Invertivore' ~ '1', trophic_niche %in% 'Frugivore, Granivore, Nectarivore' ~ '2', trophic_niche %in% 'Omnivore' ~'3'))
+
+## Only 63 species remain at this stage
 ```
 
-## More data cleaning
+## Data cleaning
+
+We clean the objects prior to running PGLS regressions
 ```{r}
 # converting the scientific names of vocal_act as per tip.labels of the tree
-vocal_act <- vocal_act %>% mutate(across(scientific_name, str_replace, ' ', '_')) 
+vocal_act <- vocal_act %>% 
+  mutate(across(scientific_name, str_replace, ' ', '_')) 
   
 # converting the scientific names of vocal_act as per the birdtree data so that both are matching
 vocal_act <- vocal_act %>%
@@ -255,6 +277,8 @@ mutate(scientific_name =
                 scientific_name == 'Tephrodornis_sylvicola' ~ 'Tephrodornis_gularis',
                 scientific_name == 'Geokichla_citrina' ~ 'Zoothera_citrina',
                scientific_name == 'Cinnyris_asiaticus' ~ 'Nectarinia_asiatica',
+               scientific_name == 'Leptocoma_minima' ~'Nectarinia_minima',
+               scientific_name == 'Spilopelia_chinensis' ~'Stigmatopelia_chinensis',
                scientific_name == 'Argya_subrufa' ~ 'Turdoides_subrufa',
                scientific_name == 'Ficedula_nigrorufa' ~ 'Muscicapa_ruficauda',
                scientific_name == 'Gracula_indica' ~ 'Gracula_religiosa',
@@ -272,9 +296,18 @@ setdiff(vocal_act$scientific_name,pruned.tree$tip.label) #checking if vocal_act 
 
 ## PGLS analysis
 ```{r}
-model <- gls(percent_detections ~ median_startTime + territory + sociality + median_peak_freq + trophic_niche, data = vocal_act, correlation = corPagel(1, pruned.tree, form = ~scientific_name))
 
-summary (model)
+trial <- vocal_act %>%
+  filter(time_of_day == "dawn")
+
+model <- gls(percent_detections ~ median_startTime + 
+               relevel(factor(territory), ref = 3) + 
+               sociality +
+               median_peak_freq + 
+               relevel(factor(trophic_niche), ref = 1), data = trial, 
+             correlation = corPagel(1, pruned.tree, form = ~scientific_name))
+
+summary(model)
 ```
 
 
