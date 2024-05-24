@@ -296,15 +296,11 @@ setdiff(vocal_act$scientific_name,pruned.tree$tip.label) #checking if vocal_act 
 
 ## PGLS analysis
 ```{r}
-
-trial <- vocal_act %>%
-  filter(time_of_day == "dawn")
-
-model <- gls(percent_detections ~ median_startTime + 
+model <- gls(percent_detections ~ median_startTime +
                relevel(factor(territory), ref = 3) + 
-               sociality +
+               factor(sociality) +
                median_peak_freq + 
-               relevel(factor(trophic_niche), ref = 1), data = trial, 
+               relevel(factor(trophic_niche), ref = 1), data = vocal_act, 
              correlation = corPagel(1, pruned.tree, form = ~scientific_name))
 
 summary(model)
