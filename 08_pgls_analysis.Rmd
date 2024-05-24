@@ -1,0 +1,280 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+ 
+  
+# PGLS regression (Phylogenetic Generalized Least Squares) analysis
+  
+In this script, we understand which driver/hypothesis (light availability, peak frequency, trophic niche, territoriality, and sociality) best explains the variation in vocal activity. We use linear regresssion to understand which of these variables bet predicts the vocal activity (response variable), while controlling for potential phylogenetic signals/relationships.
+
+## Loading necessary libraries
+```{r}
+library(ape)
+library(nlme)
+library(geiger)
+library(phytools)
+library(phangorn)
+library(dplyr)
+library(tidyverse)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(vegan)
+library(scico)
+library(data.table)
+library(extrafont)
+library(suncalc)
+library(lutz)
+library(ggpmisc)
+library(ggpubr)
+library(hms)
+```
+
+## Loading necessary data
+```{r}
+acoustic_data <- read.csv("results/acoustic_data.csv")
+species_codes <- read.csv("data/species-annotation-codes.csv")
+trait <- read.csv("data/species-trait-dat.csv")
+territoriality <- read.csv("data/territoriality-data.csv")
+sociality <- read.csv("data/sociality-data.csv")
+freq <- read.csv("data/frequency-data.csv")
+sites <- read.csv("data/list-of-sites.csv")
+tree <- read.nexus("data/birdtree.nex") #obtained 100 trees using Hackett all species 
+```
+
+## Getting the maximum credibility tree from the nexus file
+```{r}
+tree <- mcc(tree)
+```
+
+## Vocal Activity/Percent Detections- Response variable
+```{r}
+# total number of acoustic detections summarized across every 10-s audio file
+vocal_act <- acoustic_data %>%
+  group_by(time_of_day, eBird_codes) %>%
+  summarise(detections = sum(number)) %>%
+  left_join(., species_codes[,c(1,2,5)], 
+                       by = "eBird_codes") %>%
+   group_by(eBird_codes) %>%
+  mutate(total_detections =sum(detections)) %>%
+  mutate(percent_detections = (detections/total_detections)*100) %>%
+  ungroup() 
+```
+
+## Light availability- Predictor variable 1
+```{r}
+# add longitude and latitude to acoustic_data
+acoustic_data <- left_join(acoustic_data, sites[,c(2,4,5)],
+                   by = "site_id") 
+acoustic_data$date <- lubridate::ymd(acoustic_data$date)
+names(acoustic_data)[c(10,11)] <- c("lon","lat")
+
+# find out what time zone needs to be provided for the sunlight calculations
+acoustic_data$tz <- tz_lookup_coords(lat = acoustic_data$lat,
+                                     lon = acoustic_data$lon,
+                                     method = "accurate",
+                                     warn = FALSE)
+
+# extract nauticalDawn, nauticalDusk, sunrise and sunset times
+light_data <- getSunlightTimes(data = acoustic_data,
+                          keep = c("sunrise","sunset",
+                                   "nauticalDawn", "nauticalDusk"),
+                          tz = "Asia/Kolkata") %>% distinct(.)
+
+# strip dates from new columms and keep only time
+light_data$sunrise <- as_hms(light_data$sunrise)
+light_data$sunset <- as_hms(light_data$sunset)
+light_data$nauticalDawn <- as_hms(light_data$nauticalDawn)
+light_data$nauticalDusk <- as_hms(light_data$nauticalDusk)
+
+# format the start_time column in the acoustic data to keep it as the same format as light_data
+acoustic_data <- acoustic_data %>%
+   mutate(across(start_time, str_pad, width = 6, pad = "0"))
+acoustic_data$start_time<- format(strptime(acoustic_data$start_time, 
+                         format = "%H%M%S"), format = "%H:%M:%S")
+acoustic_data$start_time <- as_hms(acoustic_data$start_time)
+
+# summarize detections of species for every 15-min window
+acoustic_data <- acoustic_data %>%
+  group_by(site_id, date, start_time, time_of_day, eBird_codes,
+           lon, lat) %>%
+  summarise(detections = sum(number)) %>%
+  ungroup()
+
+# join the two datasets
+acoustic_data <- left_join(acoustic_data, light_data,
+                   by = c("date","lon","lat"))
+
+# subtract times from sunrise, sunset, nauticalDawn and nauticalDusk from start_time of acoustic detections
+acoustic_data <- acoustic_data %>%
+  mutate(time_from_dawn = as.numeric((start_time - nauticalDawn), 
+                                     units = "hours")) %>%
+  mutate(time_from_sunrise = as.numeric((start_time - sunrise), 
+                                     units = "hours")) %>%
+  mutate(time_to_dusk = as.numeric((nauticalDusk-start_time), 
+                                     units = "hours")) %>%
+  mutate(time_to_sunset = as.numeric((sunset-start_time), 
+                                     units = "hours"))
+
+# add species scientific name to this data
+acoustic_data <- acoustic_data %>%
+  left_join(., species_codes[,c(1, 5)], 
+                       by = "eBird_codes")
+
+# binding dawn and dusk times together to get at median time/light availability at dawn 
+dawn <- acoustic_data %>%
+  group_by (eBird_codes) %>%
+  filter(time_of_day == "dawn") %>%
+  dplyr::select(time_from_dawn, time_of_day) %>%
+  rename(., time_from_startTime = time_from_dawn) %>%
+  summarise(median_startTime =median(time_from_startTime)) %>%
+  mutate (time_of_day = 'dawn')
+
+dusk <- acoustic_data %>%
+  group_by (eBird_codes) %>%
+  filter(time_of_day == "dusk") %>%
+  dplyr::select(time_to_dusk, time_of_day) %>%
+  rename(., time_from_startTime = time_to_dusk) %>%
+ summarise(median_startTime =median(time_from_startTime)) %>%
+  mutate (time_of_day = 'dusk')
+
+light <- bind_rows (dawn, dusk)# this dataframe gives us the median time from dawn and time to dusk for each species
+
+vocal_act <- vocal_act %>%
+  left_join(light, by = c('eBird_codes', 'time_of_day')) #adding median time from dawn and time to dusk to vocal activity data
+```
+
+## Territoriality- Preditor variable 2
+```{r}
+territoriality <- territoriality %>% dplyr::select (Species, Territory)
+colnames (territoriality) <- c("scientific_name", "territory")
+
+# Updating the scientific names of following species as per our dataset:
+# Flame-throated bulbul- Rubigula gularis (earlier Pycnonotus gularis)
+# Black eagle- Ictinaetus malaiensis (earlier Ictinaetus malayensis)
+# Brown-capped pygmy woodpecker- Yungipicus nanus (earlier Dendrocopos nanus)
+# Malabar barbet- Psilopogon malabaricus (earlier Megalaima malabarica)
+# Dark-fronted babbler- Dumetia atriceps (earlier Rhopocichla atriceps)
+# Greater flameback- Chrysocolaptes guttacristatus (earlier Chrysocolaptes lucidus)
+# Indian blue robin- Larvivora brunnea (earlier Luscinia brunnea)
+# Indian yellow tit- Machlolophus aplonotus (earlier Parus aplonotus)
+# Jungle babbler- Argya striata (earlier Turdoides striata)
+# Orange-headed thrush- Geokichla citrina (earlier Zoothera citrina)
+# Rufous babbler- Argya subrufa (earlier Turdoides subrufa)
+# Rufous woodpecker- Micropternus brachyurus (earlier Celeus brachyurus)
+# Rusty-tailed flycatcher- Ficedula ruficauda (earlier Muscicapa ruficauda
+# Spot-bellied eagle owl- Ketupa nipalensis (earlier Bubo nipalensis)
+# Spotted dove- Spilopelia chinensis (earlier Stigmatopelia chinensis)
+# Thick-billed warbler- Arundinax aedon (earlier Acrocephalus aedon)
+# White-bellied flycatcher- Cyornis pallidipes (earlier Cyornis pallipes)
+# White-cheeked barbet- Psilopogon viridis (earlier Megalaima viridis)
+# Wayanad laughingthrush- Pterorhinus delesserti (earlier Garrulax delesserti)
+# Yellow-browed bulbul- Iole indica (earlier Acritillas indica)
+
+territoriality <- territoriality %>% mutate(scientific_name = recode (scientific_name, 'Pycnonotus gularis' = 'Rubigula gularis', 'Ictinaetus malayensis' = 'Ictinaetus malaiensis', 'Dendrocopos nanus' = 'Yungipicus nanus', 'Megalaima malabarica' = 'Psilopogon malabaricus', 'Rhopocichla atriceps' = 'Dumetia atriceps', 'Chrysocolaptes lucidus' = 'Chrysocolaptes guttacristatus', 'Luscinia brunnea' = 'Larvivora brunnea', 'Parus aplonotus' = 'Machlolophus aplonotus', 'Turdoides striata' = 'Argya striata', 'Zoothera citrina' = 'Geokichla citrina', 'Turdoides subrufa' = 'Argya subrufa', 'Celeus brachyurus' = 'Micropternus brachyurus', 'Muscicapa ruficauda' = 'Ficedula ruficauda', 'Bubo nipalensis' = 'Ketupa nipalensis', 'Stigmatopelia chinensis' = 'Spilopelia chinensis', 'Acrocephalus aedon' = 'Arundinax aedon', 'Cyornis pallipes' = 'Cyornis pallidipes', 'Megalaima viridis' = 'Psilopogon viridis', 'Garrulax delesserti' = 'Pterorhinus delesserti', 'Acritillas indica' = 'Iole indica')) 
+
+vocal_act <- vocal_act %>%
+  left_join(territoriality, by = 'scientific_name') 
+```
+
+## Sociality- Predictor variable 3
+```{r}
+sociality <- sociality %>% dplyr::select (Species, Communal)
+colnames (sociality) <- c("scientific_name", "sociality")
+
+# Updating the scientific names of following species as per our dataset: see list in Chunk 5: 'Territoriality- Predictor variable 2'
+
+sociality <- sociality %>% mutate(scientific_name = recode (scientific_name, 'Pycnonotus gularis' = 'Rubigula gularis', 'Ictinaetus malayensis' = 'Ictinaetus malaiensis', 'Dendrocopos nanus' = 'Yungipicus nanus', 'Megalaima malabarica' = 'Psilopogon malabaricus', 'Rhopocichla atriceps' = 'Dumetia atriceps', 'Chrysocolaptes lucidus' = 'Chrysocolaptes guttacristatus', 'Luscinia brunnea' = 'Larvivora brunnea', 'Parus aplonotus' = 'Machlolophus aplonotus', 'Turdoides striata' = 'Argya striata', 'Zoothera citrina' = 'Geokichla citrina', 'Turdoides subrufa' = 'Argya subrufa', 'Celeus brachyurus' = 'Micropternus brachyurus', 'Muscicapa ruficauda' = 'Ficedula ruficauda', 'Bubo nipalensis' = 'Ketupa nipalensis', 'Stigmatopelia chinensis' = 'Spilopelia chinensis','Acrocephalus aedon' = 'Arundinax aedon', 'Cyornis pallipes' = 'Cyornis pallidipes', 'Megalaima viridis' = 'Psilopogon viridis', 'Garrulax delesserti' = 'Pterorhinus delesserti', 'Acritillas indica' = 'Iole indica'))
+
+vocal_act <- vocal_act %>% 
+  left_join(sociality, by = 'scientific_name') 
+```
+
+## Peak frequency- Predictor variable 4
+```{r}
+# add standardized eBird codes to the frequency data
+freq <-left_join (freq, species_codes[c(3,5)],
+                  by = "species_annotation_codes")
+
+# Only a total of 99 species are left after filtering species with very few templates
+nTemplates_5 <- freq %>%
+  group_by(eBird_codes) %>%
+  count() %>%
+  filter(n >= 5) %>%
+  drop_na()
+
+# left-join to remove species with less than 10 templates in the frequency dataset
+freq_5 <- left_join(nTemplates_5[,1], freq)
+
+# calculate median peak frequency after grouping by time of day and species
+median_pf <- separate(freq_5, col = filename, into = c("site_id", "date", "time", "splits"), sep = "_") %>%
+  mutate(
+    time_of_day =
+      case_when(time >= '060000' & time <= '100000' ~ 'dawn', 
+                time >= '160000' & time <= '190000' ~ 'dusk')) %>%
+  group_by(eBird_codes, time_of_day) %>%
+  summarise(median_peak_freq =  log10(median(peak_freq_in_Hz)))
+
+## join the frequency data to the vocal activity data
+vocal_act <- vocal_act %>% left_join(median_pf, by = c('eBird_codes', 'time_of_day')) %>%
+  drop_na() 
+
+# A total of 66 species were included and three species were excluded from final analysis.
+```
+ 
+## Predictor variable 5- Trophic niche
+```{r}
+vocal_act <- vocal_act %>% 
+  left_join(trait[,c(1,2,29)], by = c('scientific_name',
+                          'common_name')) 
+
+## remove species that are poorly represented by a particular trophic niche
+## we get rid of nectarivore species, aquatic predator and granivore
+vocal_act <- vocal_act %>%
+  filter(trophic_niche != "Aquatic predator") %>%
+  filter(trophic_niche != "Granivore") %>%
+  filter(trophic_niche != "Nectarivore") 
+
+vocal_act <- vocal_act %>% mutate(trophic_niche = case_when (trophic_niche %in% 'Invertivore' ~ '1', trophic_niche %in% 'Frugivore' ~ '2', trophic_niche %in% 'Omnivore' ~'3', trophic_niche %in% 'Vertivore' ~ '4'))
+```
+
+## More data cleaning
+```{r}
+# converting the scientific names of vocal_act as per tip.labels of the tree
+vocal_act <- vocal_act %>% mutate(across(scientific_name, str_replace, ' ', '_')) 
+  
+# converting the scientific names of vocal_act as per the birdtree data so that both are matching
+vocal_act <- vocal_act %>%
+mutate(scientific_name = 
+         case_when (scientific_name == 'Dumetia_atriceps' ~ 'Rhopocichla_atriceps',                scientific_name == 'Chrysocolaptes_guttacristatus' ~ 'Chrysocolaptes_lucidus',
+                 scientific_name == 'Turdus_simillimus' ~ 'Turdus_merula', 
+                 scientific_name == 'Larvivora_brunnea' ~ 'Luscinia_brunnea',
+                 scientific_name == 'Machlolophus_aplonotus' ~ 'Parus_xanthogenys', 
+                scientific_name == 'Psilopogon_malabaricus' ~ 'Megalaima_rubricapillus',
+                scientific_name == 'Tephrodornis_sylvicola' ~ 'Tephrodornis_gularis',
+                scientific_name == 'Geokichla_citrina' ~ 'Zoothera_citrina',
+               scientific_name == 'Cinnyris_asiaticus' ~ 'Nectarinia_asiatica',
+               scientific_name == 'Argya_subrufa' ~ 'Turdoides_subrufa',
+               scientific_name == 'Ficedula_nigrorufa' ~ 'Muscicapa_ruficauda',
+               scientific_name == 'Gracula_indica' ~ 'Gracula_religiosa',
+               scientific_name == 'Ketupa_nipalensis' ~ 'Bubo_nipalensis',
+               scientific_name == 'Hypsipetes_ganeesa' ~ 'Hypsipetes_leucocephalus',
+              scientific_name == 'Cyornis_pallidipes' ~ 'Cyornis_pallipes',
+               scientific_name == 'Psilopogon_viridis' ~ 'Megalaima_viridis', .default = scientific_name)) #final dataframe with variables
+         
+# check same species in vocal_act and phylogenetic data, and pruning species from the tree which are not present in the vocal_act data
+diff <- setdiff(tree$tip.label, vocal_act$scientific_name)
+pruned.tree <- drop.tip (tree, diff) #final phylogenetic dataframe
+
+setdiff(vocal_act$scientific_name,pruned.tree$tip.label) #checking if vocal_act and pruned.tree have the same species: result- 'character(0)'
+```
+
+## PGLS analysis
+```{r}
+model <- gls(percent_detections ~ median_startTime + territory + sociality + median_peak_freq + trophic_niche, data = vocal_act, correlation = corPagel(1, pruned.tree, form = ~scientific_name))
+
+summary (model)
+```
+
+
