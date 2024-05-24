@@ -62,7 +62,8 @@ vocal_act <- vocal_act %>%
 vocal_act <- vocal_act %>%
   filter(trophic_niche != "Aquatic predator") %>%
   filter(trophic_niche != "Granivore") %>%
-  filter(trophic_niche != "Nectarivore")
+  filter(trophic_niche != "Nectarivore") %>%
+  filter(trophic_niche != "Vertivore")
 
 ## We retained 65 out of 69 species after the above filters
 ```

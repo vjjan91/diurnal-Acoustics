@@ -24,6 +24,7 @@ library(stringr)
 library(ggpmisc)
 library(ggpubr)
 library(hms)
+library(RColorBrewer)
 ```
 
 ## Load acoustic data and species scientific names data
@@ -70,7 +71,7 @@ acoustic_data$start_time <- as_hms(acoustic_data$start_time)
 # summarize detections of species for every 15-min window
 acoustic_data <- acoustic_data %>%
   group_by(site_id, date, start_time, time_of_day, eBird_codes,
-           lon, lat) %>%
+           lon, lat, hour_of_day) %>%
   summarise(detections = sum(number)) %>%
   ungroup()
 
@@ -106,6 +107,9 @@ acoustic_data <- acoustic_data %>%
 # visualization
 plots <- list()
 
+# collect slope and other coefficient information here
+metadata <- c()
+
 for(i in 1:length(unique(acoustic_data$common_name))) {
   
   # extract species common_name
@@ -139,7 +143,121 @@ for(i in 1:length(unique(acoustic_data$common_name))) {
   labs(title = a,
        subtitle = "Each dot represents the total number of detections after dawn or before dusk (in hours)",
     y="\n Number of acoustic detections", 
-       x="Time from Dawn and time to dusk (in hours)\n") + 
+       x="Time to darkness\n") + 
+  theme(text = element_text(family = "Century Gothic", size = 18, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "italic",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"))
+  
+  # collect metadata
+  data <- setDT(data)
+  
+  # extract t-value
+  data[,  t_value := summary(lm(detections ~    time_from_startTime))$coefficients[6], by = time_of_day] 
+  
+  # extract slope
+  data[,  slope := lm(detections ~ time_from_startTime) %>% 
+         coef()%>% nth(2), by = time_of_day] 
+
+  # extract adjusted r squared
+  data[,  r_sq := summary(lm(detections ~ time_from_startTime))$adj.r.squared,    by = time_of_day]
+  
+  # create a column with the direction of the slope (whether it is positive or    negative)  
+  data[, slope_dir := ifelse(slope >0, '+', '-')]
+
+  # extract distinct values of coefficients for each species
+  lm_output <- data %>%
+  dplyr::select(time_of_day, t_value, slope, slope_dir,r_sq) %>% 
+    distinct() %>%
+    mutate(common_name = a)
+  
+  ## add the above to the metadata object
+  metadata <- bind_rows(metadata, lm_output)
+}
+
+# save as a single pdf
+cairo_pdf(
+  filename = "figs/light-availability-acoustic-detections-by-species.pdf",
+  width = 13, height = 12,
+  onefile = TRUE
+)
+plots
+dev.off()
+
+# write metadata to file
+write.csv(metadata, "results/slopes-detections-lightAvailability.csv",
+          row.names = F)
+```
+
+## Paired statistical test to assess if the slopes (of detections ~ timing of vocalization) are significantly different between dawn and dusk across species
+
+```{r}
+stat.test <- metadata %>%
+  filter(common_name != "White-throated Kingfisher") %>%
+  filter(common_name != "Oriental-Magpie Robin") %>%
+  filter(common_name != "Malabar Trogon") %>%
+  filter(common_name != "Gray-headed Canary-Flycatcher") %>%
+  pairwise_wilcox_test(slope ~ time_of_day)
+
+# No significant differences were observed between the slopes across dawn and dusk. Here the slope conveys teh relationship between the number of acoustic detections and timing of vocalization
+
+# A tibble: 1 × 9
+#  .y.   group1 group2    n1    n2 statistic     p p.adj p.adj.signif
+#* <chr> <chr>  <chr>  <int> <int>     <dbl> <dbl> <dbl> <chr>       
+#1 slope dawn   dusk      66    63      1885 0.362 0.362 ns 
+```
+
+## Visualization of timing of vocalization 
+
+```{r}
+# visualization
+plots <- list()
+
+for(i in 1:length(unique(acoustic_data$common_name))) {
+  
+  # extract species common_name
+  a <- unique(acoustic_data$common_name)[i]
+  
+  # subset data for plotting
+  sp <- acoustic_data[acoustic_data$common_name==a,] %>%
+    group_by(hour_of_day) %>%
+    summarise(detections = sum(detections)) %>%
+    mutate(total_detections =sum(detections)) %>%
+    mutate(percent_detections = (detections/total_detections)*100) %>%
+    ungroup() 
+  
+  # add a break/no data for mid-day
+  sp <- sp %>%
+    add_row(hour_of_day = "Mid-day",
+            detections = 0,
+            total_detections = 0,
+            percent_detections = 0)
+  
+  # reordering factors for plotting
+  sp$hour_of_day <- factor(sp$hour_of_day, levels = c("6AM to 7AM", 
+                                                      "7AM to 8AM", 
+                                                      "8AM to 9AM",
+                                                      "9AM to 10AM",
+                                                      "Mid-day",
+                                                      "4PM to 5PM",
+                                                      "5PM to 6PM",
+                                                      "6PM to 7PM"))
+
+  plots[[i]] <- ggplot(sp, aes(x=hour_of_day, 
+                        y=percent_detections)) +  
+  geom_bar(stat = "identity", position = position_dodge(), 
+           fill = "#883107", alpha = 0.9) + 
+  geom_text(aes(label = ifelse(percent_detections > 0,
+                               round(percent_detections, 2), ""),
+                hjust = "middle", vjust = -0.5, family = "Century Gothic"),
+    position = position_dodge(), angle = 0, size = 5) +
+    theme_bw() +
+    labs(title = a,
+       subtitle = "Each bar represents the % of detections across dawn and dusk",
+    y="\n % Acoustic detections", 
+       x="Time of Day\n") +
   theme(text = element_text(family = "Century Gothic", size = 18, face = "bold"),plot.title = element_text(family = "Century Gothic",
       size = 18, face = "bold"),
       plot.subtitle = element_text(family = "Century Gothic", 
@@ -150,7 +268,7 @@ for(i in 1:length(unique(acoustic_data$common_name))) {
 
 # save as a single pdf
 cairo_pdf(
-  filename = "figs/light-availability-acoustic-detections-by-species.pdf",
+  filename = "figs/acoustic-detections-time-of-day-by-species.pdf",
   width = 13, height = 12,
   onefile = TRUE
 )
