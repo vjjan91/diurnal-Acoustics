@@ -25,9 +25,6 @@ library(ggpmisc)
 library(ggpubr)
 library(hms)
 library(RColorBrewer)
-
-## source internal functions
-source("code/01_internal-functions.R")
 ```
 
 ## Load acoustic data and species scientific names data
