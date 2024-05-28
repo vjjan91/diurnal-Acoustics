@@ -33,7 +33,18 @@ trait <- read.csv("data/species-trait-dat.csv")
 
 ## Vocal activity data
 ```{r}
+# sampling effort by time_of_day
+effort <- acoustic_data %>%
+    dplyr::select(site_id, date, time_of_day) %>%
+    distinct() %>%
+    arrange(time_of_day) %>%
+    count(time_of_day) %>%
+    rename(., nVisits = n)
+
+# Above, we note that we had sampled ~293 site-date combinations at dawn, while ~245 site-date combinations were sampled at dusk
+
 # total number of acoustic detections summarized across every 10-s audio file
+# here, we estimate % detections at dawn and dusk, while accounting for sampling effort
 vocal_act <- acoustic_data %>%
   group_by(time_of_day, eBird_codes) %>%
   summarise(detections = sum(number)) %>%
@@ -42,13 +53,28 @@ vocal_act <- acoustic_data %>%
    group_by(eBird_codes) %>%
   mutate(total_detections =sum(detections)) %>%
   mutate(percent_detections = (detections/total_detections)*100) %>%
+  ungroup() 
+
+## accouting for sampling effort and normalizing data
+vocal_act <- vocal_act %>%
+  left_join(., effort, by = "time_of_day") %>%
+  mutate(normalized_detections = detections/nVisits) %>%
+  group_by(eBird_codes) %>%
+  mutate(total_normalized_detections = sum(normalized_detections)) %>%
+  mutate(percent_normalized_detections = (normalized_detections/total_normalized_detections)*100) %>%
   ungroup() %>%
-  
+
 # in our case, we have 3 species which have 100% detections in dawn, Indian blackbird, Little spiderhunter and Purple sunbird. For these, we add a additional row specifying no detections in dusk.
   
-  add_row(time_of_day= 'dusk', eBird_codes = 'pursun4', detections = 0, scientific_name = 'Cinnyris asiaticus', common_name = 'Purple Sunbird', total_detections = 315, percent_detections = 0) %>%
-  add_row(time_of_day= 'dusk', eBird_codes = 'eurbla2', detections = 0, scientific_name = 'Turdus simillimus', common_name = 'Indian Blackbird', total_detections = 236, percent_detections = 0) %>%
-  add_row(time_of_day= 'dusk', eBird_codes = 'litspi1', detections = 0, scientific_name = 'Arachnothera longirostra', common_name = 'Little Spiderhunter', total_detections = 417, percent_detections = 0)
+  add_row(time_of_day= 'dusk', eBird_codes = 'pursun4', detections = 0, scientific_name = 'Cinnyris asiaticus', common_name = 'Purple Sunbird', total_detections = 315, percent_detections = 0, normalized_detections = 0,
+          percent_normalized_detections = 0, nVisits = 245, total_normalized_detections = 1.075085) %>%
+  add_row(time_of_day= 'dusk', eBird_codes = 'eurbla2', detections = 0, scientific_name = 'Turdus simillimus', common_name = 'Indian Blackbird', total_detections = 236, percent_detections = 0,normalized_detections = 0,
+          percent_normalized_detections = 0, nVisits = 245,
+          total_normalized_detections = 0.8054608) %>%
+  add_row(time_of_day= 'dusk', eBird_codes = 'litspi1', detections = 0, scientific_name = 'Arachnothera longirostra', common_name = 'Little Spiderhunter', total_detections = 417, percent_detections = 0,
+          normalized_detections = 0, nVisits = 245, 
+          percent_normalized_detections = 0,
+          total_normalized_detections = 1.423208)
 ```
 
 ## Join the vocal_activity data and species trait data
@@ -65,7 +91,7 @@ vocal_act <- vocal_act %>%
   filter(trophic_niche != "Nectarivore") %>%
   filter(trophic_niche != "Vertivore")
 
-## We retained 65 out of 69 species after the above filters
+## We retained 62 out of 69 species after the above filters
 ```
 
 ## Testing the differences using Wilcoxon test
@@ -75,17 +101,17 @@ Here, we see whether there are differences in the vocal activity between communa
 ```{r} 
 stat.test <- vocal_act %>% 
   group_by (time_of_day) %>% 
-  wilcox_test (percent_detections ~ trophic_niche)
+  wilcox_test (percent_normalized_detections ~ trophic_niche)
 ```
 
-No significant differences were observed in vocal activity between trophic niche categories irrespective of dawn or dusk. 
+Significant differences were observed between frugivore and omnivore species at dawn and dusk, as well as between frugivore and invertivore species.  
 
 ## Visualization of % detections vs. trophic niche
 ```{r}
 fig_trophicNiche_vocAct <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
   ggbetweenstats(x = trophic_niche,
-                         y = percent_detections,
+                         y = percent_normalized_detections,
                          xlab = "Trophic Niche",
                          ylab = "% Acoustic Detections at Dawn", 
                          pairwise.display = "significant",
@@ -105,4 +131,4 @@ dev.off()
 
 We observe significant differences in vocal activity for frugivorous, invertivorous and omnivorous species between dawn and dusk, where much higher acoustic detections or calling was observed/detected at dawn compared to dusk. 
 
-![% acoustic detections at dawnacross foraging guilds](figs/fig_percentDetections_trophicNiche.png) 
+![% acoustic detections at dawn across foraging guilds](figs/fig_percentDetections_trophicNiche.png) 

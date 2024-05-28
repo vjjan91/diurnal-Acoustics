@@ -237,14 +237,20 @@ for(i in 1:length(unique(acoustic_data$common_name))) {
   
   # normalize for sampling effort
   sp <- left_join(sp, effort, by = "hour_of_day") %>%
-    mutate(normalized_detections = (detections/nVisits)) 
+    mutate(normalized_detections = (detections/nVisits)) %>%
+  mutate(total_normalized_detections = sum(normalized_detections)) %>%
+  mutate(percent_normalized_detections = (normalized_detections/total_normalized_detections)*100) %>%
+  ungroup()
   
     # add a break/no data for mid-day
   sp <- sp %>%
     add_row(hour_of_day = "Mid-day",
+            nVisits = 0, 
             detections = 0,
             total_detections = 0,
-            normalized_detections = 0)
+            normalized_detections = 0,
+            total_normalized_detections = 0,
+            percent_normalized_detections = 0)
   
   # reordering factors for plotting
   sp$hour_of_day <- factor(sp$hour_of_day, levels = c("6AM to 7AM", 
@@ -257,17 +263,17 @@ for(i in 1:length(unique(acoustic_data$common_name))) {
                                                       "6PM to 7PM"))
 
   plots[[i]] <- ggplot(sp, aes(x=hour_of_day, 
-                        y=normalized_detections)) +  
+                        y=percent_normalized_detections)) +  
   geom_bar(stat = "identity", position = position_dodge(), 
            fill = "#883107", alpha = 0.9) + 
-  geom_text(aes(label = ifelse(normalized_detections > 0,
-                               round(normalized_detections, 2), ""),
+  geom_text(aes(label = ifelse(percent_normalized_detections > 0,
+                               round(percent_normalized_detections, 1), ""),
                 hjust = "middle", vjust = -0.5, family = "Century Gothic"),
     position = position_dodge(), angle = 0, size = 5) +
     theme_bw() +
     labs(title = a,
-       subtitle = "Each bar represents the normalized detections across dawn and dusk",
-    y="\n Normalized acoustic detections (detections/nVisits)", 
+       subtitle = "Each bar represents the percent detections (normalized for sampling effort) across dawn and dusk",
+    y="\n %acoustic detections", 
        x="Time of Day\n") +
   theme(text = element_text(family = "Century Gothic", size = 18, face = "bold"),plot.title = element_text(family = "Century Gothic",
       size = 18, face = "bold"),
