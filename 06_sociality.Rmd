@@ -120,7 +120,7 @@ vocal_act <- vocal_act %>%
   dplyr::mutate(sociality_cat = case_when (sociality %in% '0' ~ 'Non-communal signallers', sociality %in% '1' ~ 'Communal signallers'))
 ```
 
-## Testing the differences using Wilcoxon test
+## Testing the differences between socialiaty categories using Wilcoxon test
 
 Here, we see whether there are differences in the vocal activity between communal and non-communal signallers in dawn and dusk individually. 
 

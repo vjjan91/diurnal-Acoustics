@@ -94,9 +94,9 @@ vocal_act <- vocal_act %>%
 ## We retained 62 out of 69 species after the above filters
 ```
 
-## Testing the differences using Wilcoxon test
+## Testing the differences among trophic niche categories using Wilcoxon test
 
-Here, we see whether there are differences in the vocal activity between communal and non-communal signallers in dawn and dusk individually. 
+Here, we see whether there are differences in the vocal activity between invertivores, frugivores, and omnivores in dawn and dusk individually.
 
 ```{r} 
 stat.test <- vocal_act %>% 
