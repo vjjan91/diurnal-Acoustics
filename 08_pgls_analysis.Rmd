@@ -245,7 +245,7 @@ median_pf <- separate(freq_5, col = filename, into = c("site_id", "date", "time"
       case_when(time >= '060000' & time <= '100000' ~ 'dawn', 
                 time >= '160000' & time <= '190000' ~ 'dusk')) %>%
   group_by(eBird_codes, time_of_day) %>%
-  summarise(median_peak_freq =  log10(median(peak_freq_in_Hz)))
+  summarise(median_peak_freq =  median(peak_freq_in_Hz))
 
 ## join the frequency data to the vocal activity data
 vocal_act <- vocal_act %>% 
@@ -264,16 +264,16 @@ vocal_act <- vocal_act %>%
                           'common_name')) 
 
 ## remove species that are poorly represented by a particular trophic niche
-## we get rid of nectarivore species, aquatic predator and granivore
 vocal_act <- vocal_act %>%
-  filter(trophic_niche != "Aquatic predator") %>%
-  filter(trophic_niche != "Granivore") %>%
-  filter(trophic_niche != "Nectarivore") %>%
   filter(trophic_niche != "Vertivore")
 
-## We retained 62 out of 69 species after the above filters
+vocal_act <- vocal_act %>% mutate(trophic_niche = case_when (trophic_niche %in% 'Frugivore' ~ 'Frugivore, Granivore, Nectarivore', 
+trophic_niche %in% 'Aquatic predator' ~ 'Frugivore, Granivore, Nectarivore', trophic_niche %in% 'Granivore' ~'Frugivore, Granivore, Nectarivore',
+trophic_niche %in% 'Nectarivore' ~ 'Frugivore, Granivore, Nectarivore',
+trophic_niche %in% 'Invertivore' ~'Invertivore',
+trophic_niche %in% 'Omnivore' ~'Omnivore'))
 
-vocal_act <- vocal_act %>% mutate(trophic_niche = case_when (trophic_niche %in% 'Invertivore' ~ '1', trophic_niche %in% 'Frugivore' ~ '2', trophic_niche %in% 'Omnivore' ~'3'))
+vocal_act <- vocal_act %>% mutate(trophic_niche = case_when (trophic_niche %in% 'Invertivore' ~ '1', trophic_niche %in% 'Frugivore, Granivore, Nectarivore' ~ '2', trophic_niche %in% 'Omnivore' ~'3'))
 
 ## Only 62 species remain at this stage.
 ```
@@ -316,112 +316,38 @@ setdiff(vocal_act$scientific_name,pruned.tree$tip.label) #checking if vocal_act 
 
 ## PGLS analysis
 ```{r}
-# Univariate models:
-# percent_normalized_detections ~ median_startTime only
-model1 <- gls(percent_normalized_detections ~ scale (median_startTime), data = vocal_act, 
-             correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-summary (model1)
+## reference categories for categorical predictors/factors
+## Territoriality: 1 = Non-territorial, 2 = Weakly territorial, 3 = Highly territorial
+## Sociality: 0 = Non-communal signallers, 1 = Communal signallers
+## Trophic niche: 1 = Invertivore, 2 = Frugivore, Granivore, Nectarivore, 3 = Omnivore
 
-# percent_normalized_detections ~ territoriality only
-model2 <- gls(percent_normalized_detections ~ relevel(factor(territory), ref = 3), data = vocal_act, correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-
-summary(model2)
-
-# percent_normalized_detections ~ sociality only
-model3 <- gls(percent_normalized_detections ~ factor(sociality), data = vocal_act, 
-             correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-
-summary(model3)
-
-# percent_normalized_detections ~ median_peak_freq only
-model4 <- gls(percent_normalized_detections ~ scale (median_peak_freq), data = vocal_act, correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-
-summary(model4)
-
-# percent_normalized_detections ~ trophic_niche only
-model5 <- gls(percent_normalized_detections ~ relevel(factor(trophic_niche), ref = 1), data = vocal_act, correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-
-summary(model5)
-
-# Multi-variate models with two predictor variables:
-#percent_normalized_detections ~ median startTime + territoriality
-model6 <- gls(percent_normalized_detections ~ scale (median_startTime) +
-               relevel(factor(territory), ref = 3), data = vocal_act, 
-             correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-
-summary(model6)
-
-# percent_normalized_detections ~ median startTime + sociality
-model7 <- gls(percent_normalized_detections ~ scale (median_startTime) +
-               factor(sociality), data = vocal_act, 
-             correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-
-summary(model7)
-
-# percent_normalized_detections ~ median_startTime + median_peak_freq
-model8 <- gls(percent_normalized_detections ~ scale (median_startTime) +
-               scale (median_peak_freq), data = vocal_act, 
-             correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-
-summary(model8)
-
-# percent_normalized_detections ~ median startTime + trophic niche
-model5 <- gls(percent_normalized_detections ~ scale (median_startTime) +
-               relevel(factor(trophic_niche), ref = 1), data = vocal_act, 
-             correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-
-summary(model5)
-
-# percent_normalized_detections ~ territoriality + sociality
-model9 <- gls(percent_normalized_detections ~ relevel(factor(territory), ref = 3) + 
-               factor(sociality), data = vocal_act, 
-             correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-
-summary(model9)
-
-# percent_normalized_detections ~ territoriality + median_peak_freq
-model10 <- gls(percent_normalized_detections ~ relevel(factor(territory), ref = 3) +                  scale (median_peak_freq), data = vocal_act, 
-             correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-
-summary(model10)
-
-# percent_normalized_detections ~ territoriality + trophic_niche
-model11 <- gls(percent_normalized_detections ~ relevel(factor(territory), ref = 3) + 
-               relevel(factor(trophic_niche), ref = 1), data = vocal_act, 
-             correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-
-summary(model11)
-
-# percent_normalized_detections ~ sociality + median_peak_freq
-model12 <- gls(percent_normalized_detections ~ factor(sociality) +
-               scale (median_peak_freq), data = vocal_act, 
-             correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-
-summary(model12)
-
-# percent_normalized_detections ~ sociality + trophic_niche
-model13 <- gls(percent_normalized_detections ~ factor(sociality) +
-               relevel(factor(trophic_niche), ref = 1), data = vocal_act, 
-             correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-
-summary(model13)
-
-# percent_normalized_detections ~ median_peak_freq + trophic_niche
-model14 <- gls(percent_normalized_detections ~ scale (median_peak_freq) + 
-               relevel(factor(trophic_niche), ref = 1), data = vocal_act, 
-             correlation = corPagel(1, pruned.tree, form = ~scientific_name))
-
-summary(model14)
-
-# Multi-variate model with all predictor variables:
-model15 <- gls(percent_normalized_detections ~ scale (median_startTime) +
+## Using normalized detections
+model1 <- gls(percent_normalized_detections ~ scale(median_startTime) +
                relevel(factor(territory), ref = 3) + 
                factor(sociality) +
-               scale (median_peak_freq) + 
+               scale(median_peak_freq) + 
                relevel(factor(trophic_niche), ref = 1), data = vocal_act, 
              correlation = corPagel(1, pruned.tree, form = ~scientific_name))
 
-summary(model15)
+summary(model1)
+plot_model(model1)
+
+## Weakly territorial species showed a significant positive association with percent_normalized_detections 
+## AIC: 1006.37
+
+## Using just detections
+model2 <- gls(percent_detections ~ scale(median_startTime) +
+               relevel(factor(territory), ref = 3) + 
+               factor(sociality) +
+               scale(median_peak_freq) + 
+               relevel(factor(trophic_niche), ref = 1), data = vocal_act, 
+             correlation = corPagel(1, pruned.tree, form = ~scientific_name))
+
+summary(model2)
+plot_model(model2)
+
+## Median start time showed a marginal positive association with percent detections
+## AIC: 1004.313
 ```
 
 
