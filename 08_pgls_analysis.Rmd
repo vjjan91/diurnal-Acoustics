@@ -353,6 +353,9 @@ plot_model(model2)
 ```
 
 ########################################################################################
+# Phylogenetic Linear Mixed Model (PGLMM) analysis
+  
+In this script, we examine which predictor/hypothesis (light availability, peak frequency, trophic niche, territoriality, and sociality) best explains the variation in vocal activity between dawn and dusk. We use linear regresssions while controlling for potential phylogenetic signals/relationships, and adding site_type as random effect.
 
 # Defining response variable- number of detections at each site and time
 ```{r}
