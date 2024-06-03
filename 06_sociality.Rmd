@@ -155,6 +155,7 @@ ggplot.component = list(theme(text = element_text(family = "Century Gothic", siz
 ggsave(fig_soc_vocAct, filename = "figs/fig_percentDetections_vs_sociality.png", width = 16, height = 14, device = png(), units = "in", dpi = 300)
 dev.off() 
 ```
-# Vocal activity is significantly higher in dawn than dusk in both sociality categories.
+
+Vocal activity is significantly higher in dawn than dusk in both sociality categories.
 
 ![% acoustic detections at dawn across categories of sociality](figs/fig_percentDetections_vs_sociality.png) 
