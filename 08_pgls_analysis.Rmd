@@ -342,7 +342,7 @@ plot_model(model1)
 ## Here we will run a model using dusk data anyway
 model2 <- vocal_act %>%
   filter(time_of_day == "dusk") %>%
-  gls(percent_detections ~ scale(median_startTime) +
+  gls(percent_normalized_detections ~ scale(median_startTime) +
                relevel(factor(territory), ref = 3) + 
                factor(sociality) +
                scale(median_peak_freq) + 
