@@ -58,7 +58,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -175,6 +175,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.2" data-path="light-availability.html"><a href="light-availability.html#load-acoustic-data-and-species-scientific-names-data-2"><i class="fa fa-check"></i><b>5.2</b> Load acoustic data and species scientific names data</a></li>
 <li class="chapter" data-level="5.3" data-path="light-availability.html"><a href="light-availability.html#extract-light-availability-for-each-date"><i class="fa fa-check"></i><b>5.3</b> Extract light availability for each date</a></li>
 <li class="chapter" data-level="5.4" data-path="light-availability.html"><a href="light-availability.html#model-acoustic-detections-as-a-function-of-light-availability"><i class="fa fa-check"></i><b>5.4</b> Model acoustic detections as a function of light availability</a></li>
+<li class="chapter" data-level="5.5" data-path="light-availability.html"><a href="light-availability.html#paired-statistical-test-to-assess-if-the-slopes-of-detections-timing-of-vocalization-are-significantly-different-between-dawn-and-dusk-across-species"><i class="fa fa-check"></i><b>5.5</b> Paired statistical test to assess if the slopes (of detections ~ timing of vocalization) are significantly different between dawn and dusk across species</a></li>
+<li class="chapter" data-level="5.6" data-path="light-availability.html"><a href="light-availability.html#visualization-of-timing-of-vocalization"><i class="fa fa-check"></i><b>5.6</b> Visualization of timing of vocalization</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="territoriality.html"><a href="territoriality.html"><i class="fa fa-check"></i><b>6</b> Territoriality</a>
 <ul>
@@ -183,29 +185,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3" data-path="territoriality.html"><a href="territoriality.html#load-acoustic-data-and-species-scientific-names-data-3"><i class="fa fa-check"></i><b>6.3</b> Load acoustic data and species scientific names data</a></li>
 <li class="chapter" data-level="6.4" data-path="territoriality.html"><a href="territoriality.html#vocal-activity-data-1"><i class="fa fa-check"></i><b>6.4</b> Vocal activity data</a></li>
 <li class="chapter" data-level="6.5" data-path="territoriality.html"><a href="territoriality.html#join-the-vocal_activity-data-and-territoriality-data"><i class="fa fa-check"></i><b>6.5</b> Join the vocal_activity data and territoriality data</a></li>
-<li class="chapter" data-level="6.6" data-path="territoriality.html"><a href="territoriality.html#testing-the-differences-using-wilcoxon-test"><i class="fa fa-check"></i><b>6.6</b> Testing the differences using Wilcoxon test</a></li>
+<li class="chapter" data-level="6.6" data-path="territoriality.html"><a href="territoriality.html#testing-the-differences-between-territoriality-categories-using-wilcoxon-test"><i class="fa fa-check"></i><b>6.6</b> Testing the differences between territoriality categories using Wilcoxon test</a></li>
 <li class="chapter" data-level="6.7" data-path="territoriality.html"><a href="territoriality.html#visualization-of-detections-vs.-territoriality"><i class="fa fa-check"></i><b>6.7</b> Visualization of % detections vs. territoriality</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="vocal-activity-is-significantly-higher-in-dawn-than-dusk-in-all-territorial-categories..html"><a href="vocal-activity-is-significantly-higher-in-dawn-than-dusk-in-all-territorial-categories..html"><i class="fa fa-check"></i><b>7</b> Vocal activity is significantly higher in dawn than dusk in all territorial categories.</a></li>
-<li class="chapter" data-level="8" data-path="sociality.html"><a href="sociality.html"><i class="fa fa-check"></i><b>8</b> Sociality</a>
+<li class="chapter" data-level="7" data-path="sociality.html"><a href="sociality.html"><i class="fa fa-check"></i><b>7</b> Sociality</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="sociality.html"><a href="sociality.html#loading-necessary-libraries-1"><i class="fa fa-check"></i><b>8.1</b> Loading necessary libraries</a></li>
-<li class="chapter" data-level="8.2" data-path="sociality.html"><a href="sociality.html#loading-sociality-data"><i class="fa fa-check"></i><b>8.2</b> Loading sociality data</a></li>
-<li class="chapter" data-level="8.3" data-path="sociality.html"><a href="sociality.html#load-acoustic-data-and-species-scientific-names-data-4"><i class="fa fa-check"></i><b>8.3</b> Load acoustic data and species scientific names data</a></li>
-<li class="chapter" data-level="8.4" data-path="sociality.html"><a href="sociality.html#vocal-activity-data-2"><i class="fa fa-check"></i><b>8.4</b> Vocal activity data</a></li>
-<li class="chapter" data-level="8.5" data-path="sociality.html"><a href="sociality.html#join-the-vocal_activity-data-and-sociality-data"><i class="fa fa-check"></i><b>8.5</b> Join the vocal_activity data and sociality data</a></li>
-<li class="chapter" data-level="8.6" data-path="sociality.html"><a href="sociality.html#testing-the-differences-using-wilcoxon-test-1"><i class="fa fa-check"></i><b>8.6</b> Testing the differences using Wilcoxon test</a></li>
-<li class="chapter" data-level="8.7" data-path="sociality.html"><a href="sociality.html#visualization-of-detections-vs.-sociality"><i class="fa fa-check"></i><b>8.7</b> Visualization of % detections vs. sociality</a></li>
+<li class="chapter" data-level="7.1" data-path="sociality.html"><a href="sociality.html#loading-necessary-libraries-1"><i class="fa fa-check"></i><b>7.1</b> Loading necessary libraries</a></li>
+<li class="chapter" data-level="7.2" data-path="sociality.html"><a href="sociality.html#loading-sociality-data"><i class="fa fa-check"></i><b>7.2</b> Loading sociality data</a></li>
+<li class="chapter" data-level="7.3" data-path="sociality.html"><a href="sociality.html#load-acoustic-data-and-species-scientific-names-data-4"><i class="fa fa-check"></i><b>7.3</b> Load acoustic data and species scientific names data</a></li>
+<li class="chapter" data-level="7.4" data-path="sociality.html"><a href="sociality.html#vocal-activity-data-2"><i class="fa fa-check"></i><b>7.4</b> Vocal activity data</a></li>
+<li class="chapter" data-level="7.5" data-path="sociality.html"><a href="sociality.html#join-the-vocal_activity-data-and-sociality-data"><i class="fa fa-check"></i><b>7.5</b> Join the vocal_activity data and sociality data</a></li>
+<li class="chapter" data-level="7.6" data-path="sociality.html"><a href="sociality.html#testing-the-differences-between-socialiaty-categories-using-wilcoxon-test"><i class="fa fa-check"></i><b>7.6</b> Testing the differences between socialiaty categories using Wilcoxon test</a></li>
+<li class="chapter" data-level="7.7" data-path="sociality.html"><a href="sociality.html#visualization-of-detections-vs.-sociality"><i class="fa fa-check"></i><b>7.7</b> Visualization of % detections vs. sociality</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="vocal-activity-is-significantly-higher-in-dawn-than-dusk-in-both-sociality-categories..html"><a href="vocal-activity-is-significantly-higher-in-dawn-than-dusk-in-both-sociality-categories..html"><i class="fa fa-check"></i><b>9</b> Vocal activity is significantly higher in dawn than dusk in both sociality categories.</a></li>
-<li class="chapter" data-level="10" data-path="trophic-niche.html"><a href="trophic-niche.html"><i class="fa fa-check"></i><b>10</b> Trophic niche</a>
+<li class="chapter" data-level="8" data-path="trophic-niche.html"><a href="trophic-niche.html"><i class="fa fa-check"></i><b>8</b> Trophic niche</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="trophic-niche.html"><a href="trophic-niche.html#install-necessary-libraries-3"><i class="fa fa-check"></i><b>10.1</b> Install necessary libraries</a></li>
-<li class="chapter" data-level="10.2" data-path="trophic-niche.html"><a href="trophic-niche.html#load-acoustic-data-and-species-scientific-names-data-5"><i class="fa fa-check"></i><b>10.2</b> Load acoustic data and species scientific names data</a></li>
-<li class="chapter" data-level="10.3" data-path="trophic-niche.html"><a href="trophic-niche.html#vocal-activity-data-3"><i class="fa fa-check"></i><b>10.3</b> Vocal activity data</a></li>
-<li class="chapter" data-level="10.4" data-path="trophic-niche.html"><a href="trophic-niche.html#join-the-vocal_activity-data-and-species-trait-data"><i class="fa fa-check"></i><b>10.4</b> Join the vocal_activity data and species trait data</a></li>
-<li class="chapter" data-level="10.5" data-path="trophic-niche.html"><a href="trophic-niche.html#testing-the-differences-using-wilcoxon-test-2"><i class="fa fa-check"></i><b>10.5</b> Testing the differences using Wilcoxon test</a></li>
-<li class="chapter" data-level="10.6" data-path="trophic-niche.html"><a href="trophic-niche.html#visualization-of-detections-vs.-trophic-niche"><i class="fa fa-check"></i><b>10.6</b> Visualization of % detections vs. trophic niche</a></li>
+<li class="chapter" data-level="8.1" data-path="trophic-niche.html"><a href="trophic-niche.html#install-necessary-libraries-3"><i class="fa fa-check"></i><b>8.1</b> Install necessary libraries</a></li>
+<li class="chapter" data-level="8.2" data-path="trophic-niche.html"><a href="trophic-niche.html#load-acoustic-data-and-species-scientific-names-data-5"><i class="fa fa-check"></i><b>8.2</b> Load acoustic data and species scientific names data</a></li>
+<li class="chapter" data-level="8.3" data-path="trophic-niche.html"><a href="trophic-niche.html#vocal-activity-data-3"><i class="fa fa-check"></i><b>8.3</b> Vocal activity data</a></li>
+<li class="chapter" data-level="8.4" data-path="trophic-niche.html"><a href="trophic-niche.html#join-the-vocal_activity-data-and-species-trait-data"><i class="fa fa-check"></i><b>8.4</b> Join the vocal_activity data and species trait data</a></li>
+<li class="chapter" data-level="8.5" data-path="trophic-niche.html"><a href="trophic-niche.html#testing-the-differences-among-trophic-niche-categories-using-wilcoxon-test"><i class="fa fa-check"></i><b>8.5</b> Testing the differences among trophic niche categories using Wilcoxon test</a></li>
+<li class="chapter" data-level="8.6" data-path="trophic-niche.html"><a href="trophic-niche.html#visualization-of-detections-vs.-trophic-niche"><i class="fa fa-check"></i><b>8.6</b> Visualization of % detections vs. trophic niche</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html"><i class="fa fa-check"></i><b>9</b> Phylogenetic Generalized Least Squares (PGLS) regressions</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#loading-necessary-libraries-2"><i class="fa fa-check"></i><b>9.1</b> Loading necessary libraries</a></li>
+<li class="chapter" data-level="9.2" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#loading-necessary-data"><i class="fa fa-check"></i><b>9.2</b> Loading necessary data</a></li>
+<li class="chapter" data-level="9.3" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#getting-the-maximum-credibility-tree-from-the-nexus-file"><i class="fa fa-check"></i><b>9.3</b> Getting the maximum credibility tree from the nexus file</a></li>
+<li class="chapter" data-level="9.4" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#vocal-activity-1"><i class="fa fa-check"></i><b>9.4</b> Vocal Activity</a></li>
+<li class="chapter" data-level="9.5" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#light-availability-1"><i class="fa fa-check"></i><b>9.5</b> Light availability</a></li>
+<li class="chapter" data-level="9.6" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#territoriality-1"><i class="fa fa-check"></i><b>9.6</b> Territoriality</a></li>
+<li class="chapter" data-level="9.7" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#sociality-1"><i class="fa fa-check"></i><b>9.7</b> Sociality</a></li>
+<li class="chapter" data-level="9.8" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#peak-frequency"><i class="fa fa-check"></i><b>9.8</b> Peak frequency</a></li>
+<li class="chapter" data-level="9.9" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#trophic-niche-1"><i class="fa fa-check"></i><b>9.9</b> Trophic niche</a></li>
+<li class="chapter" data-level="9.10" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#data-cleaning-1"><i class="fa fa-check"></i><b>9.10</b> Data cleaning</a></li>
+<li class="chapter" data-level="9.11" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#pgls-analysis"><i class="fa fa-check"></i><b>9.11</b> PGLS analysis</a></li>
 </ul></li>
 </ul>
 
