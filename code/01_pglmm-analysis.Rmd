@@ -1,0 +1,155 @@
+
+## Phylogenetic Linear Mixed Model (PGLMM) analysis
+  
+In this script, we examine which predictor/hypothesis (light availability, peak frequency, trophic niche, territoriality, and sociality) best explains the variation in vocal activity between dawn and dusk. We use linear regresssions while controlling for potential phylogenetic signals/relationships, and adding site_type as random effect.
+
+[Note: if you want to run this script, please run sript corresponding to pgls-analysis to load all objects required]
+
+# Defining response variable- number of detections at each site and time
+```{r}
+# combining time_from_dawn and time_to_dusk as one column named 'time_from_startTime'
+dawn <- acoustic_data %>%
+  filter(time_of_day == "dawn") %>%
+  dplyr::select(site_id, eBird_codes, detections, time_from_dawn, time_of_day, scientific_name) %>%
+  rename(., time_from_startTime = time_from_dawn)
+  
+dusk <- acoustic_data %>%
+  filter(time_of_day == "dusk") %>%
+  dplyr::select(site_id, eBird_codes,detections, time_to_dusk, time_of_day, scientific_name) %>%
+  rename(., time_from_startTime = time_to_dusk)
+
+# combining the data and including vegetation data in this as well  
+data <- bind_rows(dawn, dusk)
+```
+
+## Processing vegetation data
+To use habitat type/vegetation data as a random effect in our model.
+```{r}
+## Process habitat structure variables
+# Counting number of tree species and unique species per plot
+treerich <- vegetation %>% 
+  group_by(Site_ID) %>% 
+  summarise (count = n(), richness = n_distinct(tree_species))
+
+# Calculate average tree height across each unique site
+treeheight <- vegetation %>% 
+  drop_na(height) %>% 
+  group_by(Site_ID) %>% 
+  summarise(height = mean(height))
+
+# Calculate basal area and left join with other data
+basal_area <- vegetation %>% 
+  mutate(basal_sum = rowSums(vegetation[,c(5:15)]^2)/(4*pi)) %>% group_by(Site_ID, Site_type) %>% 
+  summarise(basal_area = sum(basal_sum)) 
+
+# Calculate average canopy height
+canopy_height <- vegetation %>%
+  group_by(Site_ID) %>%
+  summarise(canopy_cover = mean(Canopy_cover))
+
+# Calculate average leaf litter
+leaf_litter <- vegetation %>%
+  group_by(Site_ID) %>%
+  summarise(leaf_litter = mean(Leaf_litter))
+
+# Calculate average vertical stratification
+vert_strat <- vegetation %>%
+  group_by(Site_ID) %>%
+  summarise(vert_strat = mean(Foliage_score))
+
+# Year of planting
+plantingYear <- vegetation %>%
+  group_by(Site_ID) %>%
+  summarise(plantingYear = unique(Year.of.planting))
+
+# Creating a final dataframe for further analysis
+allVeg <- basal_area %>% 
+  left_join(treeheight) %>%
+  left_join(treerich) %>%
+  left_join(canopy_height) %>%
+  left_join(leaf_litter) %>%
+  left_join(vert_strat) %>%
+  left_join(plantingYear) %>%
+  ungroup()
+
+# converting the site_ids in vegetation_data as per the acoustic_data and renaming the column
+allVeg <- allVeg %>% 
+  mutate(across(Site_ID, str_remove_all,'_')) %>%
+  rename(., site_id = Site_ID)
+
+# joining the vegetation data
+data <- data %>% 
+  left_join(allVeg, by = 'site_id')
+```
+
+## Preparing the response and predictor variables
+To use territoriality, sociality, peak freq, light availability, trophic niche as predictor variables.
+```{r}
+# filtering required columns
+data <- data %>% 
+              dplyr::select ('site_id', 'scientific_name', 'time_of_day', 'time_from_startTime',  'eBird_codes', 'detections', 'Site_type', 'basal_area', 'count', 'richness', 'canopy_cover', 'richness', 'leaf_litter', 'vert_strat') #here we have our response variable (detections), random effects (vegetation data, Site_type), and one of the predictor variables, i.e. light availability in the form of 'time_from_startTime'
+
+# adding the rest of the predictor variables to the data
+data <- data %>%
+  left_join(territoriality, by = 'scientific_name') #including territoriality predictor variable with reference categories: 1= Non-territorial, 2= Weakly territorial, 3= Highly territorial
+
+data <- data %>%
+  left_join(sociality, by = 'scientific_name') #including sociality predictor variable with reference categories: 0= Non-communal signallers, 1= Communal signallers
+
+data <- data %>% 
+  left_join(trait[,c(1,2,29)], by = 'scientific_name') #including trophic niche predictor variable with reference categories: 1= Invertivore, 2= Frugivore, Granivore, Nectarivore, 3= Omnivore
+
+data <- data %>% 
+  left_join(median_pf, by = c('eBird_codes', 'time_of_day')) %>%
+  drop_na() #including median peak frequency predictor variable
+```
+
+## Data cleaning
+
+We clean the objects prior to running PGLMM
+```{r}
+# converting the scientific names of data as per tip.labels of the tree
+data <- data %>% 
+  mutate(across(scientific_name, str_replace, ' ', '_')) 
+  
+# converting the scientific names of data as per the birdtree data so that both are matching
+data <- data %>%
+mutate(scientific_name = 
+         case_when (scientific_name == 'Dumetia_atriceps' ~ 'Rhopocichla_atriceps',                scientific_name == 'Chrysocolaptes_guttacristatus' ~ 'Chrysocolaptes_lucidus',
+                 scientific_name == 'Turdus_simillimus' ~ 'Turdus_merula', 
+                 scientific_name == 'Larvivora_brunnea' ~ 'Luscinia_brunnea',
+                 scientific_name == 'Machlolophus_aplonotus' ~ 'Parus_xanthogenys', 
+                scientific_name == 'Psilopogon_malabaricus' ~ 'Megalaima_rubricapillus',
+                scientific_name == 'Tephrodornis_sylvicola' ~ 'Tephrodornis_gularis',
+                scientific_name == 'Geokichla_citrina' ~ 'Zoothera_citrina',
+               scientific_name == 'Cinnyris_asiaticus' ~ 'Nectarinia_asiatica',
+               scientific_name == 'Leptocoma_minima' ~'Nectarinia_minima',
+               scientific_name == 'Spilopelia_chinensis' ~'Stigmatopelia_chinensis',
+               scientific_name == 'Argya_subrufa' ~ 'Turdoides_subrufa',
+               scientific_name == 'Ficedula_nigrorufa' ~ 'Muscicapa_ruficauda',
+               scientific_name == 'Gracula_indica' ~ 'Gracula_religiosa',
+               scientific_name == 'Ketupa_nipalensis' ~ 'Bubo_nipalensis',
+               scientific_name == 'Hypsipetes_ganeesa' ~ 'Hypsipetes_leucocephalus',
+              scientific_name == 'Cyornis_pallidipes' ~ 'Cyornis_pallipes',
+               scientific_name == 'Psilopogon_viridis' ~ 'Megalaima_viridis', .default = scientific_name)) #final dataframe with variables
+         
+# check same species in data and phylogenetic data, and pruning species from the tree which are not present in the data
+diff <- setdiff(tree$tip.label, data$scientific_name)
+pruned.tree <- drop.tip (tree, diff) #final phylogenetic dataframe
+
+setdiff(data$scientific_name,pruned.tree$tip.label) #checking if data and pruned.tree have the same species: result- 'character(0)'
+```
+
+## PGLMM analysis
+```{r}
+# renaming site and sp columns
+data <- data %>% 
+  rename(., sp = scientific_name) %>%
+  rename(., site = Site_type)
+     
+model <- pglmm(detections ~ scale(time_from_startTime) +  relevel(factor(territory), ref = 3) + factor(sociality) + scale(median_peak_freq) + relevel(factor(trophic_niche), ref = 1) + (1|site), data = data, family = "poisson",
+                    cov_ranef = list(sp = pruned.tree))
+summary (model)
+```
+
+
