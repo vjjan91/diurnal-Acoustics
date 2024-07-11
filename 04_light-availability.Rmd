@@ -201,7 +201,7 @@ stat.test <- metadata %>%
   filter(common_name != "Gray-headed Canary-Flycatcher") %>%
   pairwise_wilcox_test(slope ~ time_of_day)
 
-# No significant differences were observed between the slopes across dawn and dusk. Here the slope conveys teh relationship between the number of acoustic detections and timing of vocalization
+# No significant differences were observed between the slopes across dawn and dusk. Here the slope conveys the relationship between the number of acoustic detections and timing of vocalization
 
 # A tibble: 1 × 9
 #  .y.   group1 group2    n1    n2 statistic     p p.adj p.adj.signif
