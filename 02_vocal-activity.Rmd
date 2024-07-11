@@ -92,8 +92,8 @@ fig_percent_detections <- ggplot(vocal_act, aes(
   scale_fill_manual(values = c("#d95f02","#1b9e77")) +
   scale_y_continuous(labels=abs) +
   coord_flip() +
-  labs(y = '% Acoustic detections (across dawn and dusk) normalized by sampling effort)',
-       x = 'Common name') +
+  labs(y = '% Vocal activity (at dawn and at dusk)',
+       x = 'Species common name') +
   theme_bw() +
   theme(text = element_text(family = "Century Gothic", size = 10, face = "bold"),plot.title = element_text(family = "Century Gothic",
       size = 15, face = "bold"),
@@ -115,7 +115,7 @@ fig_overall_vocal_act <- vocal_act %>%
   ggbetweenstats(x = time_of_day,
                          y = percent_normalized_detections,
                          xlab = "Time of Day",
-                         ylab = "% Acoustic Detections (normalized for sampling effort)", 
+                         ylab = "% Vocal activity", 
                          pairwise.display = "significant",
                          package = "ggsci",
                          palette = "default_jco",
