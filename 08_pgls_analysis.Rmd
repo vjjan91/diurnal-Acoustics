@@ -265,16 +265,14 @@ vocal_act <- vocal_act %>%
                           'common_name')) 
 
 ## remove species that are poorly represented by a particular trophic niche
+## we get rid of nectarivore species, aquatic predator and granivore
 vocal_act <- vocal_act %>%
+  filter(trophic_niche != "Aquatic predator") %>%
+  filter(trophic_niche != "Granivore") %>%
+  filter(trophic_niche != "Nectarivore") %>%
   filter(trophic_niche != "Vertivore")
 
-vocal_act <- vocal_act %>% mutate(trophic_niche = case_when (trophic_niche %in% 'Frugivore' ~ 'Frugivore, Granivore, Nectarivore', 
-trophic_niche %in% 'Aquatic predator' ~ 'Frugivore, Granivore, Nectarivore', trophic_niche %in% 'Granivore' ~'Frugivore, Granivore, Nectarivore',
-trophic_niche %in% 'Nectarivore' ~ 'Frugivore, Granivore, Nectarivore',
-trophic_niche %in% 'Invertivore' ~'Invertivore',
-trophic_niche %in% 'Omnivore' ~'Omnivore'))
-
-vocal_act <- vocal_act %>% mutate(trophic_niche = case_when (trophic_niche %in% 'Invertivore' ~ '1', trophic_niche %in% 'Frugivore, Granivore, Nectarivore' ~ '2', trophic_niche %in% 'Omnivore' ~'3'))
+vocal_act <- vocal_act %>% mutate(trophic_niche = case_when (trophic_niche %in% 'Invertivore' ~ '1', trophic_niche %in% 'Frugivore' ~ '2', trophic_niche %in% 'Omnivore' ~'3'))
 
 ## Only 62 species remain at this stage.
 ```
@@ -322,7 +320,7 @@ Here we test if the higher rates of acoustic detections at dawn can be explained
 ## reference categories for categorical predictors/factors
 ## Territoriality: 1 = Non-territorial, 2 = Weakly territorial, 3 = Highly territorial
 ## Sociality: 0 = Non-communal signallers, 1 = Communal signallers
-## Trophic niche: 1 = Invertivore, 2 = Frugivore, Granivore, Nectarivore, 3 = Omnivore
+## Trophic niche: 1 = Invertivore, 2 = Frugivore, 3 = Omnivore
 
 ## Using normalized detections
 model1 <- vocal_act %>%
@@ -331,7 +329,7 @@ model1 <- vocal_act %>%
                relevel(factor(territory), ref = 3) + 
                factor(sociality) +
                scale(median_peak_freq) + 
-               relevel(factor(trophic_niche), ref = 1), data = ., 
+               relevel(factor(trophic_niche), ref = 2), data = ., 
              correlation = corPagel(1, pruned.tree, form = ~scientific_name))
 
 summary(model1)
