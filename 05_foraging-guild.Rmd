@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Trophic niche  
+# Foraging guild  
 
 Here, we ask if species of a certain foraging guild have higher vocal activity at dawn compared to dusk. Our null hypothesis/expectation is that there would be no differences in vocal activity across foraging guilds irrespective of time of day.  
 
@@ -112,8 +112,8 @@ fig_trophicNiche_vocAct <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
   ggbetweenstats(x = trophic_niche,
                          y = percent_normalized_detections,
-                         xlab = "Trophic Niche",
-                         ylab = "% Acoustic Detections at Dawn", 
+                         xlab = "Foraging guild",
+                         ylab = "% Vocal activity at Dawn", 
                          pairwise.display = "significant",
                          package = "ggsci",
                          palette = "default_jco",
