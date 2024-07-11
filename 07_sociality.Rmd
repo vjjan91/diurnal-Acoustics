@@ -139,8 +139,8 @@ fig_soc_vocAct <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
   ggbetweenstats(x = sociality_cat,
                          y = percent_normalized_detections,
-                         xlab = "Sociality",
-                         ylab = "% Acoustic Detections at Dawn", 
+                         xlab = "Levels of sociality",
+                         ylab = "", 
                          pairwise.display = "significant",
                          package = "ggsci",
                          palette = "default_jco",
@@ -159,3 +159,17 @@ dev.off()
 Vocal activity is significantly higher in dawn than dusk in both sociality categories.
 
 ![% acoustic detections at dawn across categories of sociality](figs/fig_percentDetections_vs_sociality.png) 
+## Creating figure for publication
+```{r}
+library(patchwork)
+
+# We will combine the territoriality and communal signalling figure into a side-by-side panel
+# Assumption here that the territoriality figure is already loaded in the R environment (if not; please run the previous script for the same)
+
+fig1 <- fig_terr_vocAct + fig_soc_vocAct
+ggsave(fig1, filename = "figs/fig_percentDetections_territoriality_sociality.png", width = 16, height = 14, device = png(), units = "in", dpi = 300)
+dev.off() 
+```
+
+
+
