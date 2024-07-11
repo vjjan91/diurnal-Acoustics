@@ -256,9 +256,9 @@ vocal_act <- vocal_act %>%
 # A total of 66 species were included and three species were excluded from final analysis.
 ```
  
-## Trophic niche  
+## Foraging guild 
 
-We prepare trophic niche categories for the PGLS analysis
+We prepare foraging guild categories for the PGLS analysis
 ```{r}
 vocal_act <- vocal_act %>% 
   left_join(trait[,c(1,2,29)], by = c('scientific_name',
