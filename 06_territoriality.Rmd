@@ -132,7 +132,7 @@ stat.test <- vocal_act %>%
   wilcox_test(percent_normalized_detections ~ territory_cat) 
 ```
 
-Marginal significant differences were observed between non-territorial and weakly territorial species at dawn (p = 0.039)
+Vocal activity is significantly higher in dawn than dusk in all territorial categories. 
 
 ## Visualization of % detections vs. territoriality
 ```{r}
@@ -143,8 +143,8 @@ fig_terr_vocAct <- vocal_act %>%
             "Highly territorial", "Weakly territorial", "Non-territorial")) %>%
   ggbetweenstats(x = territory_cat,
                          y = percent_normalized_detections,
-                         xlab = "Territoriality",
-                         ylab = "% Acoustic Detections at Dawn", 
+                         xlab = "Extent of territoriality",
+                         ylab = "% Vocal activity at Dawn", 
                          pairwise.display = "significant",
                          package = "ggsci",
                          palette = "default_jco",
