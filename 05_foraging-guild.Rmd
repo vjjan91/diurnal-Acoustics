@@ -125,10 +125,10 @@ ggplot.component = list(theme(text = element_text(family = "Century Gothic", siz
       axis.title = element_text(family = "Century Gothic",
       size = 15, face = "bold")))) 
 
-ggsave(fig_trophicNiche_vocAct, filename = "figs/fig_percentDetections_trophicNiche.png", width = 16, height = 14, device = png(), units = "in", dpi = 300)
+ggsave(fig_trophicNiche_vocAct, filename = "figs/fig_percentDetections_foragingGuild.png", width = 16, height = 14, device = png(), units = "in", dpi = 300)
 dev.off() 
 ```
 
 We observe significant differences in vocal activity for frugivorous, invertivorous and omnivorous species between dawn and dusk, where much higher acoustic detections or calling was observed/detected at dawn compared to dusk. 
 
-![% acoustic detections at dawn across foraging guilds](figs/fig_percentDetections_trophicNiche.png) 
+![% acoustic detections at dawn across foraging guilds](figs/fig_percentDetections_foragingGuild.png) 
