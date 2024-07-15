@@ -313,7 +313,7 @@ pruned.tree <- drop.tip (tree, diff) #final phylogenetic dataframe
 setdiff(vocal_act$scientific_name,pruned.tree$tip.label) #checking if vocal_act and pruned.tree have the same species: result- 'character(0)'
 ```
 
-## PGLS analysis  
+## PGLS analysis
 
 Here we test if the higher rates of acoustic detections at dawn can be explained by environmental and/or social factors
 ```{r}
@@ -322,8 +322,48 @@ Here we test if the higher rates of acoustic detections at dawn can be explained
 ## Sociality: 0 = Non-communal signallers, 1 = Communal signallers
 ## Trophic niche: 1 = Invertivore, 2 = Frugivore, 3 = Omnivore
 
-## Using normalized detections
+## Using normalized detections for dawn only
+
+# Univariate models:
+# percent_normalized_detections ~ median_startTime only
 model1 <- vocal_act %>%
+  filter(time_of_day == "dawn") %>%
+  gls (percent_normalized_detections ~ scale (median_startTime), data = ., 
+correlation = corPagel(1, pruned.tree, form = ~scientific_name))
+
+summary (model1) #AIC = 490.9885
+ 
+# percent_normalized_detections ~ territoriality only
+model2 <- vocal_act %>%
+  filter(time_of_day == "dawn") %>% 
+  gls(percent_normalized_detections ~ relevel(factor(territory), ref = 3), data = ., correlation = corPagel(1, pruned.tree, form = ~scientific_name))
+
+summary(model2) #AIC = 490.3102
+ 
+# percent_normalized_detections ~ sociality only
+model3 <- vocal_act %>%
+  filter(time_of_day == "dawn") %>% 
+  gls(percent_normalized_detections ~ factor(sociality), data = ., 
+correlation = corPagel(1, pruned.tree, form = ~scientific_name))
+ 
+summary(model3) #490.9651
+ 
+# percent_normalized_detections ~ median_peak_freq only
+model4 <- vocal_act %>%
+  filter(time_of_day == "dawn") %>%
+  gls(percent_normalized_detections ~ scale (median_peak_freq), data = ., correlation = corPagel(1, pruned.tree, form = ~scientific_name))
+ 
+summary(model4) #AIC = 498.3634
+ 
+# percent_normalized_detections ~ trophic_niche only
+model5 <- vocal_act %>%
+  filter(time_of_day == "dawn") %>%
+  gls(percent_normalized_detections ~ relevel(factor(trophic_niche), ref = 1), data = ., correlation = corPagel(1, pruned.tree, form = ~scientific_name))
+
+summary(model5) #AIC = 488.6914
+ 
+# Multi-variate model with all predictor variables:
+model <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
   gls(percent_normalized_detections ~ scale(median_startTime) +
                relevel(factor(territory), ref = 3) + 
@@ -332,13 +372,13 @@ model1 <- vocal_act %>%
                relevel(factor(trophic_niche), ref = 2), data = ., 
              correlation = corPagel(1, pruned.tree, form = ~scientific_name))
 
-summary(model1)
-plot_model(model1)
+summary(model) #AIC = 463.691
+plot_model(model)
 
 ## Sociality (communal signallers) showed a weak, but significant positive association with percent_normalized_detections 
 
 ## Here we will run a model using dusk data anyway
-model2 <- vocal_act %>%
+model6 <- vocal_act %>%
   filter(time_of_day == "dusk") %>%
   gls(percent_normalized_detections ~ scale(median_startTime) +
                relevel(factor(territory), ref = 3) + 
@@ -347,8 +387,8 @@ model2 <- vocal_act %>%
                relevel(factor(trophic_niche), ref = 1), data = ., 
              correlation = corPagel(1, pruned.tree, form = ~scientific_name))
 
-summary(model2)
-plot_model(model2)
+summary(model6)
+plot_model(model6)
 
 ## No significant association was detected between dusk data and any environmental/social factors (when controlled for phylogeny)
 ```
