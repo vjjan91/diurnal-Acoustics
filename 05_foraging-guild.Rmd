@@ -129,6 +129,6 @@ ggsave(fig_trophicNiche_vocAct, filename = "figs/fig_percentDetections_foragingG
 dev.off() 
 ```
 
-We observe significant differences in vocal activity for frugivorous, invertivorous and omnivorous species between dawn and dusk, where much higher acoustic detections or calling was observed/detected at dawn compared to dusk. 
-
-![% acoustic detections at dawn across foraging guilds](figs/fig_percentDetections_foragingGuild.png) 
+```{r, echo = FALSE, fig.cap= "We found significant differences in the dawn vocal activity between invertivore and frugivore species and omnivore and frugivore species."}
+knitr::include_graphics("figs/fig_percentDetections_foragingGuild.png")
+```

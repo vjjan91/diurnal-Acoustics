@@ -132,6 +132,6 @@ ggsave(fig_freq_vocAct, filename = "figs/fig_peakFrequency_vs_dawnDetections.png
 dev.off() 
 ```
 
-![% acoustic detections at dawn vs. median peak frequency shows no significant relationship](figs/fig_peakFrequency_vs_dawnDetections.png) 
-
-
+```{r, echo = FALSE, fig.cap= "No significant relationship was observed between % acoustic detections at dawn and median peak frequency."}
+knitr::include_graphics("figs/fig_peakFrequency_vs_dawnDetections.png")
+```

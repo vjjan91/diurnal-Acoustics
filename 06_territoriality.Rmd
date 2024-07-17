@@ -3,7 +3,6 @@ editor_options:
   chunk_output_type: console
 ---
   
-  
 # Territoriality
   
 In this script, we examine the role of territoriality in vocal activity between dawn and dusk. The expectation is that highly territorial, weakly territorial and non-territorial species have higher vocal activity in dawn than dusk.
@@ -160,6 +159,6 @@ ggsave(fig_terr_vocAct, filename = "figs/fig_percentDetections_territoriality.pn
 dev.off() 
 ```
 
-Vocal activity is significantly higher in dawn than dusk in all territorial categories. 
-
-![% acoustic detections at dawn across categories of territoriality](figs/fig_percentDetections_territoriality.png) 
+```{r, echo = FALSE, fig.cap= "Weakly territorial species were significantly more dawn shifted than non-territorial species at dawn."}
+knitr::include_graphics("figs/fig_percentDetections_territoriality.png")
+```

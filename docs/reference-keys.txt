@@ -52,6 +52,7 @@ vocal-activity-data-3
 join-the-vocal_activity-data-and-sociality-data
 testing-the-differences-between-socialiaty-categories-using-wilcoxon-test
 visualization-of-detections-vs.-sociality
+figure-for-publication-1
 phylogenetic-generalized-least-squares-pgls-regressions
 loading-necessary-libraries-2
 loading-necessary-data

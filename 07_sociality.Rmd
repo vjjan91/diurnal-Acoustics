@@ -156,10 +156,11 @@ ggsave(fig_soc_vocAct, filename = "figs/fig_percentDetections_vs_sociality.png",
 dev.off() 
 ```
 
-Vocal activity is significantly higher in dawn than dusk in both sociality categories.
+```{r, echo = FALSE, fig.cap= "No differences in vocal activity  between communal signallers and non-communal signallers at dawn."}
+knitr::include_graphics("figs/fig_percentDetections_vs_sociality.png")
+```
 
-![% acoustic detections at dawn across categories of sociality](figs/fig_percentDetections_vs_sociality.png) 
-## Creating figure for publication
+## Figure for publication
 ```{r}
 library(patchwork)
 
@@ -177,5 +178,6 @@ ggsave(fig_terr_soc, filename = "figs/fig04.png", width = 16, height = 14, devic
 dev.off() 
 ```
 
-
-
+```{r, echo = FALSE, fig.cap= "(a) Weakly territorial species were significantly more dawn shifted than non-territorial species. (b) No differences in vocal activity  between communal signallers and non-communal signallers."}
+knitr::include_graphics("figs/fig04.png")
+```

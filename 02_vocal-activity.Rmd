@@ -113,7 +113,9 @@ ggsave(fig_percent_detections, filename = "figs/fig_percentDetections_species.pn
 dev.off() 
 ```
 
-![% acoustic detections for each species between dawn and dusk](figs/fig_percentDetections_species.png)  
+```{r, echo = FALSE, fig.cap= "Species-specific vocal activity differences between dawn and dusk"}
+knitr::include_graphics("figs/fig_percentDetections_species.png")
+```
 
 ## Is overall vocal activity much higher at dawn compared to dusk, across species?
 
@@ -141,10 +143,10 @@ ggsave(fig_overall_vocal_act, filename = "figs/fig_percentDetections_overall.png
 dev.off() 
 ```
 
-Overall, higher vocal activity was detected at dawn compared to dusk, across species.
+```{r, echo= FALSE, fig.cap= "Across the entire community, higher vocal activity was detected at dawn compared to dusk"}
+knitr::include_graphics("figs/fig_percentDetections_overall.png")
+```
 
-![% acoustic detections for each species between dawn and dusk](figs/fig_percentDetections_overall.png)  
-  
 ## Testing for differences in acoustic detections between dawn and dusk
 
 Here, we see whether there are differences in the acoustic detections for each species between dawn and dusk. 
@@ -176,5 +178,6 @@ ggsave(fig_vocAct, filename = "figs/fig01.png", width = 14, height = 20, device 
 dev.off() 
 ```
 
-![Figure 1. (a) Vocal activity was significantly higher at dawn compared to dusk across a tropical bird community in the Western Ghats. (b) Species-specific vocal activity across dawn and dusk.](figs/fig01.png)
-
+```{r, echo=FALSE, fig.cap= "(a) Vocal activity was significantly higher at dawn compared to dusk across a tropical bird community in the Western Ghats. (b) Species-specific vocal activity across dawn and dusk."}
+knitr::include_graphics("figs/fig01.png")
+```
