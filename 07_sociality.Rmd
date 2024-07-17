@@ -166,8 +166,14 @@ library(patchwork)
 # We will combine the territoriality and communal signalling figure into a side-by-side panel
 # Assumption here that the territoriality figure is already loaded in the R environment (if not; please run the previous script for the same)
 
-fig1 <- fig_terr_vocAct + fig_soc_vocAct
-ggsave(fig1, filename = "figs/fig_percentDetections_territoriality_sociality.png", width = 16, height = 14, device = png(), units = "in", dpi = 300)
+fig_terr_soc  <- wrap_plots(fig_terr_vocAct, fig_soc_vocAct,
+                         ncol = 2) +
+              plot_annotation(
+      tag_levels = "a",
+      tag_prefix = "(",
+      tag_suffix = ")")
+
+ggsave(fig_terr_soc, filename = "figs/fig04.png", width = 16, height = 14, device = png(), units = "in", dpi = 300)
 dev.off() 
 ```
 
