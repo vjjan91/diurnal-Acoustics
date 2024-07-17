@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 6 Foraging guild | Source code and supporting information for Drivers of diurnal variation in vocal activity in a tropical bird community</title>
+  <meta name="description" content="Section 6 Foraging guild | Source code and supporting information for Drivers of diurnal variation in vocal activity in a tropical bird community" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 6 Foraging guild | Source code and supporting information for Drivers of diurnal variation in vocal activity in a tropical bird community" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="vjjan91/diurnal-Acoustics" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 6 Foraging guild | Source code and supporting information for Drivers of diurnal variation in vocal activity in a tropical bird community" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="Pavithra Sundar" />
+<meta name="author" content="Meghana P Srivathsa" />
+<meta name="author" content="Laurel Symes" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="light-availability.html"/>
+<link rel="next" href="territoriality.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="data-cleaning.html"><a href="data-cleaning.html"><i class="fa fa-check"></i><b>2</b> Data cleaning</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="data-cleaning.html"><a href="data-cleaning.html#install-required-libraries"><i class="fa fa-check"></i><b>2.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="2.2" data-path="data-cleaning.html"><a href="data-cleaning.html#loading-acoustic-data"><i class="fa fa-check"></i><b>2.2</b> Loading acoustic data</a></li>
+<li class="chapter" data-level="2.3" data-path="data-cleaning.html"><a href="data-cleaning.html#add-standardized-ebird-species-codes-for-future-analysis"><i class="fa fa-check"></i><b>2.3</b> Add standardized eBird species codes for future analysis</a></li>
+<li class="chapter" data-level="2.4" data-path="data-cleaning.html"><a href="data-cleaning.html#how-much-data-has-been-annotated-for-dawn-and-dusk-across-sites-and-days"><i class="fa fa-check"></i><b>2.4</b> How much data has been annotated for dawn and dusk across sites and days?</a></li>
+<li class="chapter" data-level="2.5" data-path="data-cleaning.html"><a href="data-cleaning.html#more-data-cleaning"><i class="fa fa-check"></i><b>2.5</b> More data cleaning</a></li>
+<li class="chapter" data-level="2.6" data-path="data-cleaning.html"><a href="data-cleaning.html#write-to-file"><i class="fa fa-check"></i><b>2.6</b> Write to file</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="vocal-activity.html"><a href="vocal-activity.html"><i class="fa fa-check"></i><b>3</b> Vocal activity</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="vocal-activity.html"><a href="vocal-activity.html#install-necessary-libraries"><i class="fa fa-check"></i><b>3.1</b> Install necessary libraries</a></li>
+<li class="chapter" data-level="3.2" data-path="vocal-activity.html"><a href="vocal-activity.html#load-acoustic-data-and-species-scientific-names-data"><i class="fa fa-check"></i><b>3.2</b> Load acoustic data and species scientific names data</a></li>
+<li class="chapter" data-level="3.3" data-path="vocal-activity.html"><a href="vocal-activity.html#vocal-activity-across-time-periods"><i class="fa fa-check"></i><b>3.3</b> Vocal activity across time periods</a></li>
+<li class="chapter" data-level="3.4" data-path="vocal-activity.html"><a href="vocal-activity.html#is-overall-vocal-activity-much-higher-at-dawn-compared-to-dusk-across-species"><i class="fa fa-check"></i><b>3.4</b> Is overall vocal activity much higher at dawn compared to dusk, across species?</a></li>
+<li class="chapter" data-level="3.5" data-path="vocal-activity.html"><a href="vocal-activity.html#figure-for-publication"><i class="fa fa-check"></i><b>3.5</b> Figure for publication</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="frequency.html"><a href="frequency.html"><i class="fa fa-check"></i><b>4</b> Frequency</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="frequency.html"><a href="frequency.html#install-necessary-libraries-1"><i class="fa fa-check"></i><b>4.1</b> Install necessary libraries</a></li>
+<li class="chapter" data-level="4.2" data-path="frequency.html"><a href="frequency.html#load-acoustic-data-and-species-scientific-names-data-1"><i class="fa fa-check"></i><b>4.2</b> Load acoustic data and species scientific names data</a></li>
+<li class="chapter" data-level="4.3" data-path="frequency.html"><a href="frequency.html#vocal-activity-data"><i class="fa fa-check"></i><b>4.3</b> Vocal activity data</a></li>
+<li class="chapter" data-level="4.4" data-path="frequency.html"><a href="frequency.html#frequency-data"><i class="fa fa-check"></i><b>4.4</b> Frequency data</a></li>
+<li class="chapter" data-level="4.5" data-path="frequency.html"><a href="frequency.html#visualization-of-detections-vs.-median-peak-frequency"><i class="fa fa-check"></i><b>4.5</b> Visualization of % detections vs. median peak frequency</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="light-availability.html"><a href="light-availability.html"><i class="fa fa-check"></i><b>5</b> Light availability</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="light-availability.html"><a href="light-availability.html#install-necessary-libraries-2"><i class="fa fa-check"></i><b>5.1</b> Install necessary libraries</a></li>
+<li class="chapter" data-level="5.2" data-path="light-availability.html"><a href="light-availability.html#load-acoustic-data-and-species-scientific-names-data-2"><i class="fa fa-check"></i><b>5.2</b> Load acoustic data and species scientific names data</a></li>
+<li class="chapter" data-level="5.3" data-path="light-availability.html"><a href="light-availability.html#extract-light-availability-for-each-date"><i class="fa fa-check"></i><b>5.3</b> Extract light availability for each date</a></li>
+<li class="chapter" data-level="5.4" data-path="light-availability.html"><a href="light-availability.html#model-acoustic-detections-as-a-function-of-light-availability"><i class="fa fa-check"></i><b>5.4</b> Model acoustic detections as a function of light availability</a></li>
+<li class="chapter" data-level="5.5" data-path="light-availability.html"><a href="light-availability.html#paired-statistical-test-to-assess-if-the-slopes-of-detections-timing-of-vocalization-are-significantly-different-between-dawn-and-dusk-across-species"><i class="fa fa-check"></i><b>5.5</b> Paired statistical test to assess if the slopes (of detections ~ timing of vocalization) are significantly different between dawn and dusk across species</a></li>
+<li class="chapter" data-level="5.6" data-path="light-availability.html"><a href="light-availability.html#visualization-of-timing-of-vocalization"><i class="fa fa-check"></i><b>5.6</b> Visualization of timing of vocalization</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="foraging-guild.html"><a href="foraging-guild.html"><i class="fa fa-check"></i><b>6</b> Foraging guild</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="foraging-guild.html"><a href="foraging-guild.html#install-necessary-libraries-3"><i class="fa fa-check"></i><b>6.1</b> Install necessary libraries</a></li>
+<li class="chapter" data-level="6.2" data-path="foraging-guild.html"><a href="foraging-guild.html#load-acoustic-data-and-species-scientific-names-data-3"><i class="fa fa-check"></i><b>6.2</b> Load acoustic data and species scientific names data</a></li>
+<li class="chapter" data-level="6.3" data-path="foraging-guild.html"><a href="foraging-guild.html#vocal-activity-data-1"><i class="fa fa-check"></i><b>6.3</b> Vocal activity data</a></li>
+<li class="chapter" data-level="6.4" data-path="foraging-guild.html"><a href="foraging-guild.html#join-the-vocal_activity-data-and-species-trait-data"><i class="fa fa-check"></i><b>6.4</b> Join the vocal_activity data and species trait data</a></li>
+<li class="chapter" data-level="6.5" data-path="foraging-guild.html"><a href="foraging-guild.html#testing-the-differences-among-trophic-niche-categories-using-wilcoxon-test"><i class="fa fa-check"></i><b>6.5</b> Testing the differences among trophic niche categories using Wilcoxon test</a></li>
+<li class="chapter" data-level="6.6" data-path="foraging-guild.html"><a href="foraging-guild.html#visualization-of-detections-vs.-trophic-niche"><i class="fa fa-check"></i><b>6.6</b> Visualization of % detections vs. trophic niche</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="territoriality.html"><a href="territoriality.html"><i class="fa fa-check"></i><b>7</b> Territoriality</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="territoriality.html"><a href="territoriality.html#loading-necessary-libraries"><i class="fa fa-check"></i><b>7.1</b> Loading necessary libraries</a></li>
+<li class="chapter" data-level="7.2" data-path="territoriality.html"><a href="territoriality.html#loading-territoriality-data"><i class="fa fa-check"></i><b>7.2</b> Loading territoriality data</a></li>
+<li class="chapter" data-level="7.3" data-path="territoriality.html"><a href="territoriality.html#load-acoustic-data-and-species-scientific-names-data-4"><i class="fa fa-check"></i><b>7.3</b> Load acoustic data and species scientific names data</a></li>
+<li class="chapter" data-level="7.4" data-path="territoriality.html"><a href="territoriality.html#vocal-activity-data-2"><i class="fa fa-check"></i><b>7.4</b> Vocal activity data</a></li>
+<li class="chapter" data-level="7.5" data-path="territoriality.html"><a href="territoriality.html#join-the-vocal_activity-data-and-territoriality-data"><i class="fa fa-check"></i><b>7.5</b> Join the vocal_activity data and territoriality data</a></li>
+<li class="chapter" data-level="7.6" data-path="territoriality.html"><a href="territoriality.html#testing-the-differences-between-territoriality-categories-using-wilcoxon-test"><i class="fa fa-check"></i><b>7.6</b> Testing the differences between territoriality categories using Wilcoxon test</a></li>
+<li class="chapter" data-level="7.7" data-path="territoriality.html"><a href="territoriality.html#visualization-of-detections-vs.-territoriality"><i class="fa fa-check"></i><b>7.7</b> Visualization of % detections vs. territoriality</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="sociality.html"><a href="sociality.html"><i class="fa fa-check"></i><b>8</b> Sociality</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="sociality.html"><a href="sociality.html#loading-necessary-libraries-1"><i class="fa fa-check"></i><b>8.1</b> Loading necessary libraries</a></li>
+<li class="chapter" data-level="8.2" data-path="sociality.html"><a href="sociality.html#loading-sociality-data"><i class="fa fa-check"></i><b>8.2</b> Loading sociality data</a></li>
+<li class="chapter" data-level="8.3" data-path="sociality.html"><a href="sociality.html#load-acoustic-data-and-species-scientific-names-data-5"><i class="fa fa-check"></i><b>8.3</b> Load acoustic data and species scientific names data</a></li>
+<li class="chapter" data-level="8.4" data-path="sociality.html"><a href="sociality.html#vocal-activity-data-3"><i class="fa fa-check"></i><b>8.4</b> Vocal activity data</a></li>
+<li class="chapter" data-level="8.5" data-path="sociality.html"><a href="sociality.html#join-the-vocal_activity-data-and-sociality-data"><i class="fa fa-check"></i><b>8.5</b> Join the vocal_activity data and sociality data</a></li>
+<li class="chapter" data-level="8.6" data-path="sociality.html"><a href="sociality.html#testing-the-differences-between-socialiaty-categories-using-wilcoxon-test"><i class="fa fa-check"></i><b>8.6</b> Testing the differences between socialiaty categories using Wilcoxon test</a></li>
+<li class="chapter" data-level="8.7" data-path="sociality.html"><a href="sociality.html#visualization-of-detections-vs.-sociality"><i class="fa fa-check"></i><b>8.7</b> Visualization of % detections vs. sociality</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html"><i class="fa fa-check"></i><b>9</b> Phylogenetic Generalized Least Squares (PGLS) regressions</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#loading-necessary-libraries-2"><i class="fa fa-check"></i><b>9.1</b> Loading necessary libraries</a></li>
+<li class="chapter" data-level="9.2" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#loading-necessary-data"><i class="fa fa-check"></i><b>9.2</b> Loading necessary data</a></li>
+<li class="chapter" data-level="9.3" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#getting-the-maximum-credibility-tree-from-the-nexus-file"><i class="fa fa-check"></i><b>9.3</b> Getting the maximum credibility tree from the nexus file</a></li>
+<li class="chapter" data-level="9.4" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#vocal-activity-1"><i class="fa fa-check"></i><b>9.4</b> Vocal Activity</a></li>
+<li class="chapter" data-level="9.5" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#light-availability-1"><i class="fa fa-check"></i><b>9.5</b> Light availability</a></li>
+<li class="chapter" data-level="9.6" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#territoriality-1"><i class="fa fa-check"></i><b>9.6</b> Territoriality</a></li>
+<li class="chapter" data-level="9.7" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#sociality-1"><i class="fa fa-check"></i><b>9.7</b> Sociality</a></li>
+<li class="chapter" data-level="9.8" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#peak-frequency"><i class="fa fa-check"></i><b>9.8</b> Peak frequency</a></li>
+<li class="chapter" data-level="9.9" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#foraging-guild-1"><i class="fa fa-check"></i><b>9.9</b> Foraging guild</a></li>
+<li class="chapter" data-level="9.10" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#data-cleaning-1"><i class="fa fa-check"></i><b>9.10</b> Data cleaning</a></li>
+<li class="chapter" data-level="9.11" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html#pgls-analysis"><i class="fa fa-check"></i><b>9.11</b> PGLS analysis</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code and supporting information for <em>Drivers of diurnal variation in vocal activity in a tropical bird community</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="foraging-guild" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Section 6</span> Foraging guild<a href="foraging-guild.html#foraging-guild" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Here, we ask if species of a certain foraging guild have higher vocal activity at dawn compared to dusk. Our null hypothesis/expectation is that there would be no differences in vocal activity across foraging guilds irrespective of time of day.</p>
+<div id="install-necessary-libraries-3" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Install necessary libraries<a href="foraging-guild.html#install-necessary-libraries-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="foraging-guild.html#cb24-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb24-2"><a href="foraging-guild.html#cb24-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb24-3"><a href="foraging-guild.html#cb24-3" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb24-4"><a href="foraging-guild.html#cb24-4" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb24-5"><a href="foraging-guild.html#cb24-5" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb24-6"><a href="foraging-guild.html#cb24-6" tabindex="-1"></a><span class="fu">library</span>(scico)</span>
+<span id="cb24-7"><a href="foraging-guild.html#cb24-7" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb24-8"><a href="foraging-guild.html#cb24-8" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
+<span id="cb24-9"><a href="foraging-guild.html#cb24-9" tabindex="-1"></a><span class="fu">library</span>(ggstatsplot)</span>
+<span id="cb24-10"><a href="foraging-guild.html#cb24-10" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
+<span id="cb24-11"><a href="foraging-guild.html#cb24-11" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb24-12"><a href="foraging-guild.html#cb24-12" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb24-13"><a href="foraging-guild.html#cb24-13" tabindex="-1"></a><span class="fu">library</span>(rstatix)</span></code></pre></div>
+</div>
+<div id="load-acoustic-data-and-species-scientific-names-data-3" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Load acoustic data and species scientific names data<a href="foraging-guild.html#load-acoustic-data-and-species-scientific-names-data-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="foraging-guild.html#cb25-1" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;results/acoustic_data.csv&quot;</span>)</span>
+<span id="cb25-2"><a href="foraging-guild.html#cb25-2" tabindex="-1"></a>species_codes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/species-annotation-codes.csv&quot;</span>)</span>
+<span id="cb25-3"><a href="foraging-guild.html#cb25-3" tabindex="-1"></a>trait <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/species-trait-dat.csv&quot;</span>)</span></code></pre></div>
+</div>
+<div id="vocal-activity-data-1" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Vocal activity data<a href="foraging-guild.html#vocal-activity-data-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="foraging-guild.html#cb26-1" tabindex="-1"></a><span class="co"># sampling effort by time_of_day</span></span>
+<span id="cb26-2"><a href="foraging-guild.html#cb26-2" tabindex="-1"></a>effort <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
+<span id="cb26-3"><a href="foraging-guild.html#cb26-3" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(site_id, date, time_of_day) <span class="sc">%&gt;%</span></span>
+<span id="cb26-4"><a href="foraging-guild.html#cb26-4" tabindex="-1"></a>    <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb26-5"><a href="foraging-guild.html#cb26-5" tabindex="-1"></a>    <span class="fu">arrange</span>(time_of_day) <span class="sc">%&gt;%</span></span>
+<span id="cb26-6"><a href="foraging-guild.html#cb26-6" tabindex="-1"></a>    <span class="fu">count</span>(time_of_day) <span class="sc">%&gt;%</span></span>
+<span id="cb26-7"><a href="foraging-guild.html#cb26-7" tabindex="-1"></a>    <span class="fu">rename</span>(., <span class="at">nVisits =</span> n)</span>
+<span id="cb26-8"><a href="foraging-guild.html#cb26-8" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="foraging-guild.html#cb26-9" tabindex="-1"></a><span class="co"># Above, we note that we had sampled ~293 site-date combinations at dawn, while ~245 site-date combinations were sampled at dusk</span></span>
+<span id="cb26-10"><a href="foraging-guild.html#cb26-10" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="foraging-guild.html#cb26-11" tabindex="-1"></a><span class="co"># total number of acoustic detections summarized across every 10-s audio file</span></span>
+<span id="cb26-12"><a href="foraging-guild.html#cb26-12" tabindex="-1"></a><span class="co"># here, we estimate % detections at dawn and dusk, while accounting for sampling effort</span></span>
+<span id="cb26-13"><a href="foraging-guild.html#cb26-13" tabindex="-1"></a>vocal_act <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
+<span id="cb26-14"><a href="foraging-guild.html#cb26-14" tabindex="-1"></a>  <span class="fu">group_by</span>(time_of_day, eBird_codes) <span class="sc">%&gt;%</span></span>
+<span id="cb26-15"><a href="foraging-guild.html#cb26-15" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">detections =</span> <span class="fu">sum</span>(number)) <span class="sc">%&gt;%</span></span>
+<span id="cb26-16"><a href="foraging-guild.html#cb26-16" tabindex="-1"></a>  <span class="fu">left_join</span>(., species_codes[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>)], </span>
+<span id="cb26-17"><a href="foraging-guild.html#cb26-17" tabindex="-1"></a>                       <span class="at">by =</span> <span class="st">&quot;eBird_codes&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-18"><a href="foraging-guild.html#cb26-18" tabindex="-1"></a>   <span class="fu">group_by</span>(eBird_codes) <span class="sc">%&gt;%</span></span>
+<span id="cb26-19"><a href="foraging-guild.html#cb26-19" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_detections =</span><span class="fu">sum</span>(detections)) <span class="sc">%&gt;%</span></span>
+<span id="cb26-20"><a href="foraging-guild.html#cb26-20" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_detections =</span> (detections<span class="sc">/</span>total_detections)<span class="sc">*</span><span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-21"><a href="foraging-guild.html#cb26-21" tabindex="-1"></a>  <span class="fu">ungroup</span>() </span>
+<span id="cb26-22"><a href="foraging-guild.html#cb26-22" tabindex="-1"></a></span>
+<span id="cb26-23"><a href="foraging-guild.html#cb26-23" tabindex="-1"></a><span class="do">## accouting for sampling effort and normalizing data</span></span>
+<span id="cb26-24"><a href="foraging-guild.html#cb26-24" tabindex="-1"></a>vocal_act <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span></span>
+<span id="cb26-25"><a href="foraging-guild.html#cb26-25" tabindex="-1"></a>  <span class="fu">left_join</span>(., effort, <span class="at">by =</span> <span class="st">&quot;time_of_day&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-26"><a href="foraging-guild.html#cb26-26" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">normalized_detections =</span> detections<span class="sc">/</span>nVisits) <span class="sc">%&gt;%</span></span>
+<span id="cb26-27"><a href="foraging-guild.html#cb26-27" tabindex="-1"></a>  <span class="fu">group_by</span>(eBird_codes) <span class="sc">%&gt;%</span></span>
+<span id="cb26-28"><a href="foraging-guild.html#cb26-28" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_normalized_detections =</span> <span class="fu">sum</span>(normalized_detections)) <span class="sc">%&gt;%</span></span>
+<span id="cb26-29"><a href="foraging-guild.html#cb26-29" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_normalized_detections =</span> (normalized_detections<span class="sc">/</span>total_normalized_detections)<span class="sc">*</span><span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-30"><a href="foraging-guild.html#cb26-30" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb26-31"><a href="foraging-guild.html#cb26-31" tabindex="-1"></a></span>
+<span id="cb26-32"><a href="foraging-guild.html#cb26-32" tabindex="-1"></a><span class="co"># in our case, we have 3 species which have 100% detections in dawn, Indian blackbird, Little spiderhunter and Purple sunbird. For these, we add a additional row specifying no detections in dusk.</span></span>
+<span id="cb26-33"><a href="foraging-guild.html#cb26-33" tabindex="-1"></a>  </span>
+<span id="cb26-34"><a href="foraging-guild.html#cb26-34" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">time_of_day=</span> <span class="st">&#39;dusk&#39;</span>, <span class="at">eBird_codes =</span> <span class="st">&#39;pursun4&#39;</span>, <span class="at">detections =</span> <span class="dv">0</span>, <span class="at">scientific_name =</span> <span class="st">&#39;Cinnyris asiaticus&#39;</span>, <span class="at">common_name =</span> <span class="st">&#39;Purple Sunbird&#39;</span>, <span class="at">total_detections =</span> <span class="dv">315</span>, <span class="at">percent_detections =</span> <span class="dv">0</span>, <span class="at">normalized_detections =</span> <span class="dv">0</span>,</span>
+<span id="cb26-35"><a href="foraging-guild.html#cb26-35" tabindex="-1"></a>          <span class="at">percent_normalized_detections =</span> <span class="dv">0</span>, <span class="at">nVisits =</span> <span class="dv">245</span>, <span class="at">total_normalized_detections =</span> <span class="fl">1.075085</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-36"><a href="foraging-guild.html#cb26-36" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">time_of_day=</span> <span class="st">&#39;dusk&#39;</span>, <span class="at">eBird_codes =</span> <span class="st">&#39;eurbla2&#39;</span>, <span class="at">detections =</span> <span class="dv">0</span>, <span class="at">scientific_name =</span> <span class="st">&#39;Turdus simillimus&#39;</span>, <span class="at">common_name =</span> <span class="st">&#39;Indian Blackbird&#39;</span>, <span class="at">total_detections =</span> <span class="dv">236</span>, <span class="at">percent_detections =</span> <span class="dv">0</span>,<span class="at">normalized_detections =</span> <span class="dv">0</span>,</span>
+<span id="cb26-37"><a href="foraging-guild.html#cb26-37" tabindex="-1"></a>          <span class="at">percent_normalized_detections =</span> <span class="dv">0</span>, <span class="at">nVisits =</span> <span class="dv">245</span>,</span>
+<span id="cb26-38"><a href="foraging-guild.html#cb26-38" tabindex="-1"></a>          <span class="at">total_normalized_detections =</span> <span class="fl">0.8054608</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-39"><a href="foraging-guild.html#cb26-39" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">time_of_day=</span> <span class="st">&#39;dusk&#39;</span>, <span class="at">eBird_codes =</span> <span class="st">&#39;litspi1&#39;</span>, <span class="at">detections =</span> <span class="dv">0</span>, <span class="at">scientific_name =</span> <span class="st">&#39;Arachnothera longirostra&#39;</span>, <span class="at">common_name =</span> <span class="st">&#39;Little Spiderhunter&#39;</span>, <span class="at">total_detections =</span> <span class="dv">417</span>, <span class="at">percent_detections =</span> <span class="dv">0</span>,</span>
+<span id="cb26-40"><a href="foraging-guild.html#cb26-40" tabindex="-1"></a>          <span class="at">normalized_detections =</span> <span class="dv">0</span>, <span class="at">nVisits =</span> <span class="dv">245</span>, </span>
+<span id="cb26-41"><a href="foraging-guild.html#cb26-41" tabindex="-1"></a>          <span class="at">percent_normalized_detections =</span> <span class="dv">0</span>,</span>
+<span id="cb26-42"><a href="foraging-guild.html#cb26-42" tabindex="-1"></a>          <span class="at">total_normalized_detections =</span> <span class="fl">1.423208</span>)</span></code></pre></div>
+</div>
+<div id="join-the-vocal_activity-data-and-species-trait-data" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Join the vocal_activity data and species trait data<a href="foraging-guild.html#join-the-vocal_activity-data-and-species-trait-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="foraging-guild.html#cb27-1" tabindex="-1"></a>vocal_act <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span> </span>
+<span id="cb27-2"><a href="foraging-guild.html#cb27-2" tabindex="-1"></a>  <span class="fu">left_join</span>(trait[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">29</span>)], <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&#39;scientific_name&#39;</span>,</span>
+<span id="cb27-3"><a href="foraging-guild.html#cb27-3" tabindex="-1"></a>                          <span class="st">&#39;common_name&#39;</span>)) </span>
+<span id="cb27-4"><a href="foraging-guild.html#cb27-4" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="foraging-guild.html#cb27-5" tabindex="-1"></a><span class="do">## remove species that are poorly represented by a particular trophic niche</span></span>
+<span id="cb27-6"><a href="foraging-guild.html#cb27-6" tabindex="-1"></a><span class="do">## we get rid of nectarivore species, aquatic predator and granivore</span></span>
+<span id="cb27-7"><a href="foraging-guild.html#cb27-7" tabindex="-1"></a>vocal_act <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span></span>
+<span id="cb27-8"><a href="foraging-guild.html#cb27-8" tabindex="-1"></a>  <span class="fu">filter</span>(trophic_niche <span class="sc">!=</span> <span class="st">&quot;Aquatic predator&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-9"><a href="foraging-guild.html#cb27-9" tabindex="-1"></a>  <span class="fu">filter</span>(trophic_niche <span class="sc">!=</span> <span class="st">&quot;Granivore&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-10"><a href="foraging-guild.html#cb27-10" tabindex="-1"></a>  <span class="fu">filter</span>(trophic_niche <span class="sc">!=</span> <span class="st">&quot;Nectarivore&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-11"><a href="foraging-guild.html#cb27-11" tabindex="-1"></a>  <span class="fu">filter</span>(trophic_niche <span class="sc">!=</span> <span class="st">&quot;Vertivore&quot;</span>)</span>
+<span id="cb27-12"><a href="foraging-guild.html#cb27-12" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="foraging-guild.html#cb27-13" tabindex="-1"></a><span class="do">## We retained 62 out of 69 species after the above filters</span></span></code></pre></div>
+</div>
+<div id="testing-the-differences-among-trophic-niche-categories-using-wilcoxon-test" class="section level2 hasAnchor" number="6.5">
+<h2><span class="header-section-number">6.5</span> Testing the differences among trophic niche categories using Wilcoxon test<a href="foraging-guild.html#testing-the-differences-among-trophic-niche-categories-using-wilcoxon-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Here, we see whether there are differences in the vocal activity between invertivores, frugivores, and omnivores in dawn and dusk individually.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="foraging-guild.html#cb28-1" tabindex="-1"></a>stat.test <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="foraging-guild.html#cb28-2" tabindex="-1"></a>  <span class="fu">group_by</span> (time_of_day) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-3"><a href="foraging-guild.html#cb28-3" tabindex="-1"></a>  <span class="fu">wilcox_test</span> (percent_normalized_detections <span class="sc">~</span> trophic_niche)</span></code></pre></div>
+<p>Significant differences were observed between frugivore and omnivore species at dawn and dusk, as well as between frugivore and invertivore species.</p>
+</div>
+<div id="visualization-of-detections-vs.-trophic-niche" class="section level2 hasAnchor" number="6.6">
+<h2><span class="header-section-number">6.6</span> Visualization of % detections vs. trophic niche<a href="foraging-guild.html#visualization-of-detections-vs.-trophic-niche" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="foraging-guild.html#cb29-1" tabindex="-1"></a>fig_trophicNiche_vocAct <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span></span>
+<span id="cb29-2"><a href="foraging-guild.html#cb29-2" tabindex="-1"></a>  <span class="fu">filter</span>(time_of_day <span class="sc">==</span> <span class="st">&quot;dawn&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb29-3"><a href="foraging-guild.html#cb29-3" tabindex="-1"></a>  <span class="fu">ggbetweenstats</span>(<span class="at">x =</span> trophic_niche,</span>
+<span id="cb29-4"><a href="foraging-guild.html#cb29-4" tabindex="-1"></a>                         <span class="at">y =</span> percent_normalized_detections,</span>
+<span id="cb29-5"><a href="foraging-guild.html#cb29-5" tabindex="-1"></a>                         <span class="at">xlab =</span> <span class="st">&quot;Foraging guild&quot;</span>,</span>
+<span id="cb29-6"><a href="foraging-guild.html#cb29-6" tabindex="-1"></a>                         <span class="at">ylab =</span> <span class="st">&quot;% Vocal activity at Dawn&quot;</span>, </span>
+<span id="cb29-7"><a href="foraging-guild.html#cb29-7" tabindex="-1"></a>                         <span class="at">pairwise.display =</span> <span class="st">&quot;significant&quot;</span>,</span>
+<span id="cb29-8"><a href="foraging-guild.html#cb29-8" tabindex="-1"></a>                         <span class="at">package =</span> <span class="st">&quot;ggsci&quot;</span>,</span>
+<span id="cb29-9"><a href="foraging-guild.html#cb29-9" tabindex="-1"></a>                         <span class="at">palette =</span> <span class="st">&quot;default_jco&quot;</span>,</span>
+<span id="cb29-10"><a href="foraging-guild.html#cb29-10" tabindex="-1"></a>                         <span class="at">violin.args =</span> <span class="fu">list</span>(<span class="at">width =</span> <span class="dv">0</span>),</span>
+<span id="cb29-11"><a href="foraging-guild.html#cb29-11" tabindex="-1"></a><span class="at">ggplot.component =</span> <span class="fu">list</span>(<span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb29-12"><a href="foraging-guild.html#cb29-12" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb29-13"><a href="foraging-guild.html#cb29-13" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
+<span id="cb29-14"><a href="foraging-guild.html#cb29-14" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
+<span id="cb29-15"><a href="foraging-guild.html#cb29-15" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb29-16"><a href="foraging-guild.html#cb29-16" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>)))) </span>
+<span id="cb29-17"><a href="foraging-guild.html#cb29-17" tabindex="-1"></a></span>
+<span id="cb29-18"><a href="foraging-guild.html#cb29-18" tabindex="-1"></a><span class="fu">ggsave</span>(fig_trophicNiche_vocAct, <span class="at">filename =</span> <span class="st">&quot;figs/fig_percentDetections_foragingGuild.png&quot;</span>, <span class="at">width =</span> <span class="dv">16</span>, <span class="at">height =</span> <span class="dv">14</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb29-19"><a href="foraging-guild.html#cb29-19" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+<p>We observe significant differences in vocal activity for frugivorous, invertivorous and omnivorous species between dawn and dusk, where much higher acoustic detections or calling was observed/detected at dawn compared to dusk.</p>
+<div class="float">
+<img src="figs/fig_percentDetections_foragingGuild.png" alt="% acoustic detections at dawn across foraging guilds" />
+<div class="figcaption">% acoustic detections at dawn across foraging guilds</div>
+</div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="light-availability.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="territoriality.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/diurnal-Acoustics/edit/master/05_foraging-guild.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
