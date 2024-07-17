@@ -14,6 +14,7 @@ install-necessary-libraries
 load-acoustic-data-and-species-scientific-names-data
 vocal-activity-across-time-periods
 is-overall-vocal-activity-much-higher-at-dawn-compared-to-dusk-across-species
+testing-for-differences-in-acoustic-detections-between-dawn-and-dusk
 figure-for-publication
 frequency
 install-necessary-libraries-1

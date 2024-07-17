@@ -1,5 +1,6 @@
 bookdown::gitbook:
   css: style.css
+  monofont: Source Code Pro
   config:
     toc:
       collapse: section
