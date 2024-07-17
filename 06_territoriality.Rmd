@@ -159,6 +159,4 @@ ggsave(fig_terr_vocAct, filename = "figs/fig_percentDetections_territoriality.pn
 dev.off() 
 ```
 
-```{r, echo = FALSE, fig.cap= "Weakly territorial species were significantly more dawn shifted than non-territorial species at dawn."}
-knitr::include_graphics("figs/fig_percentDetections_territoriality.png")
-```
+![Weakly territorial species were significantly more dawn shifted than non-territorial species at dawn.](figs/fig_percentDetections_territoriality.png)

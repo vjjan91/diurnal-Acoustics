@@ -129,6 +129,4 @@ ggsave(fig_trophicNiche_vocAct, filename = "figs/fig_percentDetections_foragingG
 dev.off() 
 ```
 
-```{r, echo = FALSE, fig.cap= "We found significant differences in the dawn vocal activity between invertivore and frugivore species and omnivore and frugivore species."}
-knitr::include_graphics("figs/fig_percentDetections_foragingGuild.png")
-```
+![We found significant differences in the dawn vocal activity between invertivore and frugivore species and omnivore and frugivore species.](figs/fig_percentDetections_foragingGuild.png)

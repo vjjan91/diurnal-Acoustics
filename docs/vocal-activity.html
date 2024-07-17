@@ -208,7 +208,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.5" data-path="sociality.html"><a href="sociality.html#join-the-vocal_activity-data-and-sociality-data"><i class="fa fa-check"></i><b>8.5</b> Join the vocal_activity data and sociality data</a></li>
 <li class="chapter" data-level="8.6" data-path="sociality.html"><a href="sociality.html#testing-the-differences-between-socialiaty-categories-using-wilcoxon-test"><i class="fa fa-check"></i><b>8.6</b> Testing the differences between socialiaty categories using Wilcoxon test</a></li>
 <li class="chapter" data-level="8.7" data-path="sociality.html"><a href="sociality.html#visualization-of-detections-vs.-sociality"><i class="fa fa-check"></i><b>8.7</b> Visualization of % detections vs. sociality</a></li>
-<li class="chapter" data-level="8.8" data-path="sociality.html"><a href="sociality.html#figure-for-publication-1"><i class="fa fa-check"></i><b>8.8</b> Figure for publication</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html"><i class="fa fa-check"></i><b>9</b> Phylogenetic Generalized Least Squares (PGLS) regressions</a>
 <ul>
@@ -344,6 +343,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-77"><a href="vocal-activity.html#cb9-77" tabindex="-1"></a></span>
 <span id="cb9-78"><a href="vocal-activity.html#cb9-78" tabindex="-1"></a><span class="fu">ggsave</span>(fig_percent_detections, <span class="at">filename =</span> <span class="st">&quot;figs/fig_percentDetections_species.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">16</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
 <span id="cb9-79"><a href="vocal-activity.html#cb9-79" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+<div class="float">
+<img src="figs/fig_percentDetections_species.png" alt="Species-specific differences in vocal activity across dawn and dusk" />
+<div class="figcaption">Species-specific differences in vocal activity across dawn and dusk</div>
+</div>
 </div>
 <div id="is-overall-vocal-activity-much-higher-at-dawn-compared-to-dusk-across-species" class="section level2 hasAnchor" number="3.4">
 <h2><span class="header-section-number">3.4</span> Is overall vocal activity much higher at dawn compared to dusk, across species?<a href="vocal-activity.html#is-overall-vocal-activity-much-higher-at-dawn-compared-to-dusk-across-species" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -368,6 +371,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb10-19"><a href="vocal-activity.html#cb10-19" tabindex="-1"></a></span>
 <span id="cb10-20"><a href="vocal-activity.html#cb10-20" tabindex="-1"></a><span class="fu">ggsave</span>(fig_overall_vocal_act, <span class="at">filename =</span> <span class="st">&quot;figs/fig_percentDetections_overall.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">7</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
 <span id="cb10-21"><a href="vocal-activity.html#cb10-21" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+<div class="float">
+<img src="figs/fig_percentDetections_overall.png" alt="Overall, higher vocal activity was detected at dawn compared to dusk, across species." />
+<div class="figcaption">Overall, higher vocal activity was detected at dawn compared to dusk, across species.</div>
+</div>
 </div>
 <div id="testing-for-differences-in-acoustic-detections-between-dawn-and-dusk" class="section level2 hasAnchor" number="3.5">
 <h2><span class="header-section-number">3.5</span> Testing for differences in acoustic detections between dawn and dusk<a href="vocal-activity.html#testing-for-differences-in-acoustic-detections-between-dawn-and-dusk" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -396,6 +403,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb12-10"><a href="vocal-activity.html#cb12-10" tabindex="-1"></a></span>
 <span id="cb12-11"><a href="vocal-activity.html#cb12-11" tabindex="-1"></a><span class="fu">ggsave</span>(fig_vocAct, <span class="at">filename =</span> <span class="st">&quot;figs/fig01.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">20</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
 <span id="cb12-12"><a href="vocal-activity.html#cb12-12" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+<div class="float">
+<img src="figs/fig01.png" alt="Figure 1. (a) Vocal activity was significantly higher at dawn compared to dusk across a tropical bird community in the Western Ghats. (b) Species-specific vocal activity across dawn and dusk." />
+<div class="figcaption">Figure 1. (a) Vocal activity was significantly higher at dawn compared to dusk across a tropical bird community in the Western Ghats. (b) Species-specific vocal activity across dawn and dusk.</div>
+</div>
 
 </div>
 </div>

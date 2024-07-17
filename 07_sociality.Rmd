@@ -156,10 +156,7 @@ ggsave(fig_soc_vocAct, filename = "figs/fig_percentDetections_vs_sociality.png",
 dev.off() 
 ```
 
-```{r, echo = FALSE, fig.cap= "No differences in vocal activity  between communal signallers and non-communal signallers at dawn."}
-knitr::include_graphics("figs/fig_percentDetections_vs_sociality.png")
-```
-
+![No differences in vocal activity  between communal signallers and non-communal signallers at dawn.](figs/fig_percentDetections_vs_sociality.png)
 ## Figure for publication
 ```{r}
 library(patchwork)
@@ -178,6 +175,4 @@ ggsave(fig_terr_soc, filename = "figs/fig04.png", width = 16, height = 14, devic
 dev.off() 
 ```
 
-```{r, echo = FALSE, fig.cap= "(a) Weakly territorial species were significantly more dawn shifted than non-territorial species. (b) No differences in vocal activity  between communal signallers and non-communal signallers."}
-knitr::include_graphics("figs/fig04.png")
-```
+![Figure 4: (a) Weakly territorial species were significantly more dawn shifted than non-territorial species. (b) No differences in vocal activity  between communal signallers and non-communal signallers.](figs/fig04.png)
