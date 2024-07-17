@@ -24,15 +24,35 @@ h1, h2, h3, h4 {
   color: rgba(0, 0, 0, 0.8);
 }
 
+h1 {
+  font-size: 35px;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+h3 {
+  font-size: 25px;
+}
+
+h4 {
+  font-size: 20px;
+}
+
 .title {
   font-family: 'Petrona', sans-serif;
   font-size: 40px;
   color: rgba(0, 0, 0, 0.8);
  }
 
-.code {
+.code.r {
   font-family: 'Source Code Pro', monospace;
   color: rgba(0, 0, 0, 0.8);
 }
 
+.pre {
+  font-family: 'Source Code Pro', monospace;
+  color: rgba(0, 0, 0, 0.8);
+}
 
