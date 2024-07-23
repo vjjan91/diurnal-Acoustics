@@ -133,6 +133,34 @@ stat.test <- vocal_act %>%
 
 Vocal activity is significantly higher in dawn than dusk in all territorial categories. 
 
+## Visualiation of % detections by time of day within for each category of territoriality
+
+```{r}
+fig_terr_timeOfDay <- vocal_act %>% 
+  mutate(territory_cat = fct_relevel(territory_cat, 
+            "Highly territorial", "Weakly territorial", "Non-territorial")) %>%
+  grouped_ggbetweenstats(x = time_of_day,
+                         y = percent_normalized_detections,
+                         xlab = "Time of Day",
+                         ylab = "% Vocal activity", 
+                         pairwise.display = "significant",
+                         grouping.var = territory_cat,
+                         package = "ggsci",
+                         palette = "default_jco",
+                         violin.args = list(width = 0),
+ggplot.component = list(theme(text = element_text(family = "Century Gothic", size = 15, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "bold",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 15, face = "bold")))) 
+
+ggsave(fig_terr_timeOfDay, filename = "figs/fig_percentDetections_timeOfDay_territoriality.png", width = 24, height = 12, device = png(), units = "in", dpi = 300)
+dev.off() 
+```
+
+![Highly territorial and weakly territorial species had dawn-biased vocal activity.](figs/fig_percentDetections_timeOfDay_territoriality.png)
+
 ## Visualization of % detections vs. territoriality
 ```{r}
 ## between dawn and dusk
@@ -155,8 +183,26 @@ ggplot.component = list(theme(text = element_text(family = "Century Gothic", siz
       axis.title = element_text(family = "Century Gothic",
       size = 15, face = "bold")))) 
 
-ggsave(fig_terr_vocAct, filename = "figs/fig_percentDetections_territoriality.png", width = 16, height = 14, device = png(), units = "in", dpi = 300)
+ggsave(fig_terr_vocAct, filename = "figs/fig_percentDetections_vs_territoriality.png", width = 16, height = 14, device = png(), units = "in", dpi = 300)
 dev.off() 
 ```
 
-![Weakly territorial species were significantly more dawn shifted than non-territorial species at dawn.](figs/fig_percentDetections_territoriality.png)
+![Weakly territorial species were significantly more dawn shifted than non-territorial species at dawn.](figs/fig_percentDetections_vs_territoriality.png)
+## Figure for publication
+
+```{r}
+# Here, we will combine the above two figures created
+library(patchwork)
+fig_vocAct <- wrap_plots(fig_terr_timeOfDay, fig_terr_vocAct,
+                         nrow = 2) +
+              plot_annotation(
+      tag_levels = "a",
+      tag_prefix = "(",
+      tag_suffix = ")")
+
+ggsave(fig_vocAct, filename = "figs/fig05.png", width = 25, height = 19, device = png(), units = "in", dpi = 300)
+dev.off() 
+```
+
+![(a) Highly territorial and (b) Weakly territorial species had higher vocal activity at dawn, while (c) Non-territorial species showed no differenes between dawn and dusk. (d) Significant differences in vocal activity were observed between Weakly territorial and non-territorial species at dawn](figs/fig05.png)
+
