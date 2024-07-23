@@ -89,59 +89,29 @@ median_pf <- freq_5 %>%
 voc_freq <- left_join(vocal_act, median_pf, by = "eBird_codes") %>%
   drop_na()
 
+## calculate the log of median peak frequency
+voc_freq <- voc_freq %>%
+  mutate(log_freq = log10(median_peak_freq))
+
 # A total of 66 species were included and three species were excluded due to lack of data. 
 ```
 
 ## Visualization of % detections vs. median peak frequency
 
-Here, we model the % of detections at dawn as a function of median peak frequency.  
+Here, we model the % of detections as a function of median peak frequency.  
 
 ```{r}
-# we will filter the data to only include dawn
-dawn <- voc_freq %>%
-  mutate(log_freq = log10(median_peak_freq)) %>%
-  filter(time_of_day == "dawn") 
 
-# the only species that was excluded above was pied bushchat, which was reported only from dusk
-
-fig_freq_vocAct <- ggplot(dawn, aes(x=log_freq,
-                                        y= percent_normalized_detections)) +
-  geom_point(shape = 21, colour = "black", 
-             fill = "white", size = 2, stroke = 1)+ 
-  geom_smooth(method="lm", se=TRUE, fullrange=FALSE, level=0.95,linetype="solid") +  
-  theme_bw() +
-  stat_regline_equation(label.x = 2.4, aes(label = ..eq.label..),
-                        label.y = 25, size = 6,
-                        family = "Century Gothic") +
-  stat_regline_equation(label.x = 2.4, aes(label = ..rr.label..),
-                        label.y = 20,
-                        size = 6,
-                        family = "Century Gothic") +
-  labs(y="\n % Vocal activity at Dawn", 
-       x=" log (Median Peak Frequency)\n") +
-  geom_text_repel(aes(label = common_name), family = "Century Gothic",
-                  fontface = "italic") +
-  theme(text = element_text(family = "Century Gothic", size = 18, face = "bold"),plot.title = element_text(family = "Century Gothic",
-      size = 18, face = "bold"),
-      plot.subtitle = element_text(family = "Century Gothic", 
-      size = 15, face = "bold",color="#1b2838"),
-      axis.title = element_text(family = "Century Gothic",
-      size = 18, face = "bold"))
-
-ggsave(fig_freq_vocAct, filename = "figs/fig_peakFrequency_vs_dawnDetections_regressions.png", width = 14, height = 16, device = png(), units = "in", dpi = 300)
-dev.off() 
-```
-
-![No significant relationship was observed between % acoustic detections at dawn and median peak frequency.](figs/fig_peakFrequency_vs_dawnDetections_regressions.png)
-## Correlative analysis
-
-```{r}
-fig_corr_freq_vocAct <- ggscatterstats(
-                         data = dawn,
+## creating two plots - one for dawn and one for dusk and using patchwork to combine them
+fig_freq_dawn <- voc_freq %>%
+  filter(time_of_day == "dawn") %>%
+                ggscatterstats(
+                         data = .,
                          x = log_freq,
                          y = percent_normalized_detections,
                          xlab = "log (Median Peak Frequency)\n",
                          ylab = "\n % Vocal activity at Dawn", 
+                         grouping.var = time_of_day,
                          pairwise.display = "significant",
                          package = "ggsci",
                          palette = "default_jco",
@@ -155,10 +125,40 @@ ggplot.component = list(theme(text = element_text(family = "Century Gothic", siz
   geom_text_repel(aes(label = common_name), family = "Century Gothic",
                   fontface = "italic")
 
-ggsave(fig_corr_freq_vocAct, filename = "figs/fig_peakFrequency_vs_dawnDetections_correlations.png", width = 14, height = 16, device = png(), units = "in", dpi = 300)
+fig_freq_dusk <- voc_freq %>%
+  filter(time_of_day == "dusk") %>%
+                ggscatterstats(
+                         data = .,
+                         x = log_freq,
+                         y = percent_normalized_detections,
+                         xlab = "log (Median Peak Frequency)\n",
+                         ylab = "\n % Vocal activity at Dusk", 
+                         grouping.var = time_of_day,
+                         pairwise.display = "significant",
+                         package = "ggsci",
+                         palette = "default_jco",
+                         violin.args = list(width = 0),
+ggplot.component = list(theme(text = element_text(family = "Century Gothic", size = 15, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "bold",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 15, face = "bold")))) +
+  geom_text_repel(aes(label = common_name), family = "Century Gothic",
+                  fontface = "italic")
+
+library(patchwork)
+fig_freq_vocAct <- wrap_plots(fig_freq_dawn, fig_freq_dusk,
+                         nrow = 2) +
+              plot_annotation(
+      tag_levels = "a",
+      tag_prefix = "(",
+      tag_suffix = ")") 
+
+ggsave(fig_freq_vocAct, filename = "figs/fig_peakFrequency_vs_detections.png", width = 14, height = 18, device = png(), units = "in", dpi = 300)
 dev.off() 
 ```
 
-![No significant relationship was observed between % acoustic detections at dawn and median peak frequency.](figs/fig_peakFrequency_vs_dawnDetections_correlations.png)
+![Pearson’s correlation test showed a (a) positive correlation between vocal activity at dawn and median peak frequency and (b) no correlation between vocal activity at dusk and median peak frequency. Both the effect sizes were not statistically significant.](figs/fig_peakFrequency_vs_detections.png)
 
 
