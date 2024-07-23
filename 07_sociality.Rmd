@@ -132,7 +132,7 @@ stat.test <- vocal_act %>%
 
 No significant differences were observed in vocal activity between communal signallers and non-communal signallers at dawn or dusk. 
 
-## Visualization of % detections by time of day and categories of sociality
+## Visualization of % detections across dawn and dusk within each category of sociality
 
 ```{r}
 fig_soc_timeOfDay <- vocal_act %>% 

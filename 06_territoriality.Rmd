@@ -133,7 +133,7 @@ stat.test <- vocal_act %>%
 
 Vocal activity is significantly higher in dawn than dusk in all territorial categories. 
 
-## Visualiation of % detections by time of day within for each category of territoriality
+## Visualiation of % detections between dawn and dusk within each category of territoriality
 
 ```{r}
 fig_terr_timeOfDay <- vocal_act %>% 
@@ -161,7 +161,8 @@ dev.off()
 
 ![Highly territorial and weakly territorial species had dawn-biased vocal activity.](figs/fig_percentDetections_timeOfDay_territoriality.png)
 
-## Visualization of % detections vs. territoriality
+## Comparing dawn vocal activity between categories of territoriality  
+
 ```{r}
 ## between dawn and dusk
 fig_terr_vocAct <- vocal_act %>% 
