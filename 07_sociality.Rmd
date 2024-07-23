@@ -132,7 +132,33 @@ stat.test <- vocal_act %>%
 
 No significant differences were observed in vocal activity between communal signallers and non-communal signallers at dawn or dusk. 
 
-## Visualization of % detections vs. sociality
+## Visualization of % detections by time of day and categories of sociality
+
+```{r}
+fig_soc_timeOfDay <- vocal_act %>% 
+  grouped_ggbetweenstats(x = time_of_day,
+                         y = percent_normalized_detections,
+                         xlab = "Time of Day",
+                         ylab = "% Vocal activity", 
+                         pairwise.display = "significant",
+                         grouping.var = sociality_cat,
+                         package = "ggsci",
+                         palette = "default_jco",
+                         violin.args = list(width = 0),
+ggplot.component = list(theme(text = element_text(family = "Century Gothic", size = 15, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "bold",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 15, face = "bold")))) 
+
+ggsave(fig_soc_timeOfDay, filename = "figs/fig_percentDetections_timeOfDay_sociality.png", width = 18, height = 12, device = png(), units = "in", dpi = 300)
+dev.off()
+```
+
+![Communal signallers and non-communal signallers had dawn-biased vocal activity.](figs/fig_percentDetections_timeOfDay_sociality.png)
+
+## Visualization of vocal activity at dawn vs. categories of sociality
 ```{r}
 ## between dawn and dusk
 fig_soc_vocAct <- vocal_act %>%
@@ -140,7 +166,7 @@ fig_soc_vocAct <- vocal_act %>%
   ggbetweenstats(x = sociality_cat,
                          y = percent_normalized_detections,
                          xlab = "Levels of sociality",
-                         ylab = "", 
+                         ylab = "% Vocal Activity at Dawn", 
                          pairwise.display = "significant",
                          package = "ggsci",
                          palette = "default_jco",
@@ -157,22 +183,23 @@ dev.off()
 ```
 
 ![No differences in vocal activity  between communal signallers and non-communal signallers at dawn.](figs/fig_percentDetections_vs_sociality.png)
+  
 ## Figure for publication
 ```{r}
 library(patchwork)
-
 # We will combine the territoriality and communal signalling figure into a side-by-side panel
 # Assumption here that the territoriality figure is already loaded in the R environment (if not; please run the previous script for the same)
 
-fig_terr_soc  <- wrap_plots(fig_terr_vocAct, fig_soc_vocAct,
-                         ncol = 2) +
+fig_soc  <- wrap_plots(fig_soc_timeOfDay, fig_soc_vocAct,
+                         nrow = 2) +
               plot_annotation(
       tag_levels = "a",
       tag_prefix = "(",
       tag_suffix = ")")
 
-ggsave(fig_terr_soc, filename = "figs/fig04.png", width = 16, height = 14, device = png(), units = "in", dpi = 300)
+ggsave(fig_soc, filename = "figs/fig06.png", width = 18, height = 16, device = png(), units = "in", dpi = 300)
 dev.off() 
 ```
 
-![Figure 4: (a) Weakly territorial species were significantly more dawn shifted than non-territorial species. (b) No differences in vocal activity  between communal signallers and non-communal signallers.](figs/fig04.png)
+![(a)Communal and (b) Non-communal signallers had dawn-biased vocal activity. However, (c) no differences in vocal activity  between communal signallers and non-communal signallers were observed at dawn.](figs/fig06.png)
+
