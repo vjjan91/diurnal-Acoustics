@@ -131,50 +131,42 @@ for(i in 1:length(unique(acoustic_data$common_name))) {
   
   data <- bind_rows(dawn, dusk)
   
-  plots[[i]] <- ggplot(data, aes(x= time_from_startTime,
+  p <- grouped_ggscatterstats(data, 
+                x= time_from_startTime,
                 y= detections,
-                fill = time_of_day)) +
-  geom_point(shape = 21, aes(fill = time_of_day), 
-            size = 2, stroke = 1, alpha = 0.7)+ 
-  geom_smooth(method="lm", se=TRUE, fullrange=FALSE, level=0.95,linetype="solid", aes(color = time_of_day)) +
-  scale_fill_manual(values = c("#d95f02","#1b9e77"))+
-  scale_color_manual(values = c("#d95f02","#1b9e77")) +
-  theme_bw() +
-  labs(title = a,
-       subtitle = "Each dot represents the total number of detections after dawn or before dusk (in hours)",
-    y="\n Number of acoustic detections", 
-       x="Time to darkness\n") + 
-  theme(text = element_text(family = "Century Gothic", size = 18, face = "bold"),plot.title = element_text(family = "Century Gothic",
+                ylab="\n Number of acoustic detections", 
+                xlab="Time to darkness\n",
+                grouping.var =  time_of_day,
+                annotation.args = list(title =a),
+                plotgrid.args = list(nrow = 2, ncol =1),
+                ggplot.component = list(theme(text = element_text(family = "Century Gothic", size = 15, face = "bold"),plot.title = element_text(family = "Century Gothic",
       size = 18, face = "bold"),
       plot.subtitle = element_text(family = "Century Gothic", 
-      size = 15, face = "italic",color="#1b2838"),
+      size = 15, face = "bold",color="#1b2838"),
       axis.title = element_text(family = "Century Gothic",
-      size = 18, face = "bold"))
+      size = 15, face = "bold")))) 
   
-  # collect metadata
-  data <- setDT(data)
+  ## save plot object
+  plots[[i]] <- p
   
-  # extract t-value
-  data[,  t_value := summary(lm(detections ~    time_from_startTime))$coefficients[6], by = time_of_day] 
-  
-  # extract slope
-  data[,  slope := lm(detections ~ time_from_startTime) %>% 
-         coef()%>% nth(2), by = time_of_day] 
+  # extract_stats
+  dawn_metadata <- extract_stats(p[[1L]]) 
+  if(is.null(dawn_metadata$subtitle_data) == FALSE) {
+    dawn_metadata <- dawn_metadata$subtitle_data %>%
+    mutate(common_name =a) %>%
+    mutate(time_of_day = "dawn")
+  }
 
-  # extract adjusted r squared
-  data[,  r_sq := summary(lm(detections ~ time_from_startTime))$adj.r.squared,    by = time_of_day]
-  
-  # create a column with the direction of the slope (whether it is positive or    negative)  
-  data[, slope_dir := ifelse(slope >0, '+', '-')]
-
-  # extract distinct values of coefficients for each species
-  lm_output <- data %>%
-  dplyr::select(time_of_day, t_value, slope, slope_dir,r_sq) %>% 
-    distinct() %>%
-    mutate(common_name = a)
+  dusk_metadata <- extract_stats(p[[2L]]) 
+  if(is.null(dusk_metadata$subtitle_data) == FALSE) {
+    dusk_metadata <- dusk_metadata$subtitle_data %>%
+    mutate(common_name =a) %>%
+    mutate(time_of_day = "dusk")
+  }
   
   ## add the above to the metadata object
-  metadata <- bind_rows(metadata, lm_output)
+  metadata <- bind_rows(metadata, dawn_metadata,
+                        dusk_metadata)
 }
 
 # save as a single pdf
@@ -187,27 +179,10 @@ plots
 dev.off()
 
 # write metadata to file
-write.csv(metadata, "results/slopes-detections-lightAvailability.csv",
-          row.names = F)
+metadata <- apply(metadata, 2, as.character)
+write.csv(data.frame(metadata), "results/metadata-detections-lightAvailability-correlations.csv",      row.names = F)
 ```
 
-## Paired statistical test to assess if the slopes (of detections ~ timing of vocalization) are significantly different between dawn and dusk across species
-
-```{r}
-stat.test <- metadata %>%
-  filter(common_name != "White-throated Kingfisher") %>%
-  filter(common_name != "Oriental-Magpie Robin") %>%
-  filter(common_name != "Malabar Trogon") %>%
-  filter(common_name != "Gray-headed Canary-Flycatcher") %>%
-  pairwise_wilcox_test(slope ~ time_of_day)
-
-# No significant differences were observed between the slopes across dawn and dusk. Here the slope conveys the relationship between the number of acoustic detections and timing of vocalization
-
-# A tibble: 1 × 9
-#  .y.   group1 group2    n1    n2 statistic     p p.adj p.adj.signif
-#* <chr> <chr>  <chr>  <int> <int>     <dbl> <dbl> <dbl> <chr>       
-#1 slope dawn   dusk      66    63      1885 0.362 0.362 ns 
-```
 
 ## Visualization of timing of vocalization 
 
