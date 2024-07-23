@@ -183,7 +183,6 @@ metadata <- apply(metadata, 2, as.character)
 write.csv(data.frame(metadata), "results/metadata-detections-lightAvailability-correlations.csv",      row.names = F)
 ```
 
-
 ## Visualization of timing of vocalization 
 
 ```{r}
