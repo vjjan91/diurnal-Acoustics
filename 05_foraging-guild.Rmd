@@ -35,11 +35,11 @@ trait <- read.csv("data/species-trait-dat.csv")
 ```{r}
 # sampling effort by time_of_day
 effort <- acoustic_data %>%
-    dplyr::select(site_id, date, time_of_day) %>%
-    distinct() %>%
-    arrange(time_of_day) %>%
-    count(time_of_day) %>%
-    rename(., nVisits = n)
+  dplyr::select(site_id, date, time_of_day) %>%
+  distinct() %>%
+  arrange(time_of_day) %>%
+  count(time_of_day) %>%
+  rename(., nVisits = n)
 
 # Above, we note that we had sampled ~293 site-date combinations at dawn, while ~245 site-date combinations were sampled at dusk
 
@@ -48,40 +48,48 @@ effort <- acoustic_data %>%
 vocal_act <- acoustic_data %>%
   group_by(time_of_day, eBird_codes) %>%
   summarise(detections = sum(number)) %>%
-  left_join(., species_codes[,c(1,2,5)], 
-                       by = "eBird_codes") %>%
-   group_by(eBird_codes) %>%
-  mutate(total_detections =sum(detections)) %>%
-  mutate(percent_detections = (detections/total_detections)*100) %>%
-  ungroup() 
+  left_join(., species_codes[, c(1, 2, 5)],
+    by = "eBird_codes"
+  ) %>%
+  group_by(eBird_codes) %>%
+  mutate(total_detections = sum(detections)) %>%
+  mutate(percent_detections = (detections / total_detections) * 100) %>%
+  ungroup()
 
 ## accouting for sampling effort and normalizing data
 vocal_act <- vocal_act %>%
   left_join(., effort, by = "time_of_day") %>%
-  mutate(normalized_detections = detections/nVisits) %>%
+  mutate(normalized_detections = detections / nVisits) %>%
   group_by(eBird_codes) %>%
   mutate(total_normalized_detections = sum(normalized_detections)) %>%
-  mutate(percent_normalized_detections = (normalized_detections/total_normalized_detections)*100) %>%
+  mutate(percent_normalized_detections = (normalized_detections / total_normalized_detections) * 100) %>%
   ungroup() %>%
+  # in our case, we have 3 species which have 100% detections in dawn, Indian blackbird, Little spiderhunter and Purple sunbird. For these, we add a additional row specifying no detections in dusk.
 
-# in our case, we have 3 species which have 100% detections in dawn, Indian blackbird, Little spiderhunter and Purple sunbird. For these, we add a additional row specifying no detections in dusk.
-  
-  add_row(time_of_day= 'dusk', eBird_codes = 'pursun4', detections = 0, scientific_name = 'Cinnyris asiaticus', common_name = 'Purple Sunbird', total_detections = 315, percent_detections = 0, normalized_detections = 0,
-          percent_normalized_detections = 0, nVisits = 245, total_normalized_detections = 1.075085) %>%
-  add_row(time_of_day= 'dusk', eBird_codes = 'eurbla2', detections = 0, scientific_name = 'Turdus simillimus', common_name = 'Indian Blackbird', total_detections = 236, percent_detections = 0,normalized_detections = 0,
-          percent_normalized_detections = 0, nVisits = 245,
-          total_normalized_detections = 0.8054608) %>%
-  add_row(time_of_day= 'dusk', eBird_codes = 'litspi1', detections = 0, scientific_name = 'Arachnothera longirostra', common_name = 'Little Spiderhunter', total_detections = 417, percent_detections = 0,
-          normalized_detections = 0, nVisits = 245, 
-          percent_normalized_detections = 0,
-          total_normalized_detections = 1.423208)
+  add_row(
+    time_of_day = "dusk", eBird_codes = "pursun4", detections = 0, scientific_name = "Cinnyris asiaticus", common_name = "Purple Sunbird", total_detections = 315, percent_detections = 0, normalized_detections = 0,
+    percent_normalized_detections = 0, nVisits = 245, total_normalized_detections = 1.075085
+  ) %>%
+  add_row(
+    time_of_day = "dusk", eBird_codes = "eurbla2", detections = 0, scientific_name = "Turdus simillimus", common_name = "Indian Blackbird", total_detections = 236, percent_detections = 0, normalized_detections = 0,
+    percent_normalized_detections = 0, nVisits = 245,
+    total_normalized_detections = 0.8054608
+  ) %>%
+  add_row(
+    time_of_day = "dusk", eBird_codes = "litspi1", detections = 0, scientific_name = "Arachnothera longirostra", common_name = "Little Spiderhunter", total_detections = 417, percent_detections = 0,
+    normalized_detections = 0, nVisits = 245,
+    percent_normalized_detections = 0,
+    total_normalized_detections = 1.423208
+  )
 ```
 
 ## Join the vocal_activity data and species trait data
 ```{r}
-vocal_act <- vocal_act %>% 
-  left_join(trait[,c(1,2,29)], by = c('scientific_name',
-                          'common_name')) 
+vocal_act <- vocal_act %>%
+  left_join(trait[, c(1, 2, 29)], by = c(
+    "scientific_name",
+    "common_name"
+  ))
 
 ## remove species that are poorly represented by a particular trophic niche
 ## we get rid of nectarivore species, aquatic predator and granivore
@@ -99,9 +107,9 @@ vocal_act <- vocal_act %>%
 Here, we see whether there are differences in the vocal activity between invertivores, frugivores, and omnivores in dawn and dusk individually.
 
 ```{r} 
-stat.test <- vocal_act %>% 
-  group_by (time_of_day) %>% 
-  wilcox_test (percent_normalized_detections ~ trophic_niche)
+stat.test <- vocal_act %>%
+  group_by(time_of_day) %>%
+  wilcox_test(percent_normalized_detections ~ trophic_niche)
 ```
 
 Significant differences were observed between frugivore and omnivore species at dawn and dusk, as well as between frugivore and invertivore species.  
@@ -112,24 +120,34 @@ Here, we ask if there is significantly higher dawn-biased vocal activity within 
 
 ```{r}
 fig_forGuild_vocAct <- vocal_act %>%
-  grouped_ggbetweenstats(x = time_of_day,
-                         y = percent_normalized_detections,
-                         xlab = "Time of Day",
-                         ylab = "% Vocal activity", 
-                         pairwise.display = "significant",
-                         grouping.var = trophic_niche,
-                         package = "ggsci",
-                         palette = "default_jco",
-                         violin.args = list(width = 0),
-ggplot.component = list(theme(text = element_text(family = "Century Gothic", size = 15, face = "bold"),plot.title = element_text(family = "Century Gothic",
-      size = 18, face = "bold"),
-      plot.subtitle = element_text(family = "Century Gothic", 
-      size = 15, face = "bold",color="#1b2838"),
-      axis.title = element_text(family = "Century Gothic",
-      size = 15, face = "bold")))) 
+  grouped_ggbetweenstats(
+    x = time_of_day,
+    y = percent_normalized_detections,
+    xlab = "Time of Day",
+    ylab = "% Vocal activity",
+    pairwise.display = "significant",
+    grouping.var = trophic_niche,
+    package = "ggsci",
+    palette = "default_jco",
+    violin.args = list(width = 0),
+    ggplot.component = list(theme(
+      text = element_text(family = "Century Gothic", size = 15, face = "bold"), plot.title = element_text(
+        family = "Century Gothic",
+        size = 18, face = "bold"
+      ),
+      plot.subtitle = element_text(
+        family = "Century Gothic",
+        size = 15, face = "bold", color = "#1b2838"
+      ),
+      axis.title = element_text(
+        family = "Century Gothic",
+        size = 15, face = "bold"
+      )
+    ))
+  )
 
 ggsave(fig_forGuild_vocAct, filename = "figs/fig_percentDetections_timeOfDay_foragingGuild.png", width = 24, height = 12, device = png(), units = "in", dpi = 300)
-dev.off() 
+dev.off()
 ```
 
 ![Omnivores and Invertivores had significantly higher vocal activity at dawn, while frugivores did not show any difference between dawn and dusk](figs/fig_percentDetections_timeOfDay_foragingGuild.png)
@@ -139,23 +157,33 @@ dev.off()
 ```{r}
 fig_between_foragingGuild_vocAct <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
-  ggbetweenstats(x = trophic_niche,
-                         y = percent_normalized_detections,
-                         xlab = "Foraging guild",
-                         ylab = "% Vocal activity at Dawn", 
-                         pairwise.display = "significant",
-                         package = "ggsci",
-                         palette = "default_jco",
-                         violin.args = list(width = 0),
-ggplot.component = list(theme(text = element_text(family = "Century Gothic", size = 15, face = "bold"),plot.title = element_text(family = "Century Gothic",
-      size = 18, face = "bold"),
-      plot.subtitle = element_text(family = "Century Gothic", 
-      size = 15, face = "bold",color="#1b2838"),
-      axis.title = element_text(family = "Century Gothic",
-      size = 15, face = "bold")))) 
+  ggbetweenstats(
+    x = trophic_niche,
+    y = percent_normalized_detections,
+    xlab = "Foraging guild",
+    ylab = "% Vocal activity at Dawn",
+    pairwise.display = "significant",
+    package = "ggsci",
+    palette = "default_jco",
+    violin.args = list(width = 0),
+    ggplot.component = list(theme(
+      text = element_text(family = "Century Gothic", size = 15, face = "bold"), plot.title = element_text(
+        family = "Century Gothic",
+        size = 18, face = "bold"
+      ),
+      plot.subtitle = element_text(
+        family = "Century Gothic",
+        size = 15, face = "bold", color = "#1b2838"
+      ),
+      axis.title = element_text(
+        family = "Century Gothic",
+        size = 15, face = "bold"
+      )
+    ))
+  )
 
 ggsave(fig_between_foragingGuild_vocAct, filename = "figs/fig_percentDetections_vs_foragingGuild.png", width = 16, height = 14, device = png(), units = "in", dpi = 300)
-dev.off() 
+dev.off()
 ```
 
 ![We found significant differences in the dawn vocal activity between invertivore and frugivore species and omnivore and frugivore species.](figs/fig_percentDetections_vs_foragingGuild.png)
@@ -165,14 +193,16 @@ dev.off()
 # Here, we will combine the above two figures created
 library(patchwork)
 fig_vocAct <- wrap_plots(fig_forGuild_vocAct, fig_between_foragingGuild_vocAct,
-                         nrow = 2) +
-              plot_annotation(
-      tag_levels = "a",
-      tag_prefix = "(",
-      tag_suffix = ")")
+  nrow = 2
+) +
+  plot_annotation(
+    tag_levels = "a",
+    tag_prefix = "(",
+    tag_suffix = ")"
+  )
 
 ggsave(fig_vocAct, filename = "figs/fig04.png", width = 25, height = 19, device = png(), units = "in", dpi = 300)
-dev.off() 
+dev.off()
 ```
 
 ![(a) Frugivorous species showed no differences in vocal activity between dawn and dusk, while (b) Invertivore and (c) Omnivore species had a dawn-biased vocal activity. (d) Significant differences in vocal activity were observed between Frugivore and Invertivore and Frugivore and Omnivore species at dawn](figs/fig04.png)

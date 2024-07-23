@@ -34,11 +34,11 @@ A number of factors need to be considered in further analysis: accounting for ti
 ```{r}
 # sampling effort by time_of_day
 effort <- acoustic_data %>%
-    dplyr::select(site_id, date, time_of_day) %>%
-    distinct() %>%
-    arrange(time_of_day) %>%
-    count(time_of_day) %>%
-    rename(., nVisits = n)
+  dplyr::select(site_id, date, time_of_day) %>%
+  distinct() %>%
+  arrange(time_of_day) %>%
+  count(time_of_day) %>%
+  rename(., nVisits = n)
 
 # Above, we note that we had sampled ~293 site-date combinations at dawn, while ~245 site-date combinations were sampled at dusk
 
@@ -47,70 +47,90 @@ effort <- acoustic_data %>%
 vocal_act <- acoustic_data %>%
   group_by(time_of_day, eBird_codes) %>%
   summarise(detections = sum(number)) %>%
-  left_join(., species_codes[,c(1,2,5)], 
-                       by = "eBird_codes") %>%
-   group_by(eBird_codes) %>%
-  mutate(total_detections =sum(detections)) %>%
-  mutate(percent_detections = (detections/total_detections)*100) %>%
-  ungroup() 
+  left_join(., species_codes[, c(1, 2, 5)],
+    by = "eBird_codes"
+  ) %>%
+  group_by(eBird_codes) %>%
+  mutate(total_detections = sum(detections)) %>%
+  mutate(percent_detections = (detections / total_detections) * 100) %>%
+  ungroup()
 
 ## accouting for sampling effort and normalizing data
 vocal_act <- vocal_act %>%
   left_join(., effort, by = "time_of_day") %>%
-  mutate(normalized_detections = detections/nVisits) %>%
+  mutate(normalized_detections = detections / nVisits) %>%
   group_by(eBird_codes) %>%
   mutate(total_normalized_detections = sum(normalized_detections)) %>%
-  mutate(percent_normalized_detections = (normalized_detections/total_normalized_detections)*100) %>%
+  mutate(percent_normalized_detections = (normalized_detections / total_normalized_detections) * 100) %>%
   ungroup() %>%
+  # in our case, we have 3 species which have 100% detections in dawn, Indian blackbird, Little spiderhunter and Purple sunbird. For these, we add a additional row specifying no detections in dusk.
 
-# in our case, we have 3 species which have 100% detections in dawn, Indian blackbird, Little spiderhunter and Purple sunbird. For these, we add a additional row specifying no detections in dusk.
-  
-  add_row(time_of_day= 'dusk', eBird_codes = 'pursun4', detections = 0, scientific_name = 'Cinnyris asiaticus', common_name = 'Purple Sunbird', total_detections = 315, percent_detections = 0, normalized_detections = 0,
-          percent_normalized_detections = 0, nVisits = 245, total_normalized_detections = 1.075085) %>%
-  add_row(time_of_day= 'dusk', eBird_codes = 'eurbla2', detections = 0, scientific_name = 'Turdus simillimus', common_name = 'Indian Blackbird', total_detections = 236, percent_detections = 0,normalized_detections = 0,
-          percent_normalized_detections = 0, nVisits = 245,
-          total_normalized_detections = 0.8054608) %>%
-  add_row(time_of_day= 'dusk', eBird_codes = 'litspi1', detections = 0, scientific_name = 'Arachnothera longirostra', common_name = 'Little Spiderhunter', total_detections = 417, percent_detections = 0,
-          normalized_detections = 0, nVisits = 245, 
-          percent_normalized_detections = 0,
-          total_normalized_detections = 1.423208)
+  add_row(
+    time_of_day = "dusk", eBird_codes = "pursun4", detections = 0, scientific_name = "Cinnyris asiaticus", common_name = "Purple Sunbird", total_detections = 315, percent_detections = 0, normalized_detections = 0,
+    percent_normalized_detections = 0, nVisits = 245, total_normalized_detections = 1.075085
+  ) %>%
+  add_row(
+    time_of_day = "dusk", eBird_codes = "eurbla2", detections = 0, scientific_name = "Turdus simillimus", common_name = "Indian Blackbird", total_detections = 236, percent_detections = 0, normalized_detections = 0,
+    percent_normalized_detections = 0, nVisits = 245,
+    total_normalized_detections = 0.8054608
+  ) %>%
+  add_row(
+    time_of_day = "dusk", eBird_codes = "litspi1", detections = 0, scientific_name = "Arachnothera longirostra", common_name = "Little Spiderhunter", total_detections = 417, percent_detections = 0,
+    normalized_detections = 0, nVisits = 245,
+    percent_normalized_detections = 0,
+    total_normalized_detections = 1.423208
+  )
 
-# for the sake of plotting, we will create a new variable 
+# for the sake of plotting, we will create a new variable
 vocal_act$plot_percent <- ifelse(vocal_act$time_of_day == "dusk",
-                                 -1*vocal_act$percent_normalized_detections,
-                                 vocal_act$percent_normalized_detections)
+  -1 * vocal_act$percent_normalized_detections,
+  vocal_act$percent_normalized_detections
+)
 
 # reordering legend appearance
 vocal_act$time_of_day <- factor(vocal_act$time_of_day,
-                                levels = c("dusk","dawn"))
+  levels = c("dusk", "dawn")
+)
 
 # figure of percent detections
 fig_percent_detections <- ggplot(vocal_act, aes(
-            x = reorder(common_name, plot_percent),
-                               y = plot_percent,
-                               fill = time_of_day)) +
-  geom_text(aes(label=signif(abs(plot_percent),3)),
-            hjust = ifelse(vocal_act$plot_percent >= 0, 0, 1),
-            size = 3) +
+  x = reorder(common_name, plot_percent),
+  y = plot_percent,
+  fill = time_of_day
+)) +
+  geom_text(aes(label = signif(abs(plot_percent), 3)),
+    hjust = ifelse(vocal_act$plot_percent >= 0, 0, 1),
+    size = 3
+  ) +
   geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("#1b9e77","#d95f02")) +
-  scale_y_continuous(labels=abs) +
+  scale_fill_manual(values = c("#1b9e77", "#d95f02")) +
+  scale_y_continuous(labels = abs) +
   coord_flip() +
-  labs(y = '% Vocal Activity',
-       x = 'Species Common Name') +
+  labs(
+    y = "% Vocal Activity",
+    x = "Species Common Name"
+  ) +
   theme_bw() +
-  theme(text = element_text(family = "Century Gothic", size = 10, face = "bold"),plot.title = element_text(family = "Century Gothic",
-      size = 15, face = "bold"),
-      plot.subtitle = element_text(family = "Century Gothic", 
-      size = 15, face = "bold",color="#1b2838"),
-      axis.title = element_text(family = "Century Gothic",
-      size = 15, face = "bold"),
-      legend.position = "top",
-      legend.title = element_blank(),
-      legend.text=element_text(size=10))
+  theme(
+    text = element_text(family = "Century Gothic", size = 10, face = "bold"), plot.title = element_text(
+      family = "Century Gothic",
+      size = 15, face = "bold"
+    ),
+    plot.subtitle = element_text(
+      family = "Century Gothic",
+      size = 15, face = "bold", color = "#1b2838"
+    ),
+    axis.title = element_text(
+      family = "Century Gothic",
+      size = 15, face = "bold"
+    ),
+    legend.position = "top",
+    legend.title = element_blank(),
+    legend.text = element_text(size = 10)
+  )
 
 ggsave(fig_percent_detections, filename = "figs/fig_percentDetections_species.png", width = 14, height = 16, device = png(), units = "in", dpi = 300)
-dev.off() 
+dev.off()
 ```
 
 ![Species-specific differences in vocal activity across dawn and dusk](figs/fig_percentDetections_species.png)
@@ -120,25 +140,35 @@ dev.off()
 ```{r}
 fig_overall_vocal_act <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
-  ggbetweenstats(x = time_of_day,
-                         y = percent_normalized_detections,
-                         xlab = "Time of Day",
-                         ylab = "% Overall Vocal Activity at Dawn", 
-                         pairwise.display = "significant",
-                         violin.args = list(width = 0),
-ggplot.component = list(theme(text = element_text(family = "Century Gothic", size = 10, face = "bold"),plot.title = element_text(family = "Century Gothic",
-      size = 15, face = "bold"),
-      plot.subtitle = element_text(family = "Century Gothic", 
-      size = 15, face = "bold",color="#1b2838"),
-      axis.title = element_text(family = "Century Gothic",
-      size = 15, face = "bold")))) +
-  coord_flip()+
-  scale_color_manual(values = c("#d95f02","#1b9e77"))
+  ggbetweenstats(
+    x = time_of_day,
+    y = percent_normalized_detections,
+    xlab = "Time of Day",
+    ylab = "% Overall Vocal Activity at Dawn",
+    pairwise.display = "significant",
+    violin.args = list(width = 0),
+    ggplot.component = list(theme(
+      text = element_text(family = "Century Gothic", size = 10, face = "bold"), plot.title = element_text(
+        family = "Century Gothic",
+        size = 15, face = "bold"
+      ),
+      plot.subtitle = element_text(
+        family = "Century Gothic",
+        size = 15, face = "bold", color = "#1b2838"
+      ),
+      axis.title = element_text(
+        family = "Century Gothic",
+        size = 15, face = "bold"
+      )
+    ))
+  ) +
+  coord_flip() +
+  scale_color_manual(values = c("#d95f02", "#1b9e77"))
 
 ## Edits made to figure to show only data for dawn (since % activity is significantly higher than dusk
 
 ggsave(fig_overall_vocal_act, filename = "figs/fig_percentDetections_overall.png", width = 14, height = 7, device = png(), units = "in", dpi = 300)
-dev.off() 
+dev.off()
 ```
 
 ![Overall, higher vocal activity was detected at dawn compared to dusk, across species.](figs/fig_percentDetections_overall.png)  
@@ -147,15 +177,15 @@ dev.off()
 
 Here, we see whether there are differences in the acoustic detections for each species between dawn and dusk. 
 ```{r}
-stat.test <- vocal_act %>%  
+stat.test <- vocal_act %>%
   pairwise_wilcox_test(detections ~ time_of_day)
 
 # We observe significant differences in acoustic detections across species between dawn and dusk
 
 # A tibble: 1 × 9
 #  .y.        group1 group2    n1    n2 statistic        p    p.adj p.adj.signif
-# <chr>      <chr>  <chr>  <int> <int>     <dbl>    <dbl>    <dbl> <chr>       
-# detections dawn   dusk      69    69     3192. 0.000549 0.000549 ***  
+# <chr>      <chr>  <chr>  <int> <int>     <dbl>    <dbl>    <dbl> <chr>
+# detections dawn   dusk      69    69     3192. 0.000549 0.000549 ***
 ```
 
 ## Figure for publication
@@ -163,15 +193,17 @@ stat.test <- vocal_act %>%
 # Here, we will combine the above two figures created
 library(patchwork)
 fig_vocAct <- wrap_plots(fig_overall_vocal_act, fig_percent_detections,
-                         nrow = 2) +
-              plot_annotation(
-      tag_levels = "a",
-      tag_prefix = "(",
-      tag_suffix = ")") +
-   plot_layout(heights = c(1, 8))
+  nrow = 2
+) +
+  plot_annotation(
+    tag_levels = "a",
+    tag_prefix = "(",
+    tag_suffix = ")"
+  ) +
+  plot_layout(heights = c(1, 8))
 
 ggsave(fig_vocAct, filename = "figs/fig01.png", width = 14, height = 20, device = png(), units = "in", dpi = 300)
-dev.off() 
+dev.off()
 ```
 
 ![Figure 1. (a) Vocal activity was significantly higher at dawn compared to dusk across a tropical bird community in the Western Ghats. (b) Species-specific vocal activity across dawn and dusk.](figs/fig01.png)

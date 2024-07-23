@@ -67,10 +67,11 @@ dusk <- dusk %>%
 # split the filename column into 4 columns : site, date, time and splits
 dusk <- separate(dusk, col = Filename, into = c("site_id", "date", "time", "splits"), sep = "_") %>%
   dplyr::select(-(Birds:Notes)) %>% # remove columns not required & rename
-  rename(., restoration_type = Restoration.Type..Benchmark.Active.Passive.) %>% rename(., time_of_day = Time..Morning.Evening.Night.) %>%
+  rename(., restoration_type = Restoration.Type..Benchmark.Active.Passive.) %>%
+  rename(., time_of_day = Time..Morning.Evening.Night.) %>%
   mutate(time_of_day = "dusk")
 
-# create a single dataframe 
+# create a single dataframe
 acoustic_data <- bind_rows(dawn, dusk)
 ```
 
@@ -85,7 +86,7 @@ eBirdCodes <- species_codes %>%
   deframe()
 
 # replace current annotation codes with eBird codes
-acoustic_data <-  acoustic_data %>% 
+acoustic_data <- acoustic_data %>%
   rename(!!!eBirdCodes)
 ```
 
@@ -138,29 +139,31 @@ acoustic_data <- acoustic_data %>%
         ~ "8AM to 9AM",
         start_time >= "090000" & start_time <= "100000"
         ~ "9AM to 10AM",
-         start_time >= "160000" & start_time < "170000"
+        start_time >= "160000" & start_time < "170000"
         ~ "4PM to 5PM",
         start_time >= "170000" & start_time <= "180000"
         ~ "5PM to 6PM",
         start_time >= "180000" & start_time <= "190000"
-        ~ "6PM to 7PM")) %>%
+        ~ "6PM to 7PM"
+      )
+  ) %>%
   ungroup()
 
 # add a zero before the start_time to ensure its all 6 digits of time atleast
 acoustic_data <- acoustic_data %>%
-   mutate(across(start_time, str_pad, width = 6, pad = "0"))
+  mutate(across(start_time, str_pad, width = 6, pad = "0"))
 
 # keep only species that vocalize atleast across a minimum of 20 different/unique dates and times
 # we chose this random arbitrary threshold to include only species that are highly vocal and can be used for comparative analyses
 spp_subset <- acoustic_data %>%
   group_by(site_id, date, eBird_codes) %>%
   summarise(unique_voc = sum(number)) %>%
-  ungroup() 
+  ungroup()
 
 # keep only species with n > 20
 spp_subset <- spp_subset %>%
   group_by(eBird_codes) %>%
-  summarise(n = n()) %>%  
+  summarise(n = n()) %>%
   filter(n > 20)
 
 ## subset to only include species that were detected atleast across 20 unique data/time combinations
@@ -174,4 +177,3 @@ acoustic_data <- acoustic_data %>%
 ```{r}
 write.csv(acoustic_data, "results/acoustic_data.csv", row.names = F)
 ```
-
