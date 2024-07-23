@@ -218,7 +218,8 @@ ggsave(fig_terr_vocAct, filename = "figs/fig_percentDetections_vs_territoriality
 dev.off()
 ```
 
-![Weakly territorial species were significantly more dawn shifted than non-territorial species at dawn.](figs/fig_percentDetections_vs_territoriality.png)
+![Weakly territorial species were significantly more dawn shifted than non-territorial species at dawn.](figs/fig_percentDetections_vs_territoriality.png)  
+
 ## Figure for publication
 
 ```{r}
