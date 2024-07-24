@@ -206,4 +206,4 @@ ggsave(fig_vocAct, filename = "figs/fig01.png", width = 14, height = 20, device 
 dev.off()
 ```
 
-![Figure 1. (a) Vocal activity was significantly higher at dawn compared to dusk across a tropical bird community in the Western Ghats. (b) Species-specific vocal activity across dawn and dusk.](figs/fig01.png)
+![(a) Vocal activity was significantly higher at dawn compared to dusk across a tropical bird community in the Western Ghats. (b) Species-specific vocal activity across dawn and dusk.](figs/fig01.png)
