@@ -45,6 +45,7 @@ join-the-vocal_activity-data-and-territoriality-data
 testing-the-differences-between-territoriality-categories-using-wilcoxon-test
 visualiation-of-detections-between-dawn-and-dusk-within-each-category-of-territoriality
 comparing-dawn-vocal-activity-between-categories-of-territoriality
+figure-for-publication-1
 sociality
 loading-necessary-libraries-1
 loading-sociality-data
@@ -54,7 +55,7 @@ join-the-vocal_activity-data-and-sociality-data
 testing-the-differences-between-socialiaty-categories-using-wilcoxon-test
 visualization-of-detections-across-dawn-and-dusk-within-each-category-of-sociality
 visualization-of-vocal-activity-at-dawn-vs.-categories-of-sociality
-figure-for-publication-1
+figure-for-publication-2
 phylogenetic-generalized-least-squares-pgls-regressions
 loading-necessary-libraries-2
 loading-necessary-data

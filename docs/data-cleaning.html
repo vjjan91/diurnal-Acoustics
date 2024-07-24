@@ -199,6 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.6" data-path="territoriality.html"><a href="territoriality.html#testing-the-differences-between-territoriality-categories-using-wilcoxon-test"><i class="fa fa-check"></i><b>7.6</b> Testing the differences between territoriality categories using Wilcoxon test</a></li>
 <li class="chapter" data-level="7.7" data-path="territoriality.html"><a href="territoriality.html#visualiation-of-detections-between-dawn-and-dusk-within-each-category-of-territoriality"><i class="fa fa-check"></i><b>7.7</b> Visualiation of % detections between dawn and dusk within each category of territoriality</a></li>
 <li class="chapter" data-level="7.8" data-path="territoriality.html"><a href="territoriality.html#comparing-dawn-vocal-activity-between-categories-of-territoriality"><i class="fa fa-check"></i><b>7.8</b> Comparing dawn vocal activity between categories of territoriality</a></li>
+<li class="chapter" data-level="7.9" data-path="territoriality.html"><a href="territoriality.html#figure-for-publication-1"><i class="fa fa-check"></i><b>7.9</b> Figure for publication</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="sociality.html"><a href="sociality.html"><i class="fa fa-check"></i><b>8</b> Sociality</a>
 <ul>
@@ -210,7 +211,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.6" data-path="sociality.html"><a href="sociality.html#testing-the-differences-between-socialiaty-categories-using-wilcoxon-test"><i class="fa fa-check"></i><b>8.6</b> Testing the differences between socialiaty categories using Wilcoxon test</a></li>
 <li class="chapter" data-level="8.7" data-path="sociality.html"><a href="sociality.html#visualization-of-detections-across-dawn-and-dusk-within-each-category-of-sociality"><i class="fa fa-check"></i><b>8.7</b> Visualization of % detections across dawn and dusk within each category of sociality</a></li>
 <li class="chapter" data-level="8.8" data-path="sociality.html"><a href="sociality.html#visualization-of-vocal-activity-at-dawn-vs.-categories-of-sociality"><i class="fa fa-check"></i><b>8.8</b> Visualization of vocal activity at dawn vs. categories of sociality</a></li>
-<li class="chapter" data-level="8.9" data-path="sociality.html"><a href="sociality.html#figure-for-publication-1"><i class="fa fa-check"></i><b>8.9</b> Figure for publication</a></li>
+<li class="chapter" data-level="8.9" data-path="sociality.html"><a href="sociality.html#figure-for-publication-2"><i class="fa fa-check"></i><b>8.9</b> Figure for publication</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html"><i class="fa fa-check"></i><b>9</b> Phylogenetic Generalized Least Squares (PGLS) regressions</a>
 <ul>
@@ -302,11 +303,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-32"><a href="data-cleaning.html#cb2-32" tabindex="-1"></a><span class="co"># split the filename column into 4 columns : site, date, time and splits</span></span>
 <span id="cb2-33"><a href="data-cleaning.html#cb2-33" tabindex="-1"></a>dusk <span class="ot">&lt;-</span> <span class="fu">separate</span>(dusk, <span class="at">col =</span> Filename, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;site_id&quot;</span>, <span class="st">&quot;date&quot;</span>, <span class="st">&quot;time&quot;</span>, <span class="st">&quot;splits&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;_&quot;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb2-34"><a href="data-cleaning.html#cb2-34" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>(Birds<span class="sc">:</span>Notes)) <span class="sc">%&gt;%</span> <span class="co"># remove columns not required &amp; rename</span></span>
-<span id="cb2-35"><a href="data-cleaning.html#cb2-35" tabindex="-1"></a>  <span class="fu">rename</span>(., <span class="at">restoration_type =</span> Restoration.Type..Benchmark.Active.Passive.) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(., <span class="at">time_of_day =</span> Time..Morning.Evening.Night.) <span class="sc">%&gt;%</span></span>
-<span id="cb2-36"><a href="data-cleaning.html#cb2-36" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_of_day =</span> <span class="st">&quot;dusk&quot;</span>)</span>
-<span id="cb2-37"><a href="data-cleaning.html#cb2-37" tabindex="-1"></a></span>
-<span id="cb2-38"><a href="data-cleaning.html#cb2-38" tabindex="-1"></a><span class="co"># create a single dataframe </span></span>
-<span id="cb2-39"><a href="data-cleaning.html#cb2-39" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(dawn, dusk)</span></code></pre></div>
+<span id="cb2-35"><a href="data-cleaning.html#cb2-35" tabindex="-1"></a>  <span class="fu">rename</span>(., <span class="at">restoration_type =</span> Restoration.Type..Benchmark.Active.Passive.) <span class="sc">%&gt;%</span></span>
+<span id="cb2-36"><a href="data-cleaning.html#cb2-36" tabindex="-1"></a>  <span class="fu">rename</span>(., <span class="at">time_of_day =</span> Time..Morning.Evening.Night.) <span class="sc">%&gt;%</span></span>
+<span id="cb2-37"><a href="data-cleaning.html#cb2-37" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_of_day =</span> <span class="st">&quot;dusk&quot;</span>)</span>
+<span id="cb2-38"><a href="data-cleaning.html#cb2-38" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="data-cleaning.html#cb2-39" tabindex="-1"></a><span class="co"># create a single dataframe</span></span>
+<span id="cb2-40"><a href="data-cleaning.html#cb2-40" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(dawn, dusk)</span></code></pre></div>
 </div>
 <div id="add-standardized-ebird-species-codes-for-future-analysis" class="section level2 hasAnchor" number="2.3">
 <h2><span class="header-section-number">2.3</span> Add standardized eBird species codes for future analysis<a href="data-cleaning.html#add-standardized-ebird-species-codes-for-future-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -319,7 +321,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-7"><a href="data-cleaning.html#cb3-7" tabindex="-1"></a>  <span class="fu">deframe</span>()</span>
 <span id="cb3-8"><a href="data-cleaning.html#cb3-8" tabindex="-1"></a></span>
 <span id="cb3-9"><a href="data-cleaning.html#cb3-9" tabindex="-1"></a><span class="co"># replace current annotation codes with eBird codes</span></span>
-<span id="cb3-10"><a href="data-cleaning.html#cb3-10" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span>  acoustic_data <span class="sc">%&gt;%</span> </span>
+<span id="cb3-10"><a href="data-cleaning.html#cb3-10" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
 <span id="cb3-11"><a href="data-cleaning.html#cb3-11" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="sc">!!!</span>eBirdCodes)</span></code></pre></div>
 </div>
 <div id="how-much-data-has-been-annotated-for-dawn-and-dusk-across-sites-and-days" class="section level2 hasAnchor" number="2.4">
@@ -369,36 +371,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-24"><a href="data-cleaning.html#cb5-24" tabindex="-1"></a>        <span class="sc">~</span> <span class="st">&quot;8AM to 9AM&quot;</span>,</span>
 <span id="cb5-25"><a href="data-cleaning.html#cb5-25" tabindex="-1"></a>        start_time <span class="sc">&gt;=</span> <span class="st">&quot;090000&quot;</span> <span class="sc">&amp;</span> start_time <span class="sc">&lt;=</span> <span class="st">&quot;100000&quot;</span></span>
 <span id="cb5-26"><a href="data-cleaning.html#cb5-26" tabindex="-1"></a>        <span class="sc">~</span> <span class="st">&quot;9AM to 10AM&quot;</span>,</span>
-<span id="cb5-27"><a href="data-cleaning.html#cb5-27" tabindex="-1"></a>         start_time <span class="sc">&gt;=</span> <span class="st">&quot;160000&quot;</span> <span class="sc">&amp;</span> start_time <span class="sc">&lt;</span> <span class="st">&quot;170000&quot;</span></span>
+<span id="cb5-27"><a href="data-cleaning.html#cb5-27" tabindex="-1"></a>        start_time <span class="sc">&gt;=</span> <span class="st">&quot;160000&quot;</span> <span class="sc">&amp;</span> start_time <span class="sc">&lt;</span> <span class="st">&quot;170000&quot;</span></span>
 <span id="cb5-28"><a href="data-cleaning.html#cb5-28" tabindex="-1"></a>        <span class="sc">~</span> <span class="st">&quot;4PM to 5PM&quot;</span>,</span>
 <span id="cb5-29"><a href="data-cleaning.html#cb5-29" tabindex="-1"></a>        start_time <span class="sc">&gt;=</span> <span class="st">&quot;170000&quot;</span> <span class="sc">&amp;</span> start_time <span class="sc">&lt;=</span> <span class="st">&quot;180000&quot;</span></span>
 <span id="cb5-30"><a href="data-cleaning.html#cb5-30" tabindex="-1"></a>        <span class="sc">~</span> <span class="st">&quot;5PM to 6PM&quot;</span>,</span>
 <span id="cb5-31"><a href="data-cleaning.html#cb5-31" tabindex="-1"></a>        start_time <span class="sc">&gt;=</span> <span class="st">&quot;180000&quot;</span> <span class="sc">&amp;</span> start_time <span class="sc">&lt;=</span> <span class="st">&quot;190000&quot;</span></span>
-<span id="cb5-32"><a href="data-cleaning.html#cb5-32" tabindex="-1"></a>        <span class="sc">~</span> <span class="st">&quot;6PM to 7PM&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb5-33"><a href="data-cleaning.html#cb5-33" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb5-34"><a href="data-cleaning.html#cb5-34" tabindex="-1"></a></span>
-<span id="cb5-35"><a href="data-cleaning.html#cb5-35" tabindex="-1"></a><span class="co"># add a zero before the start_time to ensure its all 6 digits of time atleast</span></span>
-<span id="cb5-36"><a href="data-cleaning.html#cb5-36" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
-<span id="cb5-37"><a href="data-cleaning.html#cb5-37" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="fu">across</span>(start_time, str_pad, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>))</span>
-<span id="cb5-38"><a href="data-cleaning.html#cb5-38" tabindex="-1"></a></span>
-<span id="cb5-39"><a href="data-cleaning.html#cb5-39" tabindex="-1"></a><span class="co"># keep only species that vocalize atleast across a minimum of 20 different/unique dates and times</span></span>
-<span id="cb5-40"><a href="data-cleaning.html#cb5-40" tabindex="-1"></a><span class="co"># we chose this random arbitrary threshold to include only species that are highly vocal and can be used for comparative analyses</span></span>
-<span id="cb5-41"><a href="data-cleaning.html#cb5-41" tabindex="-1"></a>spp_subset <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
-<span id="cb5-42"><a href="data-cleaning.html#cb5-42" tabindex="-1"></a>  <span class="fu">group_by</span>(site_id, date, eBird_codes) <span class="sc">%&gt;%</span></span>
-<span id="cb5-43"><a href="data-cleaning.html#cb5-43" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">unique_voc =</span> <span class="fu">sum</span>(number)) <span class="sc">%&gt;%</span></span>
-<span id="cb5-44"><a href="data-cleaning.html#cb5-44" tabindex="-1"></a>  <span class="fu">ungroup</span>() </span>
-<span id="cb5-45"><a href="data-cleaning.html#cb5-45" tabindex="-1"></a></span>
-<span id="cb5-46"><a href="data-cleaning.html#cb5-46" tabindex="-1"></a><span class="co"># keep only species with n &gt; 20</span></span>
-<span id="cb5-47"><a href="data-cleaning.html#cb5-47" tabindex="-1"></a>spp_subset <span class="ot">&lt;-</span> spp_subset <span class="sc">%&gt;%</span></span>
-<span id="cb5-48"><a href="data-cleaning.html#cb5-48" tabindex="-1"></a>  <span class="fu">group_by</span>(eBird_codes) <span class="sc">%&gt;%</span></span>
-<span id="cb5-49"><a href="data-cleaning.html#cb5-49" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span>  </span>
-<span id="cb5-50"><a href="data-cleaning.html#cb5-50" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">20</span>)</span>
-<span id="cb5-51"><a href="data-cleaning.html#cb5-51" tabindex="-1"></a></span>
-<span id="cb5-52"><a href="data-cleaning.html#cb5-52" tabindex="-1"></a><span class="do">## subset to only include species that were detected atleast across 20 unique data/time combinations</span></span>
-<span id="cb5-53"><a href="data-cleaning.html#cb5-53" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
-<span id="cb5-54"><a href="data-cleaning.html#cb5-54" tabindex="-1"></a>  <span class="fu">filter</span>(eBird_codes <span class="sc">%in%</span> spp_subset<span class="sc">$</span>eBird_codes)</span>
-<span id="cb5-55"><a href="data-cleaning.html#cb5-55" tabindex="-1"></a></span>
-<span id="cb5-56"><a href="data-cleaning.html#cb5-56" tabindex="-1"></a><span class="do">## Only 69 species remain after including highly vocal species alone</span></span></code></pre></div>
+<span id="cb5-32"><a href="data-cleaning.html#cb5-32" tabindex="-1"></a>        <span class="sc">~</span> <span class="st">&quot;6PM to 7PM&quot;</span></span>
+<span id="cb5-33"><a href="data-cleaning.html#cb5-33" tabindex="-1"></a>      )</span>
+<span id="cb5-34"><a href="data-cleaning.html#cb5-34" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb5-35"><a href="data-cleaning.html#cb5-35" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb5-36"><a href="data-cleaning.html#cb5-36" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="data-cleaning.html#cb5-37" tabindex="-1"></a><span class="co"># add a zero before the start_time to ensure its all 6 digits of time atleast</span></span>
+<span id="cb5-38"><a href="data-cleaning.html#cb5-38" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-39"><a href="data-cleaning.html#cb5-39" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(start_time, str_pad, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>))</span>
+<span id="cb5-40"><a href="data-cleaning.html#cb5-40" tabindex="-1"></a></span>
+<span id="cb5-41"><a href="data-cleaning.html#cb5-41" tabindex="-1"></a><span class="co"># keep only species that vocalize atleast across a minimum of 20 different/unique dates and times</span></span>
+<span id="cb5-42"><a href="data-cleaning.html#cb5-42" tabindex="-1"></a><span class="co"># we chose this random arbitrary threshold to include only species that are highly vocal and can be used for comparative analyses</span></span>
+<span id="cb5-43"><a href="data-cleaning.html#cb5-43" tabindex="-1"></a>spp_subset <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-44"><a href="data-cleaning.html#cb5-44" tabindex="-1"></a>  <span class="fu">group_by</span>(site_id, date, eBird_codes) <span class="sc">%&gt;%</span></span>
+<span id="cb5-45"><a href="data-cleaning.html#cb5-45" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">unique_voc =</span> <span class="fu">sum</span>(number)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-46"><a href="data-cleaning.html#cb5-46" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb5-47"><a href="data-cleaning.html#cb5-47" tabindex="-1"></a></span>
+<span id="cb5-48"><a href="data-cleaning.html#cb5-48" tabindex="-1"></a><span class="co"># keep only species with n &gt; 20</span></span>
+<span id="cb5-49"><a href="data-cleaning.html#cb5-49" tabindex="-1"></a>spp_subset <span class="ot">&lt;-</span> spp_subset <span class="sc">%&gt;%</span></span>
+<span id="cb5-50"><a href="data-cleaning.html#cb5-50" tabindex="-1"></a>  <span class="fu">group_by</span>(eBird_codes) <span class="sc">%&gt;%</span></span>
+<span id="cb5-51"><a href="data-cleaning.html#cb5-51" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb5-52"><a href="data-cleaning.html#cb5-52" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">20</span>)</span>
+<span id="cb5-53"><a href="data-cleaning.html#cb5-53" tabindex="-1"></a></span>
+<span id="cb5-54"><a href="data-cleaning.html#cb5-54" tabindex="-1"></a><span class="do">## subset to only include species that were detected atleast across 20 unique data/time combinations</span></span>
+<span id="cb5-55"><a href="data-cleaning.html#cb5-55" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-56"><a href="data-cleaning.html#cb5-56" tabindex="-1"></a>  <span class="fu">filter</span>(eBird_codes <span class="sc">%in%</span> spp_subset<span class="sc">$</span>eBird_codes)</span>
+<span id="cb5-57"><a href="data-cleaning.html#cb5-57" tabindex="-1"></a></span>
+<span id="cb5-58"><a href="data-cleaning.html#cb5-58" tabindex="-1"></a><span class="do">## Only 69 species remain after including highly vocal species alone</span></span></code></pre></div>
 </div>
 <div id="write-to-file" class="section level2 hasAnchor" number="2.6">
 <h2><span class="header-section-number">2.6</span> Write to file<a href="data-cleaning.html#write-to-file" class="anchor-section" aria-label="Anchor link to header"></a></h2>

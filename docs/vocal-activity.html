@@ -199,6 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.6" data-path="territoriality.html"><a href="territoriality.html#testing-the-differences-between-territoriality-categories-using-wilcoxon-test"><i class="fa fa-check"></i><b>7.6</b> Testing the differences between territoriality categories using Wilcoxon test</a></li>
 <li class="chapter" data-level="7.7" data-path="territoriality.html"><a href="territoriality.html#visualiation-of-detections-between-dawn-and-dusk-within-each-category-of-territoriality"><i class="fa fa-check"></i><b>7.7</b> Visualiation of % detections between dawn and dusk within each category of territoriality</a></li>
 <li class="chapter" data-level="7.8" data-path="territoriality.html"><a href="territoriality.html#comparing-dawn-vocal-activity-between-categories-of-territoriality"><i class="fa fa-check"></i><b>7.8</b> Comparing dawn vocal activity between categories of territoriality</a></li>
+<li class="chapter" data-level="7.9" data-path="territoriality.html"><a href="territoriality.html#figure-for-publication-1"><i class="fa fa-check"></i><b>7.9</b> Figure for publication</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="sociality.html"><a href="sociality.html"><i class="fa fa-check"></i><b>8</b> Sociality</a>
 <ul>
@@ -210,7 +211,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.6" data-path="sociality.html"><a href="sociality.html#testing-the-differences-between-socialiaty-categories-using-wilcoxon-test"><i class="fa fa-check"></i><b>8.6</b> Testing the differences between socialiaty categories using Wilcoxon test</a></li>
 <li class="chapter" data-level="8.7" data-path="sociality.html"><a href="sociality.html#visualization-of-detections-across-dawn-and-dusk-within-each-category-of-sociality"><i class="fa fa-check"></i><b>8.7</b> Visualization of % detections across dawn and dusk within each category of sociality</a></li>
 <li class="chapter" data-level="8.8" data-path="sociality.html"><a href="sociality.html#visualization-of-vocal-activity-at-dawn-vs.-categories-of-sociality"><i class="fa fa-check"></i><b>8.8</b> Visualization of vocal activity at dawn vs. categories of sociality</a></li>
-<li class="chapter" data-level="8.9" data-path="sociality.html"><a href="sociality.html#figure-for-publication-1"><i class="fa fa-check"></i><b>8.9</b> Figure for publication</a></li>
+<li class="chapter" data-level="8.9" data-path="sociality.html"><a href="sociality.html#figure-for-publication-2"><i class="fa fa-check"></i><b>8.9</b> Figure for publication</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html"><i class="fa fa-check"></i><b>9</b> Phylogenetic Generalized Least Squares (PGLS) regressions</a>
 <ul>
@@ -269,11 +270,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>A number of factors need to be considered in further analysis: accounting for time_of_day, observed_identity for example. However, we run analyses that account for differences in calling activity by species for dawn and dusk.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="vocal-activity.html#cb9-1" tabindex="-1"></a><span class="co"># sampling effort by time_of_day</span></span>
 <span id="cb9-2"><a href="vocal-activity.html#cb9-2" tabindex="-1"></a>effort <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
-<span id="cb9-3"><a href="vocal-activity.html#cb9-3" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(site_id, date, time_of_day) <span class="sc">%&gt;%</span></span>
-<span id="cb9-4"><a href="vocal-activity.html#cb9-4" tabindex="-1"></a>    <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb9-5"><a href="vocal-activity.html#cb9-5" tabindex="-1"></a>    <span class="fu">arrange</span>(time_of_day) <span class="sc">%&gt;%</span></span>
-<span id="cb9-6"><a href="vocal-activity.html#cb9-6" tabindex="-1"></a>    <span class="fu">count</span>(time_of_day) <span class="sc">%&gt;%</span></span>
-<span id="cb9-7"><a href="vocal-activity.html#cb9-7" tabindex="-1"></a>    <span class="fu">rename</span>(., <span class="at">nVisits =</span> n)</span>
+<span id="cb9-3"><a href="vocal-activity.html#cb9-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(site_id, date, time_of_day) <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="vocal-activity.html#cb9-4" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="vocal-activity.html#cb9-5" tabindex="-1"></a>  <span class="fu">arrange</span>(time_of_day) <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="vocal-activity.html#cb9-6" tabindex="-1"></a>  <span class="fu">count</span>(time_of_day) <span class="sc">%&gt;%</span></span>
+<span id="cb9-7"><a href="vocal-activity.html#cb9-7" tabindex="-1"></a>  <span class="fu">rename</span>(., <span class="at">nVisits =</span> n)</span>
 <span id="cb9-8"><a href="vocal-activity.html#cb9-8" tabindex="-1"></a></span>
 <span id="cb9-9"><a href="vocal-activity.html#cb9-9" tabindex="-1"></a><span class="co"># Above, we note that we had sampled ~293 site-date combinations at dawn, while ~245 site-date combinations were sampled at dusk</span></span>
 <span id="cb9-10"><a href="vocal-activity.html#cb9-10" tabindex="-1"></a></span>
@@ -282,70 +283,90 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-13"><a href="vocal-activity.html#cb9-13" tabindex="-1"></a>vocal_act <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
 <span id="cb9-14"><a href="vocal-activity.html#cb9-14" tabindex="-1"></a>  <span class="fu">group_by</span>(time_of_day, eBird_codes) <span class="sc">%&gt;%</span></span>
 <span id="cb9-15"><a href="vocal-activity.html#cb9-15" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">detections =</span> <span class="fu">sum</span>(number)) <span class="sc">%&gt;%</span></span>
-<span id="cb9-16"><a href="vocal-activity.html#cb9-16" tabindex="-1"></a>  <span class="fu">left_join</span>(., species_codes[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>)], </span>
-<span id="cb9-17"><a href="vocal-activity.html#cb9-17" tabindex="-1"></a>                       <span class="at">by =</span> <span class="st">&quot;eBird_codes&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-18"><a href="vocal-activity.html#cb9-18" tabindex="-1"></a>   <span class="fu">group_by</span>(eBird_codes) <span class="sc">%&gt;%</span></span>
-<span id="cb9-19"><a href="vocal-activity.html#cb9-19" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_detections =</span><span class="fu">sum</span>(detections)) <span class="sc">%&gt;%</span></span>
-<span id="cb9-20"><a href="vocal-activity.html#cb9-20" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_detections =</span> (detections<span class="sc">/</span>total_detections)<span class="sc">*</span><span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-21"><a href="vocal-activity.html#cb9-21" tabindex="-1"></a>  <span class="fu">ungroup</span>() </span>
-<span id="cb9-22"><a href="vocal-activity.html#cb9-22" tabindex="-1"></a></span>
-<span id="cb9-23"><a href="vocal-activity.html#cb9-23" tabindex="-1"></a><span class="do">## accouting for sampling effort and normalizing data</span></span>
-<span id="cb9-24"><a href="vocal-activity.html#cb9-24" tabindex="-1"></a>vocal_act <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span></span>
-<span id="cb9-25"><a href="vocal-activity.html#cb9-25" tabindex="-1"></a>  <span class="fu">left_join</span>(., effort, <span class="at">by =</span> <span class="st">&quot;time_of_day&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-26"><a href="vocal-activity.html#cb9-26" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">normalized_detections =</span> detections<span class="sc">/</span>nVisits) <span class="sc">%&gt;%</span></span>
-<span id="cb9-27"><a href="vocal-activity.html#cb9-27" tabindex="-1"></a>  <span class="fu">group_by</span>(eBird_codes) <span class="sc">%&gt;%</span></span>
-<span id="cb9-28"><a href="vocal-activity.html#cb9-28" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_normalized_detections =</span> <span class="fu">sum</span>(normalized_detections)) <span class="sc">%&gt;%</span></span>
-<span id="cb9-29"><a href="vocal-activity.html#cb9-29" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_normalized_detections =</span> (normalized_detections<span class="sc">/</span>total_normalized_detections)<span class="sc">*</span><span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-30"><a href="vocal-activity.html#cb9-30" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb9-31"><a href="vocal-activity.html#cb9-31" tabindex="-1"></a></span>
-<span id="cb9-32"><a href="vocal-activity.html#cb9-32" tabindex="-1"></a><span class="co"># in our case, we have 3 species which have 100% detections in dawn, Indian blackbird, Little spiderhunter and Purple sunbird. For these, we add a additional row specifying no detections in dusk.</span></span>
-<span id="cb9-33"><a href="vocal-activity.html#cb9-33" tabindex="-1"></a>  </span>
-<span id="cb9-34"><a href="vocal-activity.html#cb9-34" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">time_of_day=</span> <span class="st">&#39;dusk&#39;</span>, <span class="at">eBird_codes =</span> <span class="st">&#39;pursun4&#39;</span>, <span class="at">detections =</span> <span class="dv">0</span>, <span class="at">scientific_name =</span> <span class="st">&#39;Cinnyris asiaticus&#39;</span>, <span class="at">common_name =</span> <span class="st">&#39;Purple Sunbird&#39;</span>, <span class="at">total_detections =</span> <span class="dv">315</span>, <span class="at">percent_detections =</span> <span class="dv">0</span>, <span class="at">normalized_detections =</span> <span class="dv">0</span>,</span>
-<span id="cb9-35"><a href="vocal-activity.html#cb9-35" tabindex="-1"></a>          <span class="at">percent_normalized_detections =</span> <span class="dv">0</span>, <span class="at">nVisits =</span> <span class="dv">245</span>, <span class="at">total_normalized_detections =</span> <span class="fl">1.075085</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-36"><a href="vocal-activity.html#cb9-36" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">time_of_day=</span> <span class="st">&#39;dusk&#39;</span>, <span class="at">eBird_codes =</span> <span class="st">&#39;eurbla2&#39;</span>, <span class="at">detections =</span> <span class="dv">0</span>, <span class="at">scientific_name =</span> <span class="st">&#39;Turdus simillimus&#39;</span>, <span class="at">common_name =</span> <span class="st">&#39;Indian Blackbird&#39;</span>, <span class="at">total_detections =</span> <span class="dv">236</span>, <span class="at">percent_detections =</span> <span class="dv">0</span>,<span class="at">normalized_detections =</span> <span class="dv">0</span>,</span>
-<span id="cb9-37"><a href="vocal-activity.html#cb9-37" tabindex="-1"></a>          <span class="at">percent_normalized_detections =</span> <span class="dv">0</span>, <span class="at">nVisits =</span> <span class="dv">245</span>,</span>
-<span id="cb9-38"><a href="vocal-activity.html#cb9-38" tabindex="-1"></a>          <span class="at">total_normalized_detections =</span> <span class="fl">0.8054608</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-39"><a href="vocal-activity.html#cb9-39" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">time_of_day=</span> <span class="st">&#39;dusk&#39;</span>, <span class="at">eBird_codes =</span> <span class="st">&#39;litspi1&#39;</span>, <span class="at">detections =</span> <span class="dv">0</span>, <span class="at">scientific_name =</span> <span class="st">&#39;Arachnothera longirostra&#39;</span>, <span class="at">common_name =</span> <span class="st">&#39;Little Spiderhunter&#39;</span>, <span class="at">total_detections =</span> <span class="dv">417</span>, <span class="at">percent_detections =</span> <span class="dv">0</span>,</span>
-<span id="cb9-40"><a href="vocal-activity.html#cb9-40" tabindex="-1"></a>          <span class="at">normalized_detections =</span> <span class="dv">0</span>, <span class="at">nVisits =</span> <span class="dv">245</span>, </span>
-<span id="cb9-41"><a href="vocal-activity.html#cb9-41" tabindex="-1"></a>          <span class="at">percent_normalized_detections =</span> <span class="dv">0</span>,</span>
-<span id="cb9-42"><a href="vocal-activity.html#cb9-42" tabindex="-1"></a>          <span class="at">total_normalized_detections =</span> <span class="fl">1.423208</span>)</span>
-<span id="cb9-43"><a href="vocal-activity.html#cb9-43" tabindex="-1"></a></span>
-<span id="cb9-44"><a href="vocal-activity.html#cb9-44" tabindex="-1"></a><span class="co"># for the sake of plotting, we will create a new variable </span></span>
-<span id="cb9-45"><a href="vocal-activity.html#cb9-45" tabindex="-1"></a>vocal_act<span class="sc">$</span>plot_percent <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(vocal_act<span class="sc">$</span>time_of_day <span class="sc">==</span> <span class="st">&quot;dusk&quot;</span>,</span>
-<span id="cb9-46"><a href="vocal-activity.html#cb9-46" tabindex="-1"></a>                                 <span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>vocal_act<span class="sc">$</span>percent_normalized_detections,</span>
-<span id="cb9-47"><a href="vocal-activity.html#cb9-47" tabindex="-1"></a>                                 vocal_act<span class="sc">$</span>percent_normalized_detections)</span>
-<span id="cb9-48"><a href="vocal-activity.html#cb9-48" tabindex="-1"></a></span>
-<span id="cb9-49"><a href="vocal-activity.html#cb9-49" tabindex="-1"></a><span class="co"># reordering legend appearance</span></span>
-<span id="cb9-50"><a href="vocal-activity.html#cb9-50" tabindex="-1"></a>vocal_act<span class="sc">$</span>time_of_day <span class="ot">&lt;-</span> <span class="fu">factor</span>(vocal_act<span class="sc">$</span>time_of_day,</span>
-<span id="cb9-51"><a href="vocal-activity.html#cb9-51" tabindex="-1"></a>                                <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;dusk&quot;</span>,<span class="st">&quot;dawn&quot;</span>))</span>
-<span id="cb9-52"><a href="vocal-activity.html#cb9-52" tabindex="-1"></a></span>
-<span id="cb9-53"><a href="vocal-activity.html#cb9-53" tabindex="-1"></a><span class="co"># figure of percent detections</span></span>
-<span id="cb9-54"><a href="vocal-activity.html#cb9-54" tabindex="-1"></a>fig_percent_detections <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(vocal_act, <span class="fu">aes</span>(</span>
-<span id="cb9-55"><a href="vocal-activity.html#cb9-55" tabindex="-1"></a>            <span class="at">x =</span> <span class="fu">reorder</span>(common_name, plot_percent),</span>
-<span id="cb9-56"><a href="vocal-activity.html#cb9-56" tabindex="-1"></a>                               <span class="at">y =</span> plot_percent,</span>
-<span id="cb9-57"><a href="vocal-activity.html#cb9-57" tabindex="-1"></a>                               <span class="at">fill =</span> time_of_day)) <span class="sc">+</span></span>
-<span id="cb9-58"><a href="vocal-activity.html#cb9-58" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">signif</span>(<span class="fu">abs</span>(plot_percent),<span class="dv">3</span>)),</span>
-<span id="cb9-59"><a href="vocal-activity.html#cb9-59" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="fu">ifelse</span>(vocal_act<span class="sc">$</span>plot_percent <span class="sc">&gt;=</span> <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb9-60"><a href="vocal-activity.html#cb9-60" tabindex="-1"></a>            <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb9-61"><a href="vocal-activity.html#cb9-61" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
-<span id="cb9-62"><a href="vocal-activity.html#cb9-62" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#1b9e77&quot;</span>,<span class="st">&quot;#d95f02&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb9-63"><a href="vocal-activity.html#cb9-63" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels=</span>abs) <span class="sc">+</span></span>
-<span id="cb9-64"><a href="vocal-activity.html#cb9-64" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb9-65"><a href="vocal-activity.html#cb9-65" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&#39;% Vocal Activity&#39;</span>,</span>
-<span id="cb9-66"><a href="vocal-activity.html#cb9-66" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&#39;Species Common Name&#39;</span>) <span class="sc">+</span></span>
-<span id="cb9-67"><a href="vocal-activity.html#cb9-67" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb9-68"><a href="vocal-activity.html#cb9-68" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb9-69"><a href="vocal-activity.html#cb9-69" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb9-70"><a href="vocal-activity.html#cb9-70" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
-<span id="cb9-71"><a href="vocal-activity.html#cb9-71" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
-<span id="cb9-72"><a href="vocal-activity.html#cb9-72" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb9-73"><a href="vocal-activity.html#cb9-73" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb9-74"><a href="vocal-activity.html#cb9-74" tabindex="-1"></a>      <span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>,</span>
-<span id="cb9-75"><a href="vocal-activity.html#cb9-75" tabindex="-1"></a>      <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb9-76"><a href="vocal-activity.html#cb9-76" tabindex="-1"></a>      <span class="at">legend.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>))</span>
-<span id="cb9-77"><a href="vocal-activity.html#cb9-77" tabindex="-1"></a></span>
-<span id="cb9-78"><a href="vocal-activity.html#cb9-78" tabindex="-1"></a><span class="fu">ggsave</span>(fig_percent_detections, <span class="at">filename =</span> <span class="st">&quot;figs/fig_percentDetections_species.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">16</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
-<span id="cb9-79"><a href="vocal-activity.html#cb9-79" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+<span id="cb9-16"><a href="vocal-activity.html#cb9-16" tabindex="-1"></a>  <span class="fu">left_join</span>(., species_codes[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>)],</span>
+<span id="cb9-17"><a href="vocal-activity.html#cb9-17" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">&quot;eBird_codes&quot;</span></span>
+<span id="cb9-18"><a href="vocal-activity.html#cb9-18" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-19"><a href="vocal-activity.html#cb9-19" tabindex="-1"></a>  <span class="fu">group_by</span>(eBird_codes) <span class="sc">%&gt;%</span></span>
+<span id="cb9-20"><a href="vocal-activity.html#cb9-20" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_detections =</span> <span class="fu">sum</span>(detections)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-21"><a href="vocal-activity.html#cb9-21" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_detections =</span> (detections <span class="sc">/</span> total_detections) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-22"><a href="vocal-activity.html#cb9-22" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb9-23"><a href="vocal-activity.html#cb9-23" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="vocal-activity.html#cb9-24" tabindex="-1"></a><span class="do">## accouting for sampling effort and normalizing data</span></span>
+<span id="cb9-25"><a href="vocal-activity.html#cb9-25" tabindex="-1"></a>vocal_act <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span></span>
+<span id="cb9-26"><a href="vocal-activity.html#cb9-26" tabindex="-1"></a>  <span class="fu">left_join</span>(., effort, <span class="at">by =</span> <span class="st">&quot;time_of_day&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-27"><a href="vocal-activity.html#cb9-27" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">normalized_detections =</span> detections <span class="sc">/</span> nVisits) <span class="sc">%&gt;%</span></span>
+<span id="cb9-28"><a href="vocal-activity.html#cb9-28" tabindex="-1"></a>  <span class="fu">group_by</span>(eBird_codes) <span class="sc">%&gt;%</span></span>
+<span id="cb9-29"><a href="vocal-activity.html#cb9-29" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_normalized_detections =</span> <span class="fu">sum</span>(normalized_detections)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-30"><a href="vocal-activity.html#cb9-30" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_normalized_detections =</span> (normalized_detections <span class="sc">/</span> total_normalized_detections) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-31"><a href="vocal-activity.html#cb9-31" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-32"><a href="vocal-activity.html#cb9-32" tabindex="-1"></a>  <span class="co"># in our case, we have 3 species which have 100% detections in dawn, Indian blackbird, Little spiderhunter and Purple sunbird. For these, we add a additional row specifying no detections in dusk.</span></span>
+<span id="cb9-33"><a href="vocal-activity.html#cb9-33" tabindex="-1"></a></span>
+<span id="cb9-34"><a href="vocal-activity.html#cb9-34" tabindex="-1"></a>  <span class="fu">add_row</span>(</span>
+<span id="cb9-35"><a href="vocal-activity.html#cb9-35" tabindex="-1"></a>    <span class="at">time_of_day =</span> <span class="st">&quot;dusk&quot;</span>, <span class="at">eBird_codes =</span> <span class="st">&quot;pursun4&quot;</span>, <span class="at">detections =</span> <span class="dv">0</span>, <span class="at">scientific_name =</span> <span class="st">&quot;Cinnyris asiaticus&quot;</span>, <span class="at">common_name =</span> <span class="st">&quot;Purple Sunbird&quot;</span>, <span class="at">total_detections =</span> <span class="dv">315</span>, <span class="at">percent_detections =</span> <span class="dv">0</span>, <span class="at">normalized_detections =</span> <span class="dv">0</span>,</span>
+<span id="cb9-36"><a href="vocal-activity.html#cb9-36" tabindex="-1"></a>    <span class="at">percent_normalized_detections =</span> <span class="dv">0</span>, <span class="at">nVisits =</span> <span class="dv">245</span>, <span class="at">total_normalized_detections =</span> <span class="fl">1.075085</span></span>
+<span id="cb9-37"><a href="vocal-activity.html#cb9-37" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-38"><a href="vocal-activity.html#cb9-38" tabindex="-1"></a>  <span class="fu">add_row</span>(</span>
+<span id="cb9-39"><a href="vocal-activity.html#cb9-39" tabindex="-1"></a>    <span class="at">time_of_day =</span> <span class="st">&quot;dusk&quot;</span>, <span class="at">eBird_codes =</span> <span class="st">&quot;eurbla2&quot;</span>, <span class="at">detections =</span> <span class="dv">0</span>, <span class="at">scientific_name =</span> <span class="st">&quot;Turdus simillimus&quot;</span>, <span class="at">common_name =</span> <span class="st">&quot;Indian Blackbird&quot;</span>, <span class="at">total_detections =</span> <span class="dv">236</span>, <span class="at">percent_detections =</span> <span class="dv">0</span>, <span class="at">normalized_detections =</span> <span class="dv">0</span>,</span>
+<span id="cb9-40"><a href="vocal-activity.html#cb9-40" tabindex="-1"></a>    <span class="at">percent_normalized_detections =</span> <span class="dv">0</span>, <span class="at">nVisits =</span> <span class="dv">245</span>,</span>
+<span id="cb9-41"><a href="vocal-activity.html#cb9-41" tabindex="-1"></a>    <span class="at">total_normalized_detections =</span> <span class="fl">0.8054608</span></span>
+<span id="cb9-42"><a href="vocal-activity.html#cb9-42" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-43"><a href="vocal-activity.html#cb9-43" tabindex="-1"></a>  <span class="fu">add_row</span>(</span>
+<span id="cb9-44"><a href="vocal-activity.html#cb9-44" tabindex="-1"></a>    <span class="at">time_of_day =</span> <span class="st">&quot;dusk&quot;</span>, <span class="at">eBird_codes =</span> <span class="st">&quot;litspi1&quot;</span>, <span class="at">detections =</span> <span class="dv">0</span>, <span class="at">scientific_name =</span> <span class="st">&quot;Arachnothera longirostra&quot;</span>, <span class="at">common_name =</span> <span class="st">&quot;Little Spiderhunter&quot;</span>, <span class="at">total_detections =</span> <span class="dv">417</span>, <span class="at">percent_detections =</span> <span class="dv">0</span>,</span>
+<span id="cb9-45"><a href="vocal-activity.html#cb9-45" tabindex="-1"></a>    <span class="at">normalized_detections =</span> <span class="dv">0</span>, <span class="at">nVisits =</span> <span class="dv">245</span>,</span>
+<span id="cb9-46"><a href="vocal-activity.html#cb9-46" tabindex="-1"></a>    <span class="at">percent_normalized_detections =</span> <span class="dv">0</span>,</span>
+<span id="cb9-47"><a href="vocal-activity.html#cb9-47" tabindex="-1"></a>    <span class="at">total_normalized_detections =</span> <span class="fl">1.423208</span></span>
+<span id="cb9-48"><a href="vocal-activity.html#cb9-48" tabindex="-1"></a>  )</span>
+<span id="cb9-49"><a href="vocal-activity.html#cb9-49" tabindex="-1"></a></span>
+<span id="cb9-50"><a href="vocal-activity.html#cb9-50" tabindex="-1"></a><span class="co"># for the sake of plotting, we will create a new variable</span></span>
+<span id="cb9-51"><a href="vocal-activity.html#cb9-51" tabindex="-1"></a>vocal_act<span class="sc">$</span>plot_percent <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(vocal_act<span class="sc">$</span>time_of_day <span class="sc">==</span> <span class="st">&quot;dusk&quot;</span>,</span>
+<span id="cb9-52"><a href="vocal-activity.html#cb9-52" tabindex="-1"></a>  <span class="sc">-</span><span class="dv">1</span> <span class="sc">*</span> vocal_act<span class="sc">$</span>percent_normalized_detections,</span>
+<span id="cb9-53"><a href="vocal-activity.html#cb9-53" tabindex="-1"></a>  vocal_act<span class="sc">$</span>percent_normalized_detections</span>
+<span id="cb9-54"><a href="vocal-activity.html#cb9-54" tabindex="-1"></a>)</span>
+<span id="cb9-55"><a href="vocal-activity.html#cb9-55" tabindex="-1"></a></span>
+<span id="cb9-56"><a href="vocal-activity.html#cb9-56" tabindex="-1"></a><span class="co"># reordering legend appearance</span></span>
+<span id="cb9-57"><a href="vocal-activity.html#cb9-57" tabindex="-1"></a>vocal_act<span class="sc">$</span>time_of_day <span class="ot">&lt;-</span> <span class="fu">factor</span>(vocal_act<span class="sc">$</span>time_of_day,</span>
+<span id="cb9-58"><a href="vocal-activity.html#cb9-58" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;dusk&quot;</span>, <span class="st">&quot;dawn&quot;</span>)</span>
+<span id="cb9-59"><a href="vocal-activity.html#cb9-59" tabindex="-1"></a>)</span>
+<span id="cb9-60"><a href="vocal-activity.html#cb9-60" tabindex="-1"></a></span>
+<span id="cb9-61"><a href="vocal-activity.html#cb9-61" tabindex="-1"></a><span class="co"># figure of percent detections</span></span>
+<span id="cb9-62"><a href="vocal-activity.html#cb9-62" tabindex="-1"></a>fig_percent_detections <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(vocal_act, <span class="fu">aes</span>(</span>
+<span id="cb9-63"><a href="vocal-activity.html#cb9-63" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">reorder</span>(common_name, plot_percent),</span>
+<span id="cb9-64"><a href="vocal-activity.html#cb9-64" tabindex="-1"></a>  <span class="at">y =</span> plot_percent,</span>
+<span id="cb9-65"><a href="vocal-activity.html#cb9-65" tabindex="-1"></a>  <span class="at">fill =</span> time_of_day</span>
+<span id="cb9-66"><a href="vocal-activity.html#cb9-66" tabindex="-1"></a>)) <span class="sc">+</span></span>
+<span id="cb9-67"><a href="vocal-activity.html#cb9-67" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">signif</span>(<span class="fu">abs</span>(plot_percent), <span class="dv">3</span>)),</span>
+<span id="cb9-68"><a href="vocal-activity.html#cb9-68" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="fu">ifelse</span>(vocal_act<span class="sc">$</span>plot_percent <span class="sc">&gt;=</span> <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb9-69"><a href="vocal-activity.html#cb9-69" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb9-70"><a href="vocal-activity.html#cb9-70" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-71"><a href="vocal-activity.html#cb9-71" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb9-72"><a href="vocal-activity.html#cb9-72" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#1b9e77&quot;</span>, <span class="st">&quot;#d95f02&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb9-73"><a href="vocal-activity.html#cb9-73" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> abs) <span class="sc">+</span></span>
+<span id="cb9-74"><a href="vocal-activity.html#cb9-74" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb9-75"><a href="vocal-activity.html#cb9-75" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-76"><a href="vocal-activity.html#cb9-76" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;% Vocal Activity&quot;</span>,</span>
+<span id="cb9-77"><a href="vocal-activity.html#cb9-77" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Species Common Name&quot;</span></span>
+<span id="cb9-78"><a href="vocal-activity.html#cb9-78" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-79"><a href="vocal-activity.html#cb9-79" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb9-80"><a href="vocal-activity.html#cb9-80" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb9-81"><a href="vocal-activity.html#cb9-81" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>), <span class="at">plot.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb9-82"><a href="vocal-activity.html#cb9-82" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb9-83"><a href="vocal-activity.html#cb9-83" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span></span>
+<span id="cb9-84"><a href="vocal-activity.html#cb9-84" tabindex="-1"></a>    ),</span>
+<span id="cb9-85"><a href="vocal-activity.html#cb9-85" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(</span>
+<span id="cb9-86"><a href="vocal-activity.html#cb9-86" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb9-87"><a href="vocal-activity.html#cb9-87" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">color =</span> <span class="st">&quot;#1b2838&quot;</span></span>
+<span id="cb9-88"><a href="vocal-activity.html#cb9-88" tabindex="-1"></a>    ),</span>
+<span id="cb9-89"><a href="vocal-activity.html#cb9-89" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb9-90"><a href="vocal-activity.html#cb9-90" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb9-91"><a href="vocal-activity.html#cb9-91" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span></span>
+<span id="cb9-92"><a href="vocal-activity.html#cb9-92" tabindex="-1"></a>    ),</span>
+<span id="cb9-93"><a href="vocal-activity.html#cb9-93" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>,</span>
+<span id="cb9-94"><a href="vocal-activity.html#cb9-94" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb9-95"><a href="vocal-activity.html#cb9-95" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>)</span>
+<span id="cb9-96"><a href="vocal-activity.html#cb9-96" tabindex="-1"></a>  )</span>
+<span id="cb9-97"><a href="vocal-activity.html#cb9-97" tabindex="-1"></a></span>
+<span id="cb9-98"><a href="vocal-activity.html#cb9-98" tabindex="-1"></a><span class="fu">ggsave</span>(fig_percent_detections, <span class="at">filename =</span> <span class="st">&quot;figs/fig_percentDetections_species.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">16</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb9-99"><a href="vocal-activity.html#cb9-99" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div>
 <div class="float">
 <img src="figs/fig_percentDetections_species.png" alt="Species-specific differences in vocal activity across dawn and dusk" />
 <div class="figcaption">Species-specific differences in vocal activity across dawn and dusk</div>
@@ -355,25 +376,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">3.4</span> Is overall vocal activity much higher at dawn compared to dusk, across species?<a href="vocal-activity.html#is-overall-vocal-activity-much-higher-at-dawn-compared-to-dusk-across-species" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="vocal-activity.html#cb10-1" tabindex="-1"></a>fig_overall_vocal_act <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span></span>
 <span id="cb10-2"><a href="vocal-activity.html#cb10-2" tabindex="-1"></a>  <span class="fu">filter</span>(time_of_day <span class="sc">==</span> <span class="st">&quot;dawn&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-3"><a href="vocal-activity.html#cb10-3" tabindex="-1"></a>  <span class="fu">ggbetweenstats</span>(<span class="at">x =</span> time_of_day,</span>
-<span id="cb10-4"><a href="vocal-activity.html#cb10-4" tabindex="-1"></a>                         <span class="at">y =</span> percent_normalized_detections,</span>
-<span id="cb10-5"><a href="vocal-activity.html#cb10-5" tabindex="-1"></a>                         <span class="at">xlab =</span> <span class="st">&quot;Time of Day&quot;</span>,</span>
-<span id="cb10-6"><a href="vocal-activity.html#cb10-6" tabindex="-1"></a>                         <span class="at">ylab =</span> <span class="st">&quot;% Overall Vocal Activity at Dawn&quot;</span>, </span>
-<span id="cb10-7"><a href="vocal-activity.html#cb10-7" tabindex="-1"></a>                         <span class="at">pairwise.display =</span> <span class="st">&quot;significant&quot;</span>,</span>
-<span id="cb10-8"><a href="vocal-activity.html#cb10-8" tabindex="-1"></a>                         <span class="at">violin.args =</span> <span class="fu">list</span>(<span class="at">width =</span> <span class="dv">0</span>),</span>
-<span id="cb10-9"><a href="vocal-activity.html#cb10-9" tabindex="-1"></a><span class="at">ggplot.component =</span> <span class="fu">list</span>(<span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb10-10"><a href="vocal-activity.html#cb10-10" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb10-11"><a href="vocal-activity.html#cb10-11" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
-<span id="cb10-12"><a href="vocal-activity.html#cb10-12" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
-<span id="cb10-13"><a href="vocal-activity.html#cb10-13" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb10-14"><a href="vocal-activity.html#cb10-14" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>)))) <span class="sc">+</span></span>
-<span id="cb10-15"><a href="vocal-activity.html#cb10-15" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
-<span id="cb10-16"><a href="vocal-activity.html#cb10-16" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#d95f02&quot;</span>,<span class="st">&quot;#1b9e77&quot;</span>))</span>
-<span id="cb10-17"><a href="vocal-activity.html#cb10-17" tabindex="-1"></a></span>
-<span id="cb10-18"><a href="vocal-activity.html#cb10-18" tabindex="-1"></a><span class="do">## Edits made to figure to show only data for dawn (since % activity is significantly higher than dusk</span></span>
-<span id="cb10-19"><a href="vocal-activity.html#cb10-19" tabindex="-1"></a></span>
-<span id="cb10-20"><a href="vocal-activity.html#cb10-20" tabindex="-1"></a><span class="fu">ggsave</span>(fig_overall_vocal_act, <span class="at">filename =</span> <span class="st">&quot;figs/fig_percentDetections_overall.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">7</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
-<span id="cb10-21"><a href="vocal-activity.html#cb10-21" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+<span id="cb10-3"><a href="vocal-activity.html#cb10-3" tabindex="-1"></a>  <span class="fu">ggbetweenstats</span>(</span>
+<span id="cb10-4"><a href="vocal-activity.html#cb10-4" tabindex="-1"></a>    <span class="at">x =</span> time_of_day,</span>
+<span id="cb10-5"><a href="vocal-activity.html#cb10-5" tabindex="-1"></a>    <span class="at">y =</span> percent_normalized_detections,</span>
+<span id="cb10-6"><a href="vocal-activity.html#cb10-6" tabindex="-1"></a>    <span class="at">xlab =</span> <span class="st">&quot;Time of Day&quot;</span>,</span>
+<span id="cb10-7"><a href="vocal-activity.html#cb10-7" tabindex="-1"></a>    <span class="at">ylab =</span> <span class="st">&quot;% Overall Vocal Activity at Dawn&quot;</span>,</span>
+<span id="cb10-8"><a href="vocal-activity.html#cb10-8" tabindex="-1"></a>    <span class="at">pairwise.display =</span> <span class="st">&quot;significant&quot;</span>,</span>
+<span id="cb10-9"><a href="vocal-activity.html#cb10-9" tabindex="-1"></a>    <span class="at">violin.args =</span> <span class="fu">list</span>(<span class="at">width =</span> <span class="dv">0</span>),</span>
+<span id="cb10-10"><a href="vocal-activity.html#cb10-10" tabindex="-1"></a>    <span class="at">ggplot.component =</span> <span class="fu">list</span>(<span class="fu">theme</span>(</span>
+<span id="cb10-11"><a href="vocal-activity.html#cb10-11" tabindex="-1"></a>      <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>), <span class="at">plot.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb10-12"><a href="vocal-activity.html#cb10-12" tabindex="-1"></a>        <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb10-13"><a href="vocal-activity.html#cb10-13" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span></span>
+<span id="cb10-14"><a href="vocal-activity.html#cb10-14" tabindex="-1"></a>      ),</span>
+<span id="cb10-15"><a href="vocal-activity.html#cb10-15" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(</span>
+<span id="cb10-16"><a href="vocal-activity.html#cb10-16" tabindex="-1"></a>        <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb10-17"><a href="vocal-activity.html#cb10-17" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">color =</span> <span class="st">&quot;#1b2838&quot;</span></span>
+<span id="cb10-18"><a href="vocal-activity.html#cb10-18" tabindex="-1"></a>      ),</span>
+<span id="cb10-19"><a href="vocal-activity.html#cb10-19" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb10-20"><a href="vocal-activity.html#cb10-20" tabindex="-1"></a>        <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb10-21"><a href="vocal-activity.html#cb10-21" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span></span>
+<span id="cb10-22"><a href="vocal-activity.html#cb10-22" tabindex="-1"></a>      )</span>
+<span id="cb10-23"><a href="vocal-activity.html#cb10-23" tabindex="-1"></a>    ))</span>
+<span id="cb10-24"><a href="vocal-activity.html#cb10-24" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-25"><a href="vocal-activity.html#cb10-25" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb10-26"><a href="vocal-activity.html#cb10-26" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#d95f02&quot;</span>, <span class="st">&quot;#1b9e77&quot;</span>))</span>
+<span id="cb10-27"><a href="vocal-activity.html#cb10-27" tabindex="-1"></a></span>
+<span id="cb10-28"><a href="vocal-activity.html#cb10-28" tabindex="-1"></a><span class="do">## Edits made to figure to show only data for dawn (since % activity is significantly higher than dusk</span></span>
+<span id="cb10-29"><a href="vocal-activity.html#cb10-29" tabindex="-1"></a></span>
+<span id="cb10-30"><a href="vocal-activity.html#cb10-30" tabindex="-1"></a><span class="fu">ggsave</span>(fig_overall_vocal_act, <span class="at">filename =</span> <span class="st">&quot;figs/fig_percentDetections_overall.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">7</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb10-31"><a href="vocal-activity.html#cb10-31" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div>
 <div class="float">
 <img src="figs/fig_percentDetections_overall.png" alt="Overall, higher vocal activity was detected at dawn compared to dusk, across species." />
 <div class="figcaption">Overall, higher vocal activity was detected at dawn compared to dusk, across species.</div>
@@ -382,33 +413,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="testing-for-differences-in-acoustic-detections-between-dawn-and-dusk" class="section level2 hasAnchor" number="3.5">
 <h2><span class="header-section-number">3.5</span> Testing for differences in acoustic detections between dawn and dusk<a href="vocal-activity.html#testing-for-differences-in-acoustic-detections-between-dawn-and-dusk" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Here, we see whether there are differences in the acoustic detections for each species between dawn and dusk.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="vocal-activity.html#cb11-1" tabindex="-1"></a>stat.test <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span>  </span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="vocal-activity.html#cb11-1" tabindex="-1"></a>stat.test <span class="ot">&lt;-</span> vocal_act <span class="sc">%&gt;%</span></span>
 <span id="cb11-2"><a href="vocal-activity.html#cb11-2" tabindex="-1"></a>  <span class="fu">pairwise_wilcox_test</span>(detections <span class="sc">~</span> time_of_day)</span>
 <span id="cb11-3"><a href="vocal-activity.html#cb11-3" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="vocal-activity.html#cb11-4" tabindex="-1"></a><span class="co"># We observe significant differences in acoustic detections across species between dawn and dusk</span></span>
 <span id="cb11-5"><a href="vocal-activity.html#cb11-5" tabindex="-1"></a></span>
 <span id="cb11-6"><a href="vocal-activity.html#cb11-6" tabindex="-1"></a><span class="co"># A tibble: 1 × 9</span></span>
 <span id="cb11-7"><a href="vocal-activity.html#cb11-7" tabindex="-1"></a><span class="co">#  .y.        group1 group2    n1    n2 statistic        p    p.adj p.adj.signif</span></span>
-<span id="cb11-8"><a href="vocal-activity.html#cb11-8" tabindex="-1"></a><span class="co"># &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;       </span></span>
-<span id="cb11-9"><a href="vocal-activity.html#cb11-9" tabindex="-1"></a><span class="co"># detections dawn   dusk      69    69     3192. 0.000549 0.000549 ***  </span></span></code></pre></div>
+<span id="cb11-8"><a href="vocal-activity.html#cb11-8" tabindex="-1"></a><span class="co"># &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;</span></span>
+<span id="cb11-9"><a href="vocal-activity.html#cb11-9" tabindex="-1"></a><span class="co"># detections dawn   dusk      69    69     3192. 0.000549 0.000549 ***</span></span></code></pre></div>
 </div>
 <div id="figure-for-publication" class="section level2 hasAnchor" number="3.6">
 <h2><span class="header-section-number">3.6</span> Figure for publication<a href="vocal-activity.html#figure-for-publication" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="vocal-activity.html#cb12-1" tabindex="-1"></a><span class="co"># Here, we will combine the above two figures created</span></span>
 <span id="cb12-2"><a href="vocal-activity.html#cb12-2" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
 <span id="cb12-3"><a href="vocal-activity.html#cb12-3" tabindex="-1"></a>fig_vocAct <span class="ot">&lt;-</span> <span class="fu">wrap_plots</span>(fig_overall_vocal_act, fig_percent_detections,</span>
-<span id="cb12-4"><a href="vocal-activity.html#cb12-4" tabindex="-1"></a>                         <span class="at">nrow =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb12-5"><a href="vocal-activity.html#cb12-5" tabindex="-1"></a>              <span class="fu">plot_annotation</span>(</span>
-<span id="cb12-6"><a href="vocal-activity.html#cb12-6" tabindex="-1"></a>      <span class="at">tag_levels =</span> <span class="st">&quot;a&quot;</span>,</span>
-<span id="cb12-7"><a href="vocal-activity.html#cb12-7" tabindex="-1"></a>      <span class="at">tag_prefix =</span> <span class="st">&quot;(&quot;</span>,</span>
-<span id="cb12-8"><a href="vocal-activity.html#cb12-8" tabindex="-1"></a>      <span class="at">tag_suffix =</span> <span class="st">&quot;)&quot;</span>) <span class="sc">+</span></span>
-<span id="cb12-9"><a href="vocal-activity.html#cb12-9" tabindex="-1"></a>   <span class="fu">plot_layout</span>(<span class="at">heights =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">8</span>))</span>
-<span id="cb12-10"><a href="vocal-activity.html#cb12-10" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="vocal-activity.html#cb12-11" tabindex="-1"></a><span class="fu">ggsave</span>(fig_vocAct, <span class="at">filename =</span> <span class="st">&quot;figs/fig01.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">20</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
-<span id="cb12-12"><a href="vocal-activity.html#cb12-12" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+<span id="cb12-4"><a href="vocal-activity.html#cb12-4" tabindex="-1"></a>  <span class="at">nrow =</span> <span class="dv">2</span></span>
+<span id="cb12-5"><a href="vocal-activity.html#cb12-5" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="vocal-activity.html#cb12-6" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb12-7"><a href="vocal-activity.html#cb12-7" tabindex="-1"></a>    <span class="at">tag_levels =</span> <span class="st">&quot;a&quot;</span>,</span>
+<span id="cb12-8"><a href="vocal-activity.html#cb12-8" tabindex="-1"></a>    <span class="at">tag_prefix =</span> <span class="st">&quot;(&quot;</span>,</span>
+<span id="cb12-9"><a href="vocal-activity.html#cb12-9" tabindex="-1"></a>    <span class="at">tag_suffix =</span> <span class="st">&quot;)&quot;</span></span>
+<span id="cb12-10"><a href="vocal-activity.html#cb12-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-11"><a href="vocal-activity.html#cb12-11" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">heights =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">8</span>))</span>
+<span id="cb12-12"><a href="vocal-activity.html#cb12-12" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="vocal-activity.html#cb12-13" tabindex="-1"></a><span class="fu">ggsave</span>(fig_vocAct, <span class="at">filename =</span> <span class="st">&quot;figs/fig01.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">20</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb12-14"><a href="vocal-activity.html#cb12-14" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div>
 <div class="float">
-<img src="figs/fig01.png" alt="Figure 1. (a) Vocal activity was significantly higher at dawn compared to dusk across a tropical bird community in the Western Ghats. (b) Species-specific vocal activity across dawn and dusk." />
-<div class="figcaption">Figure 1. (a) Vocal activity was significantly higher at dawn compared to dusk across a tropical bird community in the Western Ghats. (b) Species-specific vocal activity across dawn and dusk.</div>
+<img src="figs/fig01.png" alt="(a) Vocal activity was significantly higher at dawn compared to dusk across a tropical bird community in the Western Ghats. (b) Species-specific vocal activity across dawn and dusk." />
+<div class="figcaption">(a) Vocal activity was significantly higher at dawn compared to dusk across a tropical bird community in the Western Ghats. (b) Species-specific vocal activity across dawn and dusk.</div>
 </div>
 
 </div>

@@ -199,6 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.6" data-path="territoriality.html"><a href="territoriality.html#testing-the-differences-between-territoriality-categories-using-wilcoxon-test"><i class="fa fa-check"></i><b>7.6</b> Testing the differences between territoriality categories using Wilcoxon test</a></li>
 <li class="chapter" data-level="7.7" data-path="territoriality.html"><a href="territoriality.html#visualiation-of-detections-between-dawn-and-dusk-within-each-category-of-territoriality"><i class="fa fa-check"></i><b>7.7</b> Visualiation of % detections between dawn and dusk within each category of territoriality</a></li>
 <li class="chapter" data-level="7.8" data-path="territoriality.html"><a href="territoriality.html#comparing-dawn-vocal-activity-between-categories-of-territoriality"><i class="fa fa-check"></i><b>7.8</b> Comparing dawn vocal activity between categories of territoriality</a></li>
+<li class="chapter" data-level="7.9" data-path="territoriality.html"><a href="territoriality.html#figure-for-publication-1"><i class="fa fa-check"></i><b>7.9</b> Figure for publication</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="sociality.html"><a href="sociality.html"><i class="fa fa-check"></i><b>8</b> Sociality</a>
 <ul>
@@ -210,7 +211,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.6" data-path="sociality.html"><a href="sociality.html#testing-the-differences-between-socialiaty-categories-using-wilcoxon-test"><i class="fa fa-check"></i><b>8.6</b> Testing the differences between socialiaty categories using Wilcoxon test</a></li>
 <li class="chapter" data-level="8.7" data-path="sociality.html"><a href="sociality.html#visualization-of-detections-across-dawn-and-dusk-within-each-category-of-sociality"><i class="fa fa-check"></i><b>8.7</b> Visualization of % detections across dawn and dusk within each category of sociality</a></li>
 <li class="chapter" data-level="8.8" data-path="sociality.html"><a href="sociality.html#visualization-of-vocal-activity-at-dawn-vs.-categories-of-sociality"><i class="fa fa-check"></i><b>8.8</b> Visualization of vocal activity at dawn vs. categories of sociality</a></li>
-<li class="chapter" data-level="8.9" data-path="sociality.html"><a href="sociality.html#figure-for-publication-1"><i class="fa fa-check"></i><b>8.9</b> Figure for publication</a></li>
+<li class="chapter" data-level="8.9" data-path="sociality.html"><a href="sociality.html#figure-for-publication-2"><i class="fa fa-check"></i><b>8.9</b> Figure for publication</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="phylogenetic-generalized-least-squares-pgls-regressions.html"><a href="phylogenetic-generalized-least-squares-pgls-regressions.html"><i class="fa fa-check"></i><b>9</b> Phylogenetic Generalized Least Squares (PGLS) regressions</a>
 <ul>
@@ -274,228 +275,276 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="extract-light-availability-for-each-date" class="section level2 hasAnchor" number="5.3">
 <h2><span class="header-section-number">5.3</span> Extract light availability for each date<a href="light-availability.html#extract-light-availability-for-each-date" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="light-availability.html#cb20-1" tabindex="-1"></a><span class="co"># add longitude and latitude to acoustic_data</span></span>
-<span id="cb20-2"><a href="light-availability.html#cb20-2" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(acoustic_data, sites[,<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">5</span>)],</span>
-<span id="cb20-3"><a href="light-availability.html#cb20-3" tabindex="-1"></a>                   <span class="at">by =</span> <span class="st">&quot;site_id&quot;</span>) </span>
-<span id="cb20-4"><a href="light-availability.html#cb20-4" tabindex="-1"></a>acoustic_data<span class="sc">$</span>date <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(acoustic_data<span class="sc">$</span>date)</span>
-<span id="cb20-5"><a href="light-availability.html#cb20-5" tabindex="-1"></a><span class="fu">names</span>(acoustic_data)[<span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">11</span>)] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;lon&quot;</span>,<span class="st">&quot;lat&quot;</span>)</span>
-<span id="cb20-6"><a href="light-availability.html#cb20-6" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="light-availability.html#cb20-7" tabindex="-1"></a><span class="co"># find out what time zone needs to be provided for the sunlight calculations</span></span>
-<span id="cb20-8"><a href="light-availability.html#cb20-8" tabindex="-1"></a>acoustic_data<span class="sc">$</span>tz <span class="ot">&lt;-</span> <span class="fu">tz_lookup_coords</span>(<span class="at">lat =</span> acoustic_data<span class="sc">$</span>lat,</span>
-<span id="cb20-9"><a href="light-availability.html#cb20-9" tabindex="-1"></a>                                     <span class="at">lon =</span> acoustic_data<span class="sc">$</span>lon,</span>
-<span id="cb20-10"><a href="light-availability.html#cb20-10" tabindex="-1"></a>                                     <span class="at">method =</span> <span class="st">&quot;accurate&quot;</span>,</span>
-<span id="cb20-11"><a href="light-availability.html#cb20-11" tabindex="-1"></a>                                     <span class="at">warn =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb20-12"><a href="light-availability.html#cb20-12" tabindex="-1"></a></span>
-<span id="cb20-13"><a href="light-availability.html#cb20-13" tabindex="-1"></a><span class="co"># extract nauticalDawn, nauticalDusk, sunrise and sunset times</span></span>
-<span id="cb20-14"><a href="light-availability.html#cb20-14" tabindex="-1"></a>light_data <span class="ot">&lt;-</span> <span class="fu">getSunlightTimes</span>(<span class="at">data =</span> acoustic_data,</span>
-<span id="cb20-15"><a href="light-availability.html#cb20-15" tabindex="-1"></a>                          <span class="at">keep =</span> <span class="fu">c</span>(<span class="st">&quot;sunrise&quot;</span>,<span class="st">&quot;sunset&quot;</span>,</span>
-<span id="cb20-16"><a href="light-availability.html#cb20-16" tabindex="-1"></a>                                   <span class="st">&quot;nauticalDawn&quot;</span>, <span class="st">&quot;nauticalDusk&quot;</span>),</span>
-<span id="cb20-17"><a href="light-availability.html#cb20-17" tabindex="-1"></a>                          <span class="at">tz =</span> <span class="st">&quot;Asia/Kolkata&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(.)</span>
-<span id="cb20-18"><a href="light-availability.html#cb20-18" tabindex="-1"></a></span>
-<span id="cb20-19"><a href="light-availability.html#cb20-19" tabindex="-1"></a><span class="co"># strip dates from new columms and keep only time</span></span>
-<span id="cb20-20"><a href="light-availability.html#cb20-20" tabindex="-1"></a>light_data<span class="sc">$</span>sunrise <span class="ot">&lt;-</span> <span class="fu">as_hms</span>(light_data<span class="sc">$</span>sunrise)</span>
-<span id="cb20-21"><a href="light-availability.html#cb20-21" tabindex="-1"></a>light_data<span class="sc">$</span>sunset <span class="ot">&lt;-</span> <span class="fu">as_hms</span>(light_data<span class="sc">$</span>sunset)</span>
-<span id="cb20-22"><a href="light-availability.html#cb20-22" tabindex="-1"></a>light_data<span class="sc">$</span>nauticalDawn <span class="ot">&lt;-</span> <span class="fu">as_hms</span>(light_data<span class="sc">$</span>nauticalDawn)</span>
-<span id="cb20-23"><a href="light-availability.html#cb20-23" tabindex="-1"></a>light_data<span class="sc">$</span>nauticalDusk <span class="ot">&lt;-</span> <span class="fu">as_hms</span>(light_data<span class="sc">$</span>nauticalDusk)</span>
-<span id="cb20-24"><a href="light-availability.html#cb20-24" tabindex="-1"></a></span>
-<span id="cb20-25"><a href="light-availability.html#cb20-25" tabindex="-1"></a><span class="co"># format the start_time column in the acoustic data to keep it as the same format as light_data</span></span>
-<span id="cb20-26"><a href="light-availability.html#cb20-26" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
-<span id="cb20-27"><a href="light-availability.html#cb20-27" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="fu">across</span>(start_time, str_pad, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>))</span>
-<span id="cb20-28"><a href="light-availability.html#cb20-28" tabindex="-1"></a>acoustic_data<span class="sc">$</span>start_time<span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">strptime</span>(acoustic_data<span class="sc">$</span>start_time, </span>
-<span id="cb20-29"><a href="light-availability.html#cb20-29" tabindex="-1"></a>                         <span class="at">format =</span> <span class="st">&quot;%H%M%S&quot;</span>), <span class="at">format =</span> <span class="st">&quot;%H:%M:%S&quot;</span>)</span>
-<span id="cb20-30"><a href="light-availability.html#cb20-30" tabindex="-1"></a>acoustic_data<span class="sc">$</span>start_time <span class="ot">&lt;-</span> <span class="fu">as_hms</span>(acoustic_data<span class="sc">$</span>start_time)</span>
+<span id="cb20-2"><a href="light-availability.html#cb20-2" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(acoustic_data, sites[, <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>)],</span>
+<span id="cb20-3"><a href="light-availability.html#cb20-3" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">&quot;site_id&quot;</span></span>
+<span id="cb20-4"><a href="light-availability.html#cb20-4" tabindex="-1"></a>)</span>
+<span id="cb20-5"><a href="light-availability.html#cb20-5" tabindex="-1"></a>acoustic_data<span class="sc">$</span>date <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(acoustic_data<span class="sc">$</span>date)</span>
+<span id="cb20-6"><a href="light-availability.html#cb20-6" tabindex="-1"></a><span class="fu">names</span>(acoustic_data)[<span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">11</span>)] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;lon&quot;</span>, <span class="st">&quot;lat&quot;</span>)</span>
+<span id="cb20-7"><a href="light-availability.html#cb20-7" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="light-availability.html#cb20-8" tabindex="-1"></a><span class="co"># find out what time zone needs to be provided for the sunlight calculations</span></span>
+<span id="cb20-9"><a href="light-availability.html#cb20-9" tabindex="-1"></a>acoustic_data<span class="sc">$</span>tz <span class="ot">&lt;-</span> <span class="fu">tz_lookup_coords</span>(</span>
+<span id="cb20-10"><a href="light-availability.html#cb20-10" tabindex="-1"></a>  <span class="at">lat =</span> acoustic_data<span class="sc">$</span>lat,</span>
+<span id="cb20-11"><a href="light-availability.html#cb20-11" tabindex="-1"></a>  <span class="at">lon =</span> acoustic_data<span class="sc">$</span>lon,</span>
+<span id="cb20-12"><a href="light-availability.html#cb20-12" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;accurate&quot;</span>,</span>
+<span id="cb20-13"><a href="light-availability.html#cb20-13" tabindex="-1"></a>  <span class="at">warn =</span> <span class="cn">FALSE</span></span>
+<span id="cb20-14"><a href="light-availability.html#cb20-14" tabindex="-1"></a>)</span>
+<span id="cb20-15"><a href="light-availability.html#cb20-15" tabindex="-1"></a></span>
+<span id="cb20-16"><a href="light-availability.html#cb20-16" tabindex="-1"></a><span class="co"># extract nauticalDawn, nauticalDusk, sunrise and sunset times</span></span>
+<span id="cb20-17"><a href="light-availability.html#cb20-17" tabindex="-1"></a>light_data <span class="ot">&lt;-</span> <span class="fu">getSunlightTimes</span>(</span>
+<span id="cb20-18"><a href="light-availability.html#cb20-18" tabindex="-1"></a>  <span class="at">data =</span> acoustic_data,</span>
+<span id="cb20-19"><a href="light-availability.html#cb20-19" tabindex="-1"></a>  <span class="at">keep =</span> <span class="fu">c</span>(</span>
+<span id="cb20-20"><a href="light-availability.html#cb20-20" tabindex="-1"></a>    <span class="st">&quot;sunrise&quot;</span>, <span class="st">&quot;sunset&quot;</span>,</span>
+<span id="cb20-21"><a href="light-availability.html#cb20-21" tabindex="-1"></a>    <span class="st">&quot;nauticalDawn&quot;</span>, <span class="st">&quot;nauticalDusk&quot;</span></span>
+<span id="cb20-22"><a href="light-availability.html#cb20-22" tabindex="-1"></a>  ),</span>
+<span id="cb20-23"><a href="light-availability.html#cb20-23" tabindex="-1"></a>  <span class="at">tz =</span> <span class="st">&quot;Asia/Kolkata&quot;</span></span>
+<span id="cb20-24"><a href="light-availability.html#cb20-24" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(.)</span>
+<span id="cb20-25"><a href="light-availability.html#cb20-25" tabindex="-1"></a></span>
+<span id="cb20-26"><a href="light-availability.html#cb20-26" tabindex="-1"></a><span class="co"># strip dates from new columms and keep only time</span></span>
+<span id="cb20-27"><a href="light-availability.html#cb20-27" tabindex="-1"></a>light_data<span class="sc">$</span>sunrise <span class="ot">&lt;-</span> <span class="fu">as_hms</span>(light_data<span class="sc">$</span>sunrise)</span>
+<span id="cb20-28"><a href="light-availability.html#cb20-28" tabindex="-1"></a>light_data<span class="sc">$</span>sunset <span class="ot">&lt;-</span> <span class="fu">as_hms</span>(light_data<span class="sc">$</span>sunset)</span>
+<span id="cb20-29"><a href="light-availability.html#cb20-29" tabindex="-1"></a>light_data<span class="sc">$</span>nauticalDawn <span class="ot">&lt;-</span> <span class="fu">as_hms</span>(light_data<span class="sc">$</span>nauticalDawn)</span>
+<span id="cb20-30"><a href="light-availability.html#cb20-30" tabindex="-1"></a>light_data<span class="sc">$</span>nauticalDusk <span class="ot">&lt;-</span> <span class="fu">as_hms</span>(light_data<span class="sc">$</span>nauticalDusk)</span>
 <span id="cb20-31"><a href="light-availability.html#cb20-31" tabindex="-1"></a></span>
-<span id="cb20-32"><a href="light-availability.html#cb20-32" tabindex="-1"></a><span class="co"># summarize detections of species for every 15-min window</span></span>
+<span id="cb20-32"><a href="light-availability.html#cb20-32" tabindex="-1"></a><span class="co"># format the start_time column in the acoustic data to keep it as the same format as light_data</span></span>
 <span id="cb20-33"><a href="light-availability.html#cb20-33" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
-<span id="cb20-34"><a href="light-availability.html#cb20-34" tabindex="-1"></a>  <span class="fu">group_by</span>(site_id, date, start_time, time_of_day, eBird_codes,</span>
-<span id="cb20-35"><a href="light-availability.html#cb20-35" tabindex="-1"></a>           lon, lat, hour_of_day) <span class="sc">%&gt;%</span></span>
-<span id="cb20-36"><a href="light-availability.html#cb20-36" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">detections =</span> <span class="fu">sum</span>(number)) <span class="sc">%&gt;%</span></span>
-<span id="cb20-37"><a href="light-availability.html#cb20-37" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb20-38"><a href="light-availability.html#cb20-38" tabindex="-1"></a></span>
-<span id="cb20-39"><a href="light-availability.html#cb20-39" tabindex="-1"></a><span class="co"># join the two datasets</span></span>
-<span id="cb20-40"><a href="light-availability.html#cb20-40" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(acoustic_data, light_data,</span>
-<span id="cb20-41"><a href="light-availability.html#cb20-41" tabindex="-1"></a>                   <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;date&quot;</span>,<span class="st">&quot;lon&quot;</span>,<span class="st">&quot;lat&quot;</span>))</span>
-<span id="cb20-42"><a href="light-availability.html#cb20-42" tabindex="-1"></a></span>
-<span id="cb20-43"><a href="light-availability.html#cb20-43" tabindex="-1"></a><span class="co"># subtract times from sunrise, sunset, nauticalDawn and nauticalDusk from start_time of acoustic detections</span></span>
-<span id="cb20-44"><a href="light-availability.html#cb20-44" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
-<span id="cb20-45"><a href="light-availability.html#cb20-45" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_from_dawn =</span> <span class="fu">as.numeric</span>((start_time <span class="sc">-</span> nauticalDawn), </span>
-<span id="cb20-46"><a href="light-availability.html#cb20-46" tabindex="-1"></a>                                     <span class="at">units =</span> <span class="st">&quot;hours&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb20-47"><a href="light-availability.html#cb20-47" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_from_sunrise =</span> <span class="fu">as.numeric</span>((start_time <span class="sc">-</span> sunrise), </span>
-<span id="cb20-48"><a href="light-availability.html#cb20-48" tabindex="-1"></a>                                     <span class="at">units =</span> <span class="st">&quot;hours&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb20-49"><a href="light-availability.html#cb20-49" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_to_dusk =</span> <span class="fu">as.numeric</span>((nauticalDusk<span class="sc">-</span>start_time), </span>
-<span id="cb20-50"><a href="light-availability.html#cb20-50" tabindex="-1"></a>                                     <span class="at">units =</span> <span class="st">&quot;hours&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb20-51"><a href="light-availability.html#cb20-51" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_to_sunset =</span> <span class="fu">as.numeric</span>((sunset<span class="sc">-</span>start_time), </span>
-<span id="cb20-52"><a href="light-availability.html#cb20-52" tabindex="-1"></a>                                     <span class="at">units =</span> <span class="st">&quot;hours&quot;</span>))</span></code></pre></div>
+<span id="cb20-34"><a href="light-availability.html#cb20-34" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(start_time, str_pad, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>))</span>
+<span id="cb20-35"><a href="light-availability.html#cb20-35" tabindex="-1"></a>acoustic_data<span class="sc">$</span>start_time <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">strptime</span>(acoustic_data<span class="sc">$</span>start_time,</span>
+<span id="cb20-36"><a href="light-availability.html#cb20-36" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">&quot;%H%M%S&quot;</span></span>
+<span id="cb20-37"><a href="light-availability.html#cb20-37" tabindex="-1"></a>), <span class="at">format =</span> <span class="st">&quot;%H:%M:%S&quot;</span>)</span>
+<span id="cb20-38"><a href="light-availability.html#cb20-38" tabindex="-1"></a>acoustic_data<span class="sc">$</span>start_time <span class="ot">&lt;-</span> <span class="fu">as_hms</span>(acoustic_data<span class="sc">$</span>start_time)</span>
+<span id="cb20-39"><a href="light-availability.html#cb20-39" tabindex="-1"></a></span>
+<span id="cb20-40"><a href="light-availability.html#cb20-40" tabindex="-1"></a><span class="co"># summarize detections of species for every 15-min window</span></span>
+<span id="cb20-41"><a href="light-availability.html#cb20-41" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
+<span id="cb20-42"><a href="light-availability.html#cb20-42" tabindex="-1"></a>  <span class="fu">group_by</span>(</span>
+<span id="cb20-43"><a href="light-availability.html#cb20-43" tabindex="-1"></a>    site_id, date, start_time, time_of_day, eBird_codes,</span>
+<span id="cb20-44"><a href="light-availability.html#cb20-44" tabindex="-1"></a>    lon, lat, hour_of_day</span>
+<span id="cb20-45"><a href="light-availability.html#cb20-45" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb20-46"><a href="light-availability.html#cb20-46" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">detections =</span> <span class="fu">sum</span>(number)) <span class="sc">%&gt;%</span></span>
+<span id="cb20-47"><a href="light-availability.html#cb20-47" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb20-48"><a href="light-availability.html#cb20-48" tabindex="-1"></a></span>
+<span id="cb20-49"><a href="light-availability.html#cb20-49" tabindex="-1"></a><span class="co"># join the two datasets</span></span>
+<span id="cb20-50"><a href="light-availability.html#cb20-50" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(acoustic_data, light_data,</span>
+<span id="cb20-51"><a href="light-availability.html#cb20-51" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;date&quot;</span>, <span class="st">&quot;lon&quot;</span>, <span class="st">&quot;lat&quot;</span>)</span>
+<span id="cb20-52"><a href="light-availability.html#cb20-52" tabindex="-1"></a>)</span>
+<span id="cb20-53"><a href="light-availability.html#cb20-53" tabindex="-1"></a></span>
+<span id="cb20-54"><a href="light-availability.html#cb20-54" tabindex="-1"></a><span class="co"># subtract times from sunrise, sunset, nauticalDawn and nauticalDusk from start_time of acoustic detections</span></span>
+<span id="cb20-55"><a href="light-availability.html#cb20-55" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
+<span id="cb20-56"><a href="light-availability.html#cb20-56" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_from_dawn =</span> <span class="fu">as.numeric</span>((start_time <span class="sc">-</span> nauticalDawn),</span>
+<span id="cb20-57"><a href="light-availability.html#cb20-57" tabindex="-1"></a>    <span class="at">units =</span> <span class="st">&quot;hours&quot;</span></span>
+<span id="cb20-58"><a href="light-availability.html#cb20-58" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb20-59"><a href="light-availability.html#cb20-59" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_from_sunrise =</span> <span class="fu">as.numeric</span>((start_time <span class="sc">-</span> sunrise),</span>
+<span id="cb20-60"><a href="light-availability.html#cb20-60" tabindex="-1"></a>    <span class="at">units =</span> <span class="st">&quot;hours&quot;</span></span>
+<span id="cb20-61"><a href="light-availability.html#cb20-61" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb20-62"><a href="light-availability.html#cb20-62" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_to_dusk =</span> <span class="fu">as.numeric</span>((nauticalDusk <span class="sc">-</span> start_time),</span>
+<span id="cb20-63"><a href="light-availability.html#cb20-63" tabindex="-1"></a>    <span class="at">units =</span> <span class="st">&quot;hours&quot;</span></span>
+<span id="cb20-64"><a href="light-availability.html#cb20-64" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb20-65"><a href="light-availability.html#cb20-65" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_to_sunset =</span> <span class="fu">as.numeric</span>((sunset <span class="sc">-</span> start_time),</span>
+<span id="cb20-66"><a href="light-availability.html#cb20-66" tabindex="-1"></a>    <span class="at">units =</span> <span class="st">&quot;hours&quot;</span></span>
+<span id="cb20-67"><a href="light-availability.html#cb20-67" tabindex="-1"></a>  ))</span></code></pre></div>
 </div>
 <div id="model-acoustic-detections-as-a-function-of-light-availability" class="section level2 hasAnchor" number="5.4">
 <h2><span class="header-section-number">5.4</span> Model acoustic detections as a function of light availability<a href="light-availability.html#model-acoustic-detections-as-a-function-of-light-availability" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Here, we choose times of day as proxies for light availability (ie. nautical dawn, dusk for example).</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="light-availability.html#cb21-1" tabindex="-1"></a><span class="co"># Here, we make the assumption that light levels are fairly similar closer to dawn and closer to dusk. Hence, we model the number of acoustic detections as a function of time to dusk and time from dawn. </span></span>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="light-availability.html#cb21-1" tabindex="-1"></a><span class="co"># Here, we make the assumption that light levels are fairly similar closer to dawn and closer to dusk. Hence, we model the number of acoustic detections as a function of time to dusk and time from dawn.</span></span>
 <span id="cb21-2"><a href="light-availability.html#cb21-2" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="light-availability.html#cb21-3" tabindex="-1"></a><span class="co"># add species_codes/common_name to the above dataset</span></span>
 <span id="cb21-4"><a href="light-availability.html#cb21-4" tabindex="-1"></a>acoustic_data <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
-<span id="cb21-5"><a href="light-availability.html#cb21-5" tabindex="-1"></a>  <span class="fu">left_join</span>(., species_codes[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>)], </span>
-<span id="cb21-6"><a href="light-availability.html#cb21-6" tabindex="-1"></a>                       <span class="at">by =</span> <span class="st">&quot;eBird_codes&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb21-7"><a href="light-availability.html#cb21-7" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb21-8"><a href="light-availability.html#cb21-8" tabindex="-1"></a></span>
-<span id="cb21-9"><a href="light-availability.html#cb21-9" tabindex="-1"></a><span class="co"># visualization</span></span>
-<span id="cb21-10"><a href="light-availability.html#cb21-10" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb21-11"><a href="light-availability.html#cb21-11" tabindex="-1"></a></span>
-<span id="cb21-12"><a href="light-availability.html#cb21-12" tabindex="-1"></a><span class="co"># collect slope and other coefficient information here</span></span>
-<span id="cb21-13"><a href="light-availability.html#cb21-13" tabindex="-1"></a>metadata <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
-<span id="cb21-14"><a href="light-availability.html#cb21-14" tabindex="-1"></a></span>
-<span id="cb21-15"><a href="light-availability.html#cb21-15" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">unique</span>(acoustic_data<span class="sc">$</span>common_name))) {</span>
-<span id="cb21-16"><a href="light-availability.html#cb21-16" tabindex="-1"></a>  </span>
+<span id="cb21-5"><a href="light-availability.html#cb21-5" tabindex="-1"></a>  <span class="fu">left_join</span>(., species_codes[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>)],</span>
+<span id="cb21-6"><a href="light-availability.html#cb21-6" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">&quot;eBird_codes&quot;</span></span>
+<span id="cb21-7"><a href="light-availability.html#cb21-7" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb21-8"><a href="light-availability.html#cb21-8" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb21-9"><a href="light-availability.html#cb21-9" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="light-availability.html#cb21-10" tabindex="-1"></a><span class="co"># visualization</span></span>
+<span id="cb21-11"><a href="light-availability.html#cb21-11" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb21-12"><a href="light-availability.html#cb21-12" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="light-availability.html#cb21-13" tabindex="-1"></a><span class="co"># collect slope and other coefficient information here</span></span>
+<span id="cb21-14"><a href="light-availability.html#cb21-14" tabindex="-1"></a>metadata <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb21-15"><a href="light-availability.html#cb21-15" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="light-availability.html#cb21-16" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">unique</span>(acoustic_data<span class="sc">$</span>common_name))) {</span>
 <span id="cb21-17"><a href="light-availability.html#cb21-17" tabindex="-1"></a>  <span class="co"># extract species common_name</span></span>
 <span id="cb21-18"><a href="light-availability.html#cb21-18" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">unique</span>(acoustic_data<span class="sc">$</span>common_name)[i]</span>
-<span id="cb21-19"><a href="light-availability.html#cb21-19" tabindex="-1"></a>  </span>
+<span id="cb21-19"><a href="light-availability.html#cb21-19" tabindex="-1"></a></span>
 <span id="cb21-20"><a href="light-availability.html#cb21-20" tabindex="-1"></a>  <span class="co"># subset data for plotting</span></span>
-<span id="cb21-21"><a href="light-availability.html#cb21-21" tabindex="-1"></a>  sp <span class="ot">&lt;-</span> acoustic_data[acoustic_data<span class="sc">$</span>common_name<span class="sc">==</span>a,]</span>
-<span id="cb21-22"><a href="light-availability.html#cb21-22" tabindex="-1"></a>  </span>
+<span id="cb21-21"><a href="light-availability.html#cb21-21" tabindex="-1"></a>  sp <span class="ot">&lt;-</span> acoustic_data[acoustic_data<span class="sc">$</span>common_name <span class="sc">==</span> a, ]</span>
+<span id="cb21-22"><a href="light-availability.html#cb21-22" tabindex="-1"></a></span>
 <span id="cb21-23"><a href="light-availability.html#cb21-23" tabindex="-1"></a>  <span class="co"># bind dawn and dusk data together</span></span>
 <span id="cb21-24"><a href="light-availability.html#cb21-24" tabindex="-1"></a>  dawn <span class="ot">&lt;-</span> sp <span class="sc">%&gt;%</span></span>
-<span id="cb21-25"><a href="light-availability.html#cb21-25" tabindex="-1"></a>  <span class="fu">filter</span>(time_of_day <span class="sc">==</span> <span class="st">&quot;dawn&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb21-26"><a href="light-availability.html#cb21-26" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(detections, time_from_dawn, time_of_day) <span class="sc">%&gt;%</span></span>
-<span id="cb21-27"><a href="light-availability.html#cb21-27" tabindex="-1"></a>  <span class="fu">rename</span>(., <span class="at">time_from_startTime =</span> time_from_dawn)</span>
-<span id="cb21-28"><a href="light-availability.html#cb21-28" tabindex="-1"></a>  </span>
+<span id="cb21-25"><a href="light-availability.html#cb21-25" tabindex="-1"></a>    <span class="fu">filter</span>(time_of_day <span class="sc">==</span> <span class="st">&quot;dawn&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-26"><a href="light-availability.html#cb21-26" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(detections, time_from_dawn, time_of_day) <span class="sc">%&gt;%</span></span>
+<span id="cb21-27"><a href="light-availability.html#cb21-27" tabindex="-1"></a>    <span class="fu">rename</span>(., <span class="at">time_from_startTime =</span> time_from_dawn)</span>
+<span id="cb21-28"><a href="light-availability.html#cb21-28" tabindex="-1"></a></span>
 <span id="cb21-29"><a href="light-availability.html#cb21-29" tabindex="-1"></a>  dusk <span class="ot">&lt;-</span> sp <span class="sc">%&gt;%</span></span>
-<span id="cb21-30"><a href="light-availability.html#cb21-30" tabindex="-1"></a>  <span class="fu">filter</span>(time_of_day <span class="sc">==</span> <span class="st">&quot;dusk&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb21-31"><a href="light-availability.html#cb21-31" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(detections, time_to_dusk, time_of_day) <span class="sc">%&gt;%</span></span>
-<span id="cb21-32"><a href="light-availability.html#cb21-32" tabindex="-1"></a>  <span class="fu">rename</span>(., <span class="at">time_from_startTime =</span> time_to_dusk)</span>
-<span id="cb21-33"><a href="light-availability.html#cb21-33" tabindex="-1"></a>  </span>
+<span id="cb21-30"><a href="light-availability.html#cb21-30" tabindex="-1"></a>    <span class="fu">filter</span>(time_of_day <span class="sc">==</span> <span class="st">&quot;dusk&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-31"><a href="light-availability.html#cb21-31" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(detections, time_to_dusk, time_of_day) <span class="sc">%&gt;%</span></span>
+<span id="cb21-32"><a href="light-availability.html#cb21-32" tabindex="-1"></a>    <span class="fu">rename</span>(., <span class="at">time_from_startTime =</span> time_to_dusk)</span>
+<span id="cb21-33"><a href="light-availability.html#cb21-33" tabindex="-1"></a></span>
 <span id="cb21-34"><a href="light-availability.html#cb21-34" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(dawn, dusk)</span>
-<span id="cb21-35"><a href="light-availability.html#cb21-35" tabindex="-1"></a>  </span>
-<span id="cb21-36"><a href="light-availability.html#cb21-36" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">grouped_ggscatterstats</span>(data, </span>
-<span id="cb21-37"><a href="light-availability.html#cb21-37" tabindex="-1"></a>                <span class="at">x=</span> time_from_startTime,</span>
-<span id="cb21-38"><a href="light-availability.html#cb21-38" tabindex="-1"></a>                <span class="at">y=</span> detections,</span>
-<span id="cb21-39"><a href="light-availability.html#cb21-39" tabindex="-1"></a>                <span class="at">ylab=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st"> Number of acoustic detections&quot;</span>, </span>
-<span id="cb21-40"><a href="light-availability.html#cb21-40" tabindex="-1"></a>                <span class="at">xlab=</span><span class="st">&quot;Time to darkness</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
-<span id="cb21-41"><a href="light-availability.html#cb21-41" tabindex="-1"></a>                <span class="at">grouping.var =</span>  time_of_day,</span>
-<span id="cb21-42"><a href="light-availability.html#cb21-42" tabindex="-1"></a>                <span class="at">annotation.args =</span> <span class="fu">list</span>(<span class="at">title =</span>a),</span>
-<span id="cb21-43"><a href="light-availability.html#cb21-43" tabindex="-1"></a>                <span class="at">plotgrid.args =</span> <span class="fu">list</span>(<span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span><span class="dv">1</span>),</span>
-<span id="cb21-44"><a href="light-availability.html#cb21-44" tabindex="-1"></a>                <span class="at">ggplot.component =</span> <span class="fu">list</span>(<span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb21-45"><a href="light-availability.html#cb21-45" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb21-46"><a href="light-availability.html#cb21-46" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
-<span id="cb21-47"><a href="light-availability.html#cb21-47" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
-<span id="cb21-48"><a href="light-availability.html#cb21-48" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb21-49"><a href="light-availability.html#cb21-49" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>)))) </span>
-<span id="cb21-50"><a href="light-availability.html#cb21-50" tabindex="-1"></a>  </span>
-<span id="cb21-51"><a href="light-availability.html#cb21-51" tabindex="-1"></a>  <span class="do">## save plot object</span></span>
-<span id="cb21-52"><a href="light-availability.html#cb21-52" tabindex="-1"></a>  plots[[i]] <span class="ot">&lt;-</span> p</span>
-<span id="cb21-53"><a href="light-availability.html#cb21-53" tabindex="-1"></a>  </span>
-<span id="cb21-54"><a href="light-availability.html#cb21-54" tabindex="-1"></a>  <span class="co"># extract_stats</span></span>
-<span id="cb21-55"><a href="light-availability.html#cb21-55" tabindex="-1"></a>  dawn_metadata <span class="ot">&lt;-</span> <span class="fu">extract_stats</span>(p[[<span class="dv">1</span><span class="dt">L</span>]]) </span>
-<span id="cb21-56"><a href="light-availability.html#cb21-56" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(dawn_metadata<span class="sc">$</span>subtitle_data) <span class="sc">==</span> <span class="cn">FALSE</span>) {</span>
-<span id="cb21-57"><a href="light-availability.html#cb21-57" tabindex="-1"></a>    dawn_metadata <span class="ot">&lt;-</span> dawn_metadata<span class="sc">$</span>subtitle_data <span class="sc">%&gt;%</span></span>
-<span id="cb21-58"><a href="light-availability.html#cb21-58" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">common_name =</span>a) <span class="sc">%&gt;%</span></span>
-<span id="cb21-59"><a href="light-availability.html#cb21-59" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">time_of_day =</span> <span class="st">&quot;dawn&quot;</span>)</span>
-<span id="cb21-60"><a href="light-availability.html#cb21-60" tabindex="-1"></a>  }</span>
-<span id="cb21-61"><a href="light-availability.html#cb21-61" tabindex="-1"></a></span>
-<span id="cb21-62"><a href="light-availability.html#cb21-62" tabindex="-1"></a>  dusk_metadata <span class="ot">&lt;-</span> <span class="fu">extract_stats</span>(p[[<span class="dv">2</span><span class="dt">L</span>]]) </span>
-<span id="cb21-63"><a href="light-availability.html#cb21-63" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(dusk_metadata<span class="sc">$</span>subtitle_data) <span class="sc">==</span> <span class="cn">FALSE</span>) {</span>
-<span id="cb21-64"><a href="light-availability.html#cb21-64" tabindex="-1"></a>    dusk_metadata <span class="ot">&lt;-</span> dusk_metadata<span class="sc">$</span>subtitle_data <span class="sc">%&gt;%</span></span>
-<span id="cb21-65"><a href="light-availability.html#cb21-65" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">common_name =</span>a) <span class="sc">%&gt;%</span></span>
-<span id="cb21-66"><a href="light-availability.html#cb21-66" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">time_of_day =</span> <span class="st">&quot;dusk&quot;</span>)</span>
-<span id="cb21-67"><a href="light-availability.html#cb21-67" tabindex="-1"></a>  }</span>
-<span id="cb21-68"><a href="light-availability.html#cb21-68" tabindex="-1"></a>  </span>
-<span id="cb21-69"><a href="light-availability.html#cb21-69" tabindex="-1"></a>  <span class="do">## add the above to the metadata object</span></span>
-<span id="cb21-70"><a href="light-availability.html#cb21-70" tabindex="-1"></a>  metadata <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(metadata, dawn_metadata,</span>
-<span id="cb21-71"><a href="light-availability.html#cb21-71" tabindex="-1"></a>                        dusk_metadata)</span>
-<span id="cb21-72"><a href="light-availability.html#cb21-72" tabindex="-1"></a>}</span>
-<span id="cb21-73"><a href="light-availability.html#cb21-73" tabindex="-1"></a></span>
-<span id="cb21-74"><a href="light-availability.html#cb21-74" tabindex="-1"></a><span class="co"># save as a single pdf</span></span>
-<span id="cb21-75"><a href="light-availability.html#cb21-75" tabindex="-1"></a><span class="fu">cairo_pdf</span>(</span>
-<span id="cb21-76"><a href="light-availability.html#cb21-76" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">&quot;figs/acoustic-detections-time-to-darkness.pdf&quot;</span>,</span>
-<span id="cb21-77"><a href="light-availability.html#cb21-77" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">13</span>, <span class="at">height =</span> <span class="dv">12</span>,</span>
-<span id="cb21-78"><a href="light-availability.html#cb21-78" tabindex="-1"></a>  <span class="at">onefile =</span> <span class="cn">TRUE</span></span>
-<span id="cb21-79"><a href="light-availability.html#cb21-79" tabindex="-1"></a>)</span>
-<span id="cb21-80"><a href="light-availability.html#cb21-80" tabindex="-1"></a>plots</span>
-<span id="cb21-81"><a href="light-availability.html#cb21-81" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
-<span id="cb21-82"><a href="light-availability.html#cb21-82" tabindex="-1"></a></span>
-<span id="cb21-83"><a href="light-availability.html#cb21-83" tabindex="-1"></a><span class="co"># write metadata to file</span></span>
-<span id="cb21-84"><a href="light-availability.html#cb21-84" tabindex="-1"></a>metadata <span class="ot">&lt;-</span> <span class="fu">apply</span>(metadata, <span class="dv">2</span>, as.character)</span>
-<span id="cb21-85"><a href="light-availability.html#cb21-85" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">data.frame</span>(metadata), <span class="st">&quot;results/metadata-detections-lightAvailability-correlations.csv&quot;</span>,      <span class="at">row.names =</span> F)</span></code></pre></div>
+<span id="cb21-35"><a href="light-availability.html#cb21-35" tabindex="-1"></a></span>
+<span id="cb21-36"><a href="light-availability.html#cb21-36" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">grouped_ggscatterstats</span>(data,</span>
+<span id="cb21-37"><a href="light-availability.html#cb21-37" tabindex="-1"></a>    <span class="at">x =</span> time_from_startTime,</span>
+<span id="cb21-38"><a href="light-availability.html#cb21-38" tabindex="-1"></a>    <span class="at">y =</span> detections,</span>
+<span id="cb21-39"><a href="light-availability.html#cb21-39" tabindex="-1"></a>    <span class="at">ylab =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st"> Number of acoustic detections&quot;</span>,</span>
+<span id="cb21-40"><a href="light-availability.html#cb21-40" tabindex="-1"></a>    <span class="at">xlab =</span> <span class="st">&quot;Time to darkness</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb21-41"><a href="light-availability.html#cb21-41" tabindex="-1"></a>    <span class="at">grouping.var =</span> time_of_day,</span>
+<span id="cb21-42"><a href="light-availability.html#cb21-42" tabindex="-1"></a>    <span class="at">annotation.args =</span> <span class="fu">list</span>(<span class="at">title =</span> a),</span>
+<span id="cb21-43"><a href="light-availability.html#cb21-43" tabindex="-1"></a>    <span class="at">plotgrid.args =</span> <span class="fu">list</span>(<span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">1</span>),</span>
+<span id="cb21-44"><a href="light-availability.html#cb21-44" tabindex="-1"></a>    <span class="at">ggplot.component =</span> <span class="fu">list</span>(<span class="fu">theme</span>(</span>
+<span id="cb21-45"><a href="light-availability.html#cb21-45" tabindex="-1"></a>      <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>), <span class="at">plot.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb21-46"><a href="light-availability.html#cb21-46" tabindex="-1"></a>        <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb21-47"><a href="light-availability.html#cb21-47" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span></span>
+<span id="cb21-48"><a href="light-availability.html#cb21-48" tabindex="-1"></a>      ),</span>
+<span id="cb21-49"><a href="light-availability.html#cb21-49" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(</span>
+<span id="cb21-50"><a href="light-availability.html#cb21-50" tabindex="-1"></a>        <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb21-51"><a href="light-availability.html#cb21-51" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">color =</span> <span class="st">&quot;#1b2838&quot;</span></span>
+<span id="cb21-52"><a href="light-availability.html#cb21-52" tabindex="-1"></a>      ),</span>
+<span id="cb21-53"><a href="light-availability.html#cb21-53" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb21-54"><a href="light-availability.html#cb21-54" tabindex="-1"></a>        <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb21-55"><a href="light-availability.html#cb21-55" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span></span>
+<span id="cb21-56"><a href="light-availability.html#cb21-56" tabindex="-1"></a>      )</span>
+<span id="cb21-57"><a href="light-availability.html#cb21-57" tabindex="-1"></a>    ))</span>
+<span id="cb21-58"><a href="light-availability.html#cb21-58" tabindex="-1"></a>  )</span>
+<span id="cb21-59"><a href="light-availability.html#cb21-59" tabindex="-1"></a></span>
+<span id="cb21-60"><a href="light-availability.html#cb21-60" tabindex="-1"></a>  <span class="do">## save plot object</span></span>
+<span id="cb21-61"><a href="light-availability.html#cb21-61" tabindex="-1"></a>  plots[[i]] <span class="ot">&lt;-</span> p</span>
+<span id="cb21-62"><a href="light-availability.html#cb21-62" tabindex="-1"></a></span>
+<span id="cb21-63"><a href="light-availability.html#cb21-63" tabindex="-1"></a>  <span class="co"># extract_stats</span></span>
+<span id="cb21-64"><a href="light-availability.html#cb21-64" tabindex="-1"></a>  dawn_metadata <span class="ot">&lt;-</span> <span class="fu">extract_stats</span>(p[[<span class="dv">1</span><span class="dt">L</span>]])</span>
+<span id="cb21-65"><a href="light-availability.html#cb21-65" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(dawn_metadata<span class="sc">$</span>subtitle_data) <span class="sc">==</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb21-66"><a href="light-availability.html#cb21-66" tabindex="-1"></a>    dawn_metadata <span class="ot">&lt;-</span> dawn_metadata<span class="sc">$</span>subtitle_data <span class="sc">%&gt;%</span></span>
+<span id="cb21-67"><a href="light-availability.html#cb21-67" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">common_name =</span> a) <span class="sc">%&gt;%</span></span>
+<span id="cb21-68"><a href="light-availability.html#cb21-68" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">time_of_day =</span> <span class="st">&quot;dawn&quot;</span>)</span>
+<span id="cb21-69"><a href="light-availability.html#cb21-69" tabindex="-1"></a>  }</span>
+<span id="cb21-70"><a href="light-availability.html#cb21-70" tabindex="-1"></a></span>
+<span id="cb21-71"><a href="light-availability.html#cb21-71" tabindex="-1"></a>  dusk_metadata <span class="ot">&lt;-</span> <span class="fu">extract_stats</span>(p[[<span class="dv">2</span><span class="dt">L</span>]])</span>
+<span id="cb21-72"><a href="light-availability.html#cb21-72" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(dusk_metadata<span class="sc">$</span>subtitle_data) <span class="sc">==</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb21-73"><a href="light-availability.html#cb21-73" tabindex="-1"></a>    dusk_metadata <span class="ot">&lt;-</span> dusk_metadata<span class="sc">$</span>subtitle_data <span class="sc">%&gt;%</span></span>
+<span id="cb21-74"><a href="light-availability.html#cb21-74" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">common_name =</span> a) <span class="sc">%&gt;%</span></span>
+<span id="cb21-75"><a href="light-availability.html#cb21-75" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">time_of_day =</span> <span class="st">&quot;dusk&quot;</span>)</span>
+<span id="cb21-76"><a href="light-availability.html#cb21-76" tabindex="-1"></a>  }</span>
+<span id="cb21-77"><a href="light-availability.html#cb21-77" tabindex="-1"></a></span>
+<span id="cb21-78"><a href="light-availability.html#cb21-78" tabindex="-1"></a>  <span class="do">## add the above to the metadata object</span></span>
+<span id="cb21-79"><a href="light-availability.html#cb21-79" tabindex="-1"></a>  metadata <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb21-80"><a href="light-availability.html#cb21-80" tabindex="-1"></a>    metadata, dawn_metadata,</span>
+<span id="cb21-81"><a href="light-availability.html#cb21-81" tabindex="-1"></a>    dusk_metadata</span>
+<span id="cb21-82"><a href="light-availability.html#cb21-82" tabindex="-1"></a>  )</span>
+<span id="cb21-83"><a href="light-availability.html#cb21-83" tabindex="-1"></a>}</span>
+<span id="cb21-84"><a href="light-availability.html#cb21-84" tabindex="-1"></a></span>
+<span id="cb21-85"><a href="light-availability.html#cb21-85" tabindex="-1"></a><span class="co"># save as a single pdf</span></span>
+<span id="cb21-86"><a href="light-availability.html#cb21-86" tabindex="-1"></a><span class="fu">cairo_pdf</span>(</span>
+<span id="cb21-87"><a href="light-availability.html#cb21-87" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">&quot;figs/acoustic-detections-time-to-darkness.pdf&quot;</span>,</span>
+<span id="cb21-88"><a href="light-availability.html#cb21-88" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">13</span>, <span class="at">height =</span> <span class="dv">12</span>,</span>
+<span id="cb21-89"><a href="light-availability.html#cb21-89" tabindex="-1"></a>  <span class="at">onefile =</span> <span class="cn">TRUE</span></span>
+<span id="cb21-90"><a href="light-availability.html#cb21-90" tabindex="-1"></a>)</span>
+<span id="cb21-91"><a href="light-availability.html#cb21-91" tabindex="-1"></a>plots</span>
+<span id="cb21-92"><a href="light-availability.html#cb21-92" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb21-93"><a href="light-availability.html#cb21-93" tabindex="-1"></a></span>
+<span id="cb21-94"><a href="light-availability.html#cb21-94" tabindex="-1"></a><span class="co"># write metadata to file</span></span>
+<span id="cb21-95"><a href="light-availability.html#cb21-95" tabindex="-1"></a>metadata <span class="ot">&lt;-</span> <span class="fu">apply</span>(metadata, <span class="dv">2</span>, as.character)</span>
+<span id="cb21-96"><a href="light-availability.html#cb21-96" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">data.frame</span>(metadata), <span class="st">&quot;results/metadata-detections-lightAvailability-correlations.csv&quot;</span>, <span class="at">row.names =</span> F)</span></code></pre></div>
 </div>
 <div id="visualization-of-timing-of-vocalization" class="section level2 hasAnchor" number="5.5">
 <h2><span class="header-section-number">5.5</span> Visualization of timing of vocalization<a href="light-availability.html#visualization-of-timing-of-vocalization" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="light-availability.html#cb22-1" tabindex="-1"></a><span class="co"># sampling effort by hour_of_day</span></span>
 <span id="cb22-2"><a href="light-availability.html#cb22-2" tabindex="-1"></a>effort <span class="ot">&lt;-</span> acoustic_data <span class="sc">%&gt;%</span></span>
-<span id="cb22-3"><a href="light-availability.html#cb22-3" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(site_id, date, hour_of_day) <span class="sc">%&gt;%</span></span>
-<span id="cb22-4"><a href="light-availability.html#cb22-4" tabindex="-1"></a>    <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb22-5"><a href="light-availability.html#cb22-5" tabindex="-1"></a>    <span class="fu">arrange</span>(hour_of_day) <span class="sc">%&gt;%</span></span>
-<span id="cb22-6"><a href="light-availability.html#cb22-6" tabindex="-1"></a>    <span class="fu">count</span>(hour_of_day) <span class="sc">%&gt;%</span></span>
-<span id="cb22-7"><a href="light-availability.html#cb22-7" tabindex="-1"></a>    <span class="fu">rename</span>(., <span class="at">nVisits =</span> n)</span>
+<span id="cb22-3"><a href="light-availability.html#cb22-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(site_id, date, hour_of_day) <span class="sc">%&gt;%</span></span>
+<span id="cb22-4"><a href="light-availability.html#cb22-4" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb22-5"><a href="light-availability.html#cb22-5" tabindex="-1"></a>  <span class="fu">arrange</span>(hour_of_day) <span class="sc">%&gt;%</span></span>
+<span id="cb22-6"><a href="light-availability.html#cb22-6" tabindex="-1"></a>  <span class="fu">count</span>(hour_of_day) <span class="sc">%&gt;%</span></span>
+<span id="cb22-7"><a href="light-availability.html#cb22-7" tabindex="-1"></a>  <span class="fu">rename</span>(., <span class="at">nVisits =</span> n)</span>
 <span id="cb22-8"><a href="light-availability.html#cb22-8" tabindex="-1"></a></span>
 <span id="cb22-9"><a href="light-availability.html#cb22-9" tabindex="-1"></a><span class="co"># visualization</span></span>
 <span id="cb22-10"><a href="light-availability.html#cb22-10" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
 <span id="cb22-11"><a href="light-availability.html#cb22-11" tabindex="-1"></a></span>
-<span id="cb22-12"><a href="light-availability.html#cb22-12" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">unique</span>(acoustic_data<span class="sc">$</span>common_name))) {</span>
-<span id="cb22-13"><a href="light-availability.html#cb22-13" tabindex="-1"></a>  </span>
-<span id="cb22-14"><a href="light-availability.html#cb22-14" tabindex="-1"></a>  <span class="co"># extract species common_name</span></span>
-<span id="cb22-15"><a href="light-availability.html#cb22-15" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">unique</span>(acoustic_data<span class="sc">$</span>common_name)[i]</span>
-<span id="cb22-16"><a href="light-availability.html#cb22-16" tabindex="-1"></a>  </span>
-<span id="cb22-17"><a href="light-availability.html#cb22-17" tabindex="-1"></a>  <span class="co"># subset data for plotting</span></span>
-<span id="cb22-18"><a href="light-availability.html#cb22-18" tabindex="-1"></a>  sp <span class="ot">&lt;-</span> acoustic_data[acoustic_data<span class="sc">$</span>common_name<span class="sc">==</span>a,] <span class="sc">%&gt;%</span></span>
-<span id="cb22-19"><a href="light-availability.html#cb22-19" tabindex="-1"></a>    <span class="fu">group_by</span>(hour_of_day) <span class="sc">%&gt;%</span></span>
-<span id="cb22-20"><a href="light-availability.html#cb22-20" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">detections =</span> <span class="fu">sum</span>(detections)) <span class="sc">%&gt;%</span></span>
-<span id="cb22-21"><a href="light-availability.html#cb22-21" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">total_detections =</span><span class="fu">sum</span>(detections)) <span class="sc">%&gt;%</span></span>
-<span id="cb22-22"><a href="light-availability.html#cb22-22" tabindex="-1"></a>    <span class="fu">ungroup</span>() </span>
-<span id="cb22-23"><a href="light-availability.html#cb22-23" tabindex="-1"></a>  </span>
-<span id="cb22-24"><a href="light-availability.html#cb22-24" tabindex="-1"></a>  <span class="co"># normalize for sampling effort</span></span>
-<span id="cb22-25"><a href="light-availability.html#cb22-25" tabindex="-1"></a>  sp <span class="ot">&lt;-</span> <span class="fu">left_join</span>(sp, effort, <span class="at">by =</span> <span class="st">&quot;hour_of_day&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb22-26"><a href="light-availability.html#cb22-26" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">normalized_detections =</span> (detections<span class="sc">/</span>nVisits)) <span class="sc">%&gt;%</span></span>
-<span id="cb22-27"><a href="light-availability.html#cb22-27" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_normalized_detections =</span> <span class="fu">sum</span>(normalized_detections)) <span class="sc">%&gt;%</span></span>
-<span id="cb22-28"><a href="light-availability.html#cb22-28" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_normalized_detections =</span> (normalized_detections<span class="sc">/</span>total_normalized_detections)<span class="sc">*</span><span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb22-29"><a href="light-availability.html#cb22-29" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb22-30"><a href="light-availability.html#cb22-30" tabindex="-1"></a>  </span>
-<span id="cb22-31"><a href="light-availability.html#cb22-31" tabindex="-1"></a>    <span class="co"># add a break/no data for mid-day</span></span>
-<span id="cb22-32"><a href="light-availability.html#cb22-32" tabindex="-1"></a>  sp <span class="ot">&lt;-</span> sp <span class="sc">%&gt;%</span></span>
-<span id="cb22-33"><a href="light-availability.html#cb22-33" tabindex="-1"></a>    <span class="fu">add_row</span>(<span class="at">hour_of_day =</span> <span class="st">&quot;Mid-day&quot;</span>,</span>
-<span id="cb22-34"><a href="light-availability.html#cb22-34" tabindex="-1"></a>            <span class="at">nVisits =</span> <span class="dv">0</span>, </span>
-<span id="cb22-35"><a href="light-availability.html#cb22-35" tabindex="-1"></a>            <span class="at">detections =</span> <span class="dv">0</span>,</span>
-<span id="cb22-36"><a href="light-availability.html#cb22-36" tabindex="-1"></a>            <span class="at">total_detections =</span> <span class="dv">0</span>,</span>
-<span id="cb22-37"><a href="light-availability.html#cb22-37" tabindex="-1"></a>            <span class="at">normalized_detections =</span> <span class="dv">0</span>,</span>
-<span id="cb22-38"><a href="light-availability.html#cb22-38" tabindex="-1"></a>            <span class="at">total_normalized_detections =</span> <span class="dv">0</span>,</span>
-<span id="cb22-39"><a href="light-availability.html#cb22-39" tabindex="-1"></a>            <span class="at">percent_normalized_detections =</span> <span class="dv">0</span>)</span>
-<span id="cb22-40"><a href="light-availability.html#cb22-40" tabindex="-1"></a>  </span>
-<span id="cb22-41"><a href="light-availability.html#cb22-41" tabindex="-1"></a>  <span class="co"># reordering factors for plotting</span></span>
-<span id="cb22-42"><a href="light-availability.html#cb22-42" tabindex="-1"></a>  sp<span class="sc">$</span>hour_of_day <span class="ot">&lt;-</span> <span class="fu">factor</span>(sp<span class="sc">$</span>hour_of_day, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;6AM to 7AM&quot;</span>, </span>
-<span id="cb22-43"><a href="light-availability.html#cb22-43" tabindex="-1"></a>                                                      <span class="st">&quot;7AM to 8AM&quot;</span>, </span>
-<span id="cb22-44"><a href="light-availability.html#cb22-44" tabindex="-1"></a>                                                      <span class="st">&quot;8AM to 9AM&quot;</span>,</span>
-<span id="cb22-45"><a href="light-availability.html#cb22-45" tabindex="-1"></a>                                                      <span class="st">&quot;9AM to 10AM&quot;</span>,</span>
-<span id="cb22-46"><a href="light-availability.html#cb22-46" tabindex="-1"></a>                                                      <span class="st">&quot;Mid-day&quot;</span>,</span>
-<span id="cb22-47"><a href="light-availability.html#cb22-47" tabindex="-1"></a>                                                      <span class="st">&quot;4PM to 5PM&quot;</span>,</span>
-<span id="cb22-48"><a href="light-availability.html#cb22-48" tabindex="-1"></a>                                                      <span class="st">&quot;5PM to 6PM&quot;</span>,</span>
-<span id="cb22-49"><a href="light-availability.html#cb22-49" tabindex="-1"></a>                                                      <span class="st">&quot;6PM to 7PM&quot;</span>))</span>
-<span id="cb22-50"><a href="light-availability.html#cb22-50" tabindex="-1"></a></span>
-<span id="cb22-51"><a href="light-availability.html#cb22-51" tabindex="-1"></a>  plots[[i]] <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sp, <span class="fu">aes</span>(<span class="at">x=</span>hour_of_day, </span>
-<span id="cb22-52"><a href="light-availability.html#cb22-52" tabindex="-1"></a>                        <span class="at">y=</span>percent_normalized_detections)) <span class="sc">+</span>  </span>
-<span id="cb22-53"><a href="light-availability.html#cb22-53" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(), </span>
-<span id="cb22-54"><a href="light-availability.html#cb22-54" tabindex="-1"></a>           <span class="at">fill =</span> <span class="st">&quot;#883107&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span> </span>
-<span id="cb22-55"><a href="light-availability.html#cb22-55" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(percent_normalized_detections <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
-<span id="cb22-56"><a href="light-availability.html#cb22-56" tabindex="-1"></a>                               <span class="fu">round</span>(percent_normalized_detections, <span class="dv">1</span>), <span class="st">&quot;&quot;</span>),</span>
-<span id="cb22-57"><a href="light-availability.html#cb22-57" tabindex="-1"></a>                <span class="at">hjust =</span> <span class="st">&quot;middle&quot;</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>),</span>
-<span id="cb22-58"><a href="light-availability.html#cb22-58" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_dodge</span>(), <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
-<span id="cb22-59"><a href="light-availability.html#cb22-59" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb22-60"><a href="light-availability.html#cb22-60" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> a,</span>
-<span id="cb22-61"><a href="light-availability.html#cb22-61" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Each bar represents the percent detections (normalized for sampling effort) across dawn and dusk&quot;</span>,</span>
-<span id="cb22-62"><a href="light-availability.html#cb22-62" tabindex="-1"></a>    <span class="at">y=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st"> %acoustic detections&quot;</span>, </span>
-<span id="cb22-63"><a href="light-availability.html#cb22-63" tabindex="-1"></a>       <span class="at">x=</span><span class="st">&quot;Time of Day</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
-<span id="cb22-64"><a href="light-availability.html#cb22-64" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb22-65"><a href="light-availability.html#cb22-65" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb22-66"><a href="light-availability.html#cb22-66" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
-<span id="cb22-67"><a href="light-availability.html#cb22-67" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;italic&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
-<span id="cb22-68"><a href="light-availability.html#cb22-68" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
-<span id="cb22-69"><a href="light-availability.html#cb22-69" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>))</span>
-<span id="cb22-70"><a href="light-availability.html#cb22-70" tabindex="-1"></a>}</span>
-<span id="cb22-71"><a href="light-availability.html#cb22-71" tabindex="-1"></a></span>
-<span id="cb22-72"><a href="light-availability.html#cb22-72" tabindex="-1"></a><span class="co"># save as a single pdf</span></span>
-<span id="cb22-73"><a href="light-availability.html#cb22-73" tabindex="-1"></a><span class="fu">cairo_pdf</span>(</span>
-<span id="cb22-74"><a href="light-availability.html#cb22-74" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">&quot;figs/acoustic-detections-hour-of-day.pdf&quot;</span>,</span>
-<span id="cb22-75"><a href="light-availability.html#cb22-75" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">13</span>, <span class="at">height =</span> <span class="dv">12</span>,</span>
-<span id="cb22-76"><a href="light-availability.html#cb22-76" tabindex="-1"></a>  <span class="at">onefile =</span> <span class="cn">TRUE</span></span>
-<span id="cb22-77"><a href="light-availability.html#cb22-77" tabindex="-1"></a>)</span>
-<span id="cb22-78"><a href="light-availability.html#cb22-78" tabindex="-1"></a>plots</span>
-<span id="cb22-79"><a href="light-availability.html#cb22-79" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div>
+<span id="cb22-12"><a href="light-availability.html#cb22-12" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">unique</span>(acoustic_data<span class="sc">$</span>common_name))) {</span>
+<span id="cb22-13"><a href="light-availability.html#cb22-13" tabindex="-1"></a>  <span class="co"># extract species common_name</span></span>
+<span id="cb22-14"><a href="light-availability.html#cb22-14" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">unique</span>(acoustic_data<span class="sc">$</span>common_name)[i]</span>
+<span id="cb22-15"><a href="light-availability.html#cb22-15" tabindex="-1"></a></span>
+<span id="cb22-16"><a href="light-availability.html#cb22-16" tabindex="-1"></a>  <span class="co"># subset data for plotting</span></span>
+<span id="cb22-17"><a href="light-availability.html#cb22-17" tabindex="-1"></a>  sp <span class="ot">&lt;-</span> acoustic_data[acoustic_data<span class="sc">$</span>common_name <span class="sc">==</span> a, ] <span class="sc">%&gt;%</span></span>
+<span id="cb22-18"><a href="light-availability.html#cb22-18" tabindex="-1"></a>    <span class="fu">group_by</span>(hour_of_day) <span class="sc">%&gt;%</span></span>
+<span id="cb22-19"><a href="light-availability.html#cb22-19" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">detections =</span> <span class="fu">sum</span>(detections)) <span class="sc">%&gt;%</span></span>
+<span id="cb22-20"><a href="light-availability.html#cb22-20" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">total_detections =</span> <span class="fu">sum</span>(detections)) <span class="sc">%&gt;%</span></span>
+<span id="cb22-21"><a href="light-availability.html#cb22-21" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
+<span id="cb22-22"><a href="light-availability.html#cb22-22" tabindex="-1"></a></span>
+<span id="cb22-23"><a href="light-availability.html#cb22-23" tabindex="-1"></a>  <span class="co"># normalize for sampling effort</span></span>
+<span id="cb22-24"><a href="light-availability.html#cb22-24" tabindex="-1"></a>  sp <span class="ot">&lt;-</span> <span class="fu">left_join</span>(sp, effort, <span class="at">by =</span> <span class="st">&quot;hour_of_day&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-25"><a href="light-availability.html#cb22-25" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">normalized_detections =</span> (detections <span class="sc">/</span> nVisits)) <span class="sc">%&gt;%</span></span>
+<span id="cb22-26"><a href="light-availability.html#cb22-26" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">total_normalized_detections =</span> <span class="fu">sum</span>(normalized_detections)) <span class="sc">%&gt;%</span></span>
+<span id="cb22-27"><a href="light-availability.html#cb22-27" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">percent_normalized_detections =</span> (normalized_detections <span class="sc">/</span> total_normalized_detections) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-28"><a href="light-availability.html#cb22-28" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
+<span id="cb22-29"><a href="light-availability.html#cb22-29" tabindex="-1"></a></span>
+<span id="cb22-30"><a href="light-availability.html#cb22-30" tabindex="-1"></a>  <span class="co"># add a break/no data for mid-day</span></span>
+<span id="cb22-31"><a href="light-availability.html#cb22-31" tabindex="-1"></a>  sp <span class="ot">&lt;-</span> sp <span class="sc">%&gt;%</span></span>
+<span id="cb22-32"><a href="light-availability.html#cb22-32" tabindex="-1"></a>    <span class="fu">add_row</span>(</span>
+<span id="cb22-33"><a href="light-availability.html#cb22-33" tabindex="-1"></a>      <span class="at">hour_of_day =</span> <span class="st">&quot;Mid-day&quot;</span>,</span>
+<span id="cb22-34"><a href="light-availability.html#cb22-34" tabindex="-1"></a>      <span class="at">nVisits =</span> <span class="dv">0</span>,</span>
+<span id="cb22-35"><a href="light-availability.html#cb22-35" tabindex="-1"></a>      <span class="at">detections =</span> <span class="dv">0</span>,</span>
+<span id="cb22-36"><a href="light-availability.html#cb22-36" tabindex="-1"></a>      <span class="at">total_detections =</span> <span class="dv">0</span>,</span>
+<span id="cb22-37"><a href="light-availability.html#cb22-37" tabindex="-1"></a>      <span class="at">normalized_detections =</span> <span class="dv">0</span>,</span>
+<span id="cb22-38"><a href="light-availability.html#cb22-38" tabindex="-1"></a>      <span class="at">total_normalized_detections =</span> <span class="dv">0</span>,</span>
+<span id="cb22-39"><a href="light-availability.html#cb22-39" tabindex="-1"></a>      <span class="at">percent_normalized_detections =</span> <span class="dv">0</span></span>
+<span id="cb22-40"><a href="light-availability.html#cb22-40" tabindex="-1"></a>    )</span>
+<span id="cb22-41"><a href="light-availability.html#cb22-41" tabindex="-1"></a></span>
+<span id="cb22-42"><a href="light-availability.html#cb22-42" tabindex="-1"></a>  <span class="co"># reordering factors for plotting</span></span>
+<span id="cb22-43"><a href="light-availability.html#cb22-43" tabindex="-1"></a>  sp<span class="sc">$</span>hour_of_day <span class="ot">&lt;-</span> <span class="fu">factor</span>(sp<span class="sc">$</span>hour_of_day, <span class="at">levels =</span> <span class="fu">c</span>(</span>
+<span id="cb22-44"><a href="light-availability.html#cb22-44" tabindex="-1"></a>    <span class="st">&quot;6AM to 7AM&quot;</span>,</span>
+<span id="cb22-45"><a href="light-availability.html#cb22-45" tabindex="-1"></a>    <span class="st">&quot;7AM to 8AM&quot;</span>,</span>
+<span id="cb22-46"><a href="light-availability.html#cb22-46" tabindex="-1"></a>    <span class="st">&quot;8AM to 9AM&quot;</span>,</span>
+<span id="cb22-47"><a href="light-availability.html#cb22-47" tabindex="-1"></a>    <span class="st">&quot;9AM to 10AM&quot;</span>,</span>
+<span id="cb22-48"><a href="light-availability.html#cb22-48" tabindex="-1"></a>    <span class="st">&quot;Mid-day&quot;</span>,</span>
+<span id="cb22-49"><a href="light-availability.html#cb22-49" tabindex="-1"></a>    <span class="st">&quot;4PM to 5PM&quot;</span>,</span>
+<span id="cb22-50"><a href="light-availability.html#cb22-50" tabindex="-1"></a>    <span class="st">&quot;5PM to 6PM&quot;</span>,</span>
+<span id="cb22-51"><a href="light-availability.html#cb22-51" tabindex="-1"></a>    <span class="st">&quot;6PM to 7PM&quot;</span></span>
+<span id="cb22-52"><a href="light-availability.html#cb22-52" tabindex="-1"></a>  ))</span>
+<span id="cb22-53"><a href="light-availability.html#cb22-53" tabindex="-1"></a></span>
+<span id="cb22-54"><a href="light-availability.html#cb22-54" tabindex="-1"></a>  plots[[i]] <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sp, <span class="fu">aes</span>(</span>
+<span id="cb22-55"><a href="light-availability.html#cb22-55" tabindex="-1"></a>    <span class="at">x =</span> hour_of_day,</span>
+<span id="cb22-56"><a href="light-availability.html#cb22-56" tabindex="-1"></a>    <span class="at">y =</span> percent_normalized_detections</span>
+<span id="cb22-57"><a href="light-availability.html#cb22-57" tabindex="-1"></a>  )) <span class="sc">+</span></span>
+<span id="cb22-58"><a href="light-availability.html#cb22-58" tabindex="-1"></a>    <span class="fu">geom_bar</span>(</span>
+<span id="cb22-59"><a href="light-availability.html#cb22-59" tabindex="-1"></a>      <span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(),</span>
+<span id="cb22-60"><a href="light-availability.html#cb22-60" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">&quot;#883107&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.9</span></span>
+<span id="cb22-61"><a href="light-availability.html#cb22-61" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb22-62"><a href="light-availability.html#cb22-62" tabindex="-1"></a>    <span class="fu">geom_text</span>(</span>
+<span id="cb22-63"><a href="light-availability.html#cb22-63" tabindex="-1"></a>      <span class="fu">aes</span>(</span>
+<span id="cb22-64"><a href="light-availability.html#cb22-64" tabindex="-1"></a>        <span class="at">label =</span> <span class="fu">ifelse</span>(percent_normalized_detections <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb22-65"><a href="light-availability.html#cb22-65" tabindex="-1"></a>          <span class="fu">round</span>(percent_normalized_detections, <span class="dv">1</span>), <span class="st">&quot;&quot;</span></span>
+<span id="cb22-66"><a href="light-availability.html#cb22-66" tabindex="-1"></a>        ),</span>
+<span id="cb22-67"><a href="light-availability.html#cb22-67" tabindex="-1"></a>        <span class="at">hjust =</span> <span class="st">&quot;middle&quot;</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span></span>
+<span id="cb22-68"><a href="light-availability.html#cb22-68" tabindex="-1"></a>      ),</span>
+<span id="cb22-69"><a href="light-availability.html#cb22-69" tabindex="-1"></a>      <span class="at">position =</span> <span class="fu">position_dodge</span>(), <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">5</span></span>
+<span id="cb22-70"><a href="light-availability.html#cb22-70" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb22-71"><a href="light-availability.html#cb22-71" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb22-72"><a href="light-availability.html#cb22-72" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb22-73"><a href="light-availability.html#cb22-73" tabindex="-1"></a>      <span class="at">title =</span> a,</span>
+<span id="cb22-74"><a href="light-availability.html#cb22-74" tabindex="-1"></a>      <span class="at">subtitle =</span> <span class="st">&quot;Each bar represents the percent detections (normalized for sampling effort) across dawn and dusk&quot;</span>,</span>
+<span id="cb22-75"><a href="light-availability.html#cb22-75" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st"> %acoustic detections&quot;</span>,</span>
+<span id="cb22-76"><a href="light-availability.html#cb22-76" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">&quot;Time of Day</span><span class="sc">\n</span><span class="st">&quot;</span></span>
+<span id="cb22-77"><a href="light-availability.html#cb22-77" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb22-78"><a href="light-availability.html#cb22-78" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb22-79"><a href="light-availability.html#cb22-79" tabindex="-1"></a>      <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>), <span class="at">plot.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb22-80"><a href="light-availability.html#cb22-80" tabindex="-1"></a>        <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb22-81"><a href="light-availability.html#cb22-81" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span></span>
+<span id="cb22-82"><a href="light-availability.html#cb22-82" tabindex="-1"></a>      ),</span>
+<span id="cb22-83"><a href="light-availability.html#cb22-83" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(</span>
+<span id="cb22-84"><a href="light-availability.html#cb22-84" tabindex="-1"></a>        <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb22-85"><a href="light-availability.html#cb22-85" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;italic&quot;</span>, <span class="at">color =</span> <span class="st">&quot;#1b2838&quot;</span></span>
+<span id="cb22-86"><a href="light-availability.html#cb22-86" tabindex="-1"></a>      ),</span>
+<span id="cb22-87"><a href="light-availability.html#cb22-87" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb22-88"><a href="light-availability.html#cb22-88" tabindex="-1"></a>        <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb22-89"><a href="light-availability.html#cb22-89" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span></span>
+<span id="cb22-90"><a href="light-availability.html#cb22-90" tabindex="-1"></a>      )</span>
+<span id="cb22-91"><a href="light-availability.html#cb22-91" tabindex="-1"></a>    )</span>
+<span id="cb22-92"><a href="light-availability.html#cb22-92" tabindex="-1"></a>}</span>
+<span id="cb22-93"><a href="light-availability.html#cb22-93" tabindex="-1"></a></span>
+<span id="cb22-94"><a href="light-availability.html#cb22-94" tabindex="-1"></a><span class="co"># save as a single pdf</span></span>
+<span id="cb22-95"><a href="light-availability.html#cb22-95" tabindex="-1"></a><span class="fu">cairo_pdf</span>(</span>
+<span id="cb22-96"><a href="light-availability.html#cb22-96" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">&quot;figs/acoustic-detections-hour-of-day.pdf&quot;</span>,</span>
+<span id="cb22-97"><a href="light-availability.html#cb22-97" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">13</span>, <span class="at">height =</span> <span class="dv">12</span>,</span>
+<span id="cb22-98"><a href="light-availability.html#cb22-98" tabindex="-1"></a>  <span class="at">onefile =</span> <span class="cn">TRUE</span></span>
+<span id="cb22-99"><a href="light-availability.html#cb22-99" tabindex="-1"></a>)</span>
+<span id="cb22-100"><a href="light-availability.html#cb22-100" tabindex="-1"></a>plots</span>
+<span id="cb22-101"><a href="light-availability.html#cb22-101" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div>
 
 </div>
 </div>
