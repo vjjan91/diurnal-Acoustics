@@ -41,7 +41,6 @@ territoriality <- read.csv("data/territoriality-data.csv")
 sociality <- read.csv("data/sociality-data.csv")
 freq <- read.csv("data/frequency-data.csv")
 sites <- read.csv("data/list-of-sites.csv")
-vegetation <- read.csv("data/vegetation-data.csv")
 tree <- read.nexus("data/birdtree.nex") # obtained 100 trees using Hackett all species
 ```
 
