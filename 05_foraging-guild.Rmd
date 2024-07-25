@@ -112,45 +112,7 @@ stat.test <- vocal_act %>%
   wilcox_test(percent_normalized_detections ~ trophic_niche)
 ```
 
-Significant differences were observed between frugivore and omnivore species at dawn and dusk, as well as between frugivore and invertivore species.  
-
-## Visualization of %detections across dawn and dusk within each foraging guild
-
-Here, we ask if there is significantly higher dawn-biased vocal activity within each foraging guild, before comparing between guild types. 
-
-```{r}
-fig_forGuild_vocAct <- vocal_act %>%
-  grouped_ggbetweenstats(
-    x = time_of_day,
-    y = percent_normalized_detections,
-    xlab = "Time of Day",
-    ylab = "% Vocal activity",
-    pairwise.display = "significant",
-    grouping.var = trophic_niche,
-    package = "ggsci",
-    palette = "default_jco",
-    violin.args = list(width = 0),
-    ggplot.component = list(theme(
-      text = element_text(family = "Century Gothic", size = 15, face = "bold"), plot.title = element_text(
-        family = "Century Gothic",
-        size = 18, face = "bold"
-      ),
-      plot.subtitle = element_text(
-        family = "Century Gothic",
-        size = 15, face = "bold", color = "#1b2838"
-      ),
-      axis.title = element_text(
-        family = "Century Gothic",
-        size = 15, face = "bold"
-      )
-    ))
-  )
-
-ggsave(fig_forGuild_vocAct, filename = "figs/fig_percentDetections_timeOfDay_foragingGuild.png", width = 24, height = 12, device = png(), units = "in", dpi = 300)
-dev.off()
-```
-
-![Omnivores and Invertivores had significantly higher vocal activity at dawn, while frugivores did not show any difference between dawn and dusk](figs/fig_percentDetections_timeOfDay_foragingGuild.png)
+Significant differences were observed between frugivore and omnivore species at dawn and dusk. 
 
 ## Comparing vocal activity at dawn between foraging guilds
 
@@ -187,22 +149,3 @@ dev.off()
 ```
 
 ![We found significant differences in the dawn vocal activity between invertivore and frugivore species and omnivore and frugivore species.](figs/fig_percentDetections_vs_foragingGuild.png)
-## Figure for publication
-
-```{r}
-# Here, we will combine the above two figures created
-library(patchwork)
-fig_vocAct <- wrap_plots(fig_forGuild_vocAct, fig_between_foragingGuild_vocAct,
-  nrow = 2
-) +
-  plot_annotation(
-    tag_levels = "a",
-    tag_prefix = "(",
-    tag_suffix = ")"
-  )
-
-ggsave(fig_vocAct, filename = "figs/fig04.png", width = 25, height = 19, device = png(), units = "in", dpi = 300)
-dev.off()
-```
-
-![(a) Frugivorous species showed no differences in vocal activity between dawn and dusk, while (b) Invertivore and (c) Omnivore species had a dawn-biased vocal activity. (d) Significant differences in vocal activity were observed between Frugivore and Invertivore and Frugivore and Omnivore species at dawn](figs/fig04.png)
