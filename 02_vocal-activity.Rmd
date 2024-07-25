@@ -82,19 +82,19 @@ vocal_act <- vocal_act %>%
   )
 
 # for the sake of plotting, we will create a new variable
-vocal_act$plot_percent <- ifelse(vocal_act$time_of_day == "dusk",
+vocal_act$plot_percent <- ifelse(vocal_act$time_of_day == "dawn",
   -1 * vocal_act$percent_normalized_detections,
   vocal_act$percent_normalized_detections
 )
 
 # reordering legend appearance
 vocal_act$time_of_day <- factor(vocal_act$time_of_day,
-  levels = c("dusk", "dawn")
+  levels = c("dawn", "dusk")
 )
 
 # figure of percent detections
 fig_percent_detections <- ggplot(vocal_act, aes(
-  x = reorder(common_name, plot_percent),
+  x = reorder(common_name, -plot_percent),
   y = plot_percent,
   fill = time_of_day
 )) +
@@ -103,7 +103,7 @@ fig_percent_detections <- ggplot(vocal_act, aes(
     size = 3
   ) +
   geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("#1b9e77", "#d95f02")) +
+  scale_fill_manual(values = c("#d95f02", "#1b9e77")) +
   scale_y_continuous(labels = abs) +
   coord_flip() +
   labs(
