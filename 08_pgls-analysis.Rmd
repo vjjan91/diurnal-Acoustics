@@ -394,10 +394,10 @@ model <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
   gls(
     percent_normalized_detections ~ scale(median_startTime) +
-      relevel(factor(territory), ref = "Weakly territorial") +
-     relevel(factor(sociality), ref = "Non-communal signallers") +
+      territory +
+      sociality +
       scale(median_peak_freq) +
-      relevel(factor(trophic_niche), ref = "Invertivore"),
+      trophic_niche,
     data = .,
     correlation = corPagel(1, pruned.tree, form = ~scientific_name)
   )
