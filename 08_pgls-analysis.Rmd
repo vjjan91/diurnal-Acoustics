@@ -394,8 +394,8 @@ model <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
   gls(
     percent_normalized_detections ~ scale(median_startTime) +
-      territory +
-      sociality +
+      relevel(factor(territory), ref = "Non-territorial") +
+      relevel(factor(sociality), ref = "Non-communal signallers") +
       scale(median_peak_freq) +
       trophic_niche,
     data = .,
