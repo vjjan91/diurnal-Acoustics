@@ -142,7 +142,7 @@ fig_overall_vocal_act <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
   ggbetweenstats(
     x = time_of_day,
-    y = percent_normalized_detections,
+    y = plot_percent,
     xlab = "Time of Day",
     ylab = "% Overall Vocal Activity at Dawn",
     pairwise.display = "significant",
