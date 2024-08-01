@@ -142,7 +142,7 @@ fig_overall_vocal_act <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
   ggbetweenstats(
     x = time_of_day,
-    y = plot_percent,
+    y = percent_normalized_detections,
     xlab = "Time of Day",
     ylab = "% Overall Vocal Activity at Dawn",
     pairwise.display = "significant",
@@ -163,7 +163,8 @@ fig_overall_vocal_act <- vocal_act %>%
     ))
   ) +
   coord_flip() +
-  scale_color_manual(values = c("#d95f02", "#1b9e77"))
+  scale_y_reverse () +
+  scale_color_manual(values = c("#d95f02", "#1b9e77")) 
 
 ## Edits made to figure to show only data for dawn (since % activity is significantly higher than dusk
 
