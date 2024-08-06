@@ -112,7 +112,7 @@ fig_percent_detections <- ggplot(vocal_act, aes(
   ) +
   theme_bw() +
   theme(
-    text = element_text(family = "Century Gothic", size = 10, face = "bold"), plot.title = element_text(
+    text = element_text(family = "Century Gothic", size = 14, face = "bold"), plot.title = element_text(
       family = "Century Gothic",
       size = 15, face = "bold"
     ),
@@ -122,7 +122,7 @@ fig_percent_detections <- ggplot(vocal_act, aes(
     ),
     axis.title = element_text(
       family = "Century Gothic",
-      size = 15, face = "bold"
+      size = 18, face = "bold"
     ),
     legend.position = "top",
     legend.title = element_blank(),
@@ -148,7 +148,7 @@ fig_overall_vocal_act <- vocal_act %>%
     pairwise.display = "significant",
     violin.args = list(width = 0),
     ggplot.component = list(theme(
-      text = element_text(family = "Century Gothic", size = 10, face = "bold"), plot.title = element_text(
+      text = element_text(family = "Century Gothic", size = 14, face = "bold"), plot.title = element_text(
         family = "Century Gothic",
         size = 15, face = "bold"
       ),
@@ -158,7 +158,7 @@ fig_overall_vocal_act <- vocal_act %>%
       ),
       axis.title = element_text(
         family = "Century Gothic",
-        size = 15, face = "bold"
+        size = 18, face = "bold"
       )
     ))
   ) +
