@@ -29,6 +29,22 @@ species_codes <- read.csv("data/species-annotation-codes.csv")
 freq <- read.csv("data/frequency-data.csv")
 ```
 
+## Filtering acoustic data to ensure sampling periods are even across dawn and dusk  
+
+Since our recording schedule was uneven (6am to 10am in the morning and 4pm to 7pm in th evening), we filter acoustic data to retain recordings between 6am and 830am and recordings made between 4pm and 630pm so that the two sampling windows capture a similar amount of time right after dawn and right before dusk. 
+
+```{r}
+dawn <- acoustic_data %>%
+  group_by(time_of_day =="dawn") %>%
+  filter(start_time >= 060000 & start_time <= 083000)
+  
+dusk <- acoustic_data %>%
+  group_by(time_of_day == "dusk") %>%
+  filter(start_time >= 160000 & start_time <= 183000)
+
+acoustic_data <- bind_rows(dawn[,-10], dusk[,-10])
+```
+
 ## Vocal activity data
 ```{r}
 # sampling effort by time_of_day
@@ -182,4 +198,4 @@ ggsave(fig_freq_vocAct, filename = "figs/fig_peakFrequency_vs_detections.png", w
 dev.off()
 ```
 
-![Pearson’s correlation test showed a (a) positive correlation between vocal activity at dawn and median peak frequency and (b) no correlation between vocal activity at dusk and median peak frequency. Both the effect sizes were not statistically significant.](figs/fig_peakFrequency_vs_detections.png)
+![Pearson’s correlation test showed  (a) no correlation between vocal activity at dawn and median peak frequency and (b) no correlation between vocal activity at dusk and median peak frequency. Both the effect sizes were not statistically significant.](figs/fig_peakFrequency_vs_detections.png)

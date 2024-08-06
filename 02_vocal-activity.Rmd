@@ -27,6 +27,23 @@ acoustic_data <- read.csv("results/acoustic_data.csv")
 species_codes <- read.csv("data/species-annotation-codes.csv")
 ```
 
+## Filtering acoustic data to ensure sampling periods are even across dawn and dusk  
+
+Since our recording schedule was uneven (6am to 10am in the morning and 4pm to 7pm in th evening), we filter acoustic data to retain recordings between 6am and 830am and recordings made between 4pm and 630pm so that the two sampling windows capture a similar amount of time right after dawn and right before dusk. 
+
+```{r}
+dawn <- acoustic_data %>%
+  group_by(time_of_day =="dawn") %>%
+  filter(start_time >= 060000 & start_time <= 083000)
+  
+dusk <- acoustic_data %>%
+  group_by(time_of_day == "dusk") %>%
+  filter(start_time >= 160000 & start_time <= 183000)
+
+acoustic_data <- bind_rows(dawn[,-10], dusk[,-10])
+```
+
+
 ## Vocal activity across time periods
 
 A number of factors need to be considered in further analysis: accounting for time_of_day, observed_identity for example. However, we run analyses that account for differences in calling activity by species for dawn and dusk.
@@ -63,22 +80,29 @@ vocal_act <- vocal_act %>%
   mutate(total_normalized_detections = sum(normalized_detections)) %>%
   mutate(percent_normalized_detections = (normalized_detections / total_normalized_detections) * 100) %>%
   ungroup() %>%
-  # in our case, we have 3 species which have 100% detections in dawn, Indian blackbird, Little spiderhunter and Purple sunbird. For these, we add a additional row specifying no detections in dusk.
+  # in our case, we have 4 species which have 100% detections in dawn, Indian blackbird, Little spiderhunter, Oriental-Magpie Robin and Purple sunbird. For these, we add a additional row specifying no detections in dusk.
 
   add_row(
-    time_of_day = "dusk", eBird_codes = "pursun4", detections = 0, scientific_name = "Cinnyris asiaticus", common_name = "Purple Sunbird", total_detections = 315, percent_detections = 0, normalized_detections = 0,
-    percent_normalized_detections = 0, nVisits = 245, total_normalized_detections = 1.075085
+    time_of_day = "dusk", eBird_codes = "pursun4", detections = 0, scientific_name = "Cinnyris asiaticus", common_name = "Purple Sunbird", total_detections = 96, percent_detections = 0, normalized_detections = 0,
+    percent_normalized_detections = 0, nVisits = 230, total_normalized_detections = 0.6620690
   ) %>%
   add_row(
-    time_of_day = "dusk", eBird_codes = "eurbla2", detections = 0, scientific_name = "Turdus simillimus", common_name = "Indian Blackbird", total_detections = 236, percent_detections = 0, normalized_detections = 0,
-    percent_normalized_detections = 0, nVisits = 245,
-    total_normalized_detections = 0.8054608
+    time_of_day = "dusk", eBird_codes = "eurbla2", detections = 0, scientific_name = "Turdus simillimus", common_name = "Indian Blackbird", total_detections = 179, percent_detections = 0, normalized_detections = 0,
+    percent_normalized_detections = 0, nVisits = 230,
+    total_normalized_detections = 1.2344828
   ) %>%
   add_row(
-    time_of_day = "dusk", eBird_codes = "litspi1", detections = 0, scientific_name = "Arachnothera longirostra", common_name = "Little Spiderhunter", total_detections = 417, percent_detections = 0,
-    normalized_detections = 0, nVisits = 245,
+    time_of_day = "dusk", eBird_codes = "litspi1", detections = 0, scientific_name = "Arachnothera longirostra", common_name = "Little Spiderhunter", total_detections = 204, percent_detections = 0,
+    normalized_detections = 0, nVisits = 230,
     percent_normalized_detections = 0,
-    total_normalized_detections = 1.423208
+    total_normalized_detections = 1.4068966
+  ) %>%
+  add_row(
+    time_of_day = "dusk", eBird_codes = "magrob", detections = 0, scientific_name = "Copsychus saularis", common_name = "Oriental Magpie-Robin", 
+    total_detections = 119, percent_detections = 0,
+    normalized_detections = 0, nVisits = 230, 
+    percent_normalized_detections = 0,
+    total_normalized_detections = 0.6620690
   )
 
 # for the sake of plotting, we will create a new variable
@@ -179,9 +203,9 @@ dev.off()
 Here, we see whether there are differences in the acoustic detections for each species between dawn and dusk. 
 ```{r}
 stat.test <- vocal_act %>%
-  pairwise_wilcox_test(detections ~ time_of_day)
+  pairwise_wilcox_test(percent_normalized_detections ~ time_of_day)
 
-# We observe significant differences in acoustic detections across species between dawn and dusk
+# We observe significant differences in vocal activity across species between dawn and dusk
 
 # A tibble: 1 × 9
 #  .y.        group1 group2    n1    n2 statistic        p    p.adj p.adj.signif

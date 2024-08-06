@@ -34,6 +34,22 @@ sites <- read.csv("data/list-of-sites.csv")
 species_codes <- read.csv("data/species-annotation-codes.csv")
 ```
 
+## Filtering acoustic data to ensure sampling periods are even across dawn and dusk  
+
+Since our recording schedule was uneven (6am to 10am in the morning and 4pm to 7pm in th evening), we filter acoustic data to retain recordings between 6am and 830am and recordings made between 4pm and 630pm so that the two sampling windows capture a similar amount of time right after dawn and right before dusk. 
+
+```{r}
+dawn <- acoustic_data %>%
+  group_by(time_of_day =="dawn") %>%
+  filter(start_time >= 060000 & start_time <= 083000)
+  
+dusk <- acoustic_data %>%
+  group_by(time_of_day == "dusk") %>%
+  filter(start_time >= 160000 & start_time <= 183000)
+
+acoustic_data <- bind_rows(dawn[,-10], dusk[,-10])
+```
+
 ## Vocal Activity
 
 We use normalized percent detections (percent detections which account for sampling effort) as a response variable in our PGLS analysis.
@@ -104,14 +120,6 @@ light_data$sunset <- as_hms(light_data$sunset)
 light_data$nauticalDawn <- as_hms(light_data$nauticalDawn)
 light_data$nauticalDusk <- as_hms(light_data$nauticalDusk)
 
-# format the start_time column in the acoustic data to keep it as the same format as light_data
-acoustic_data <- acoustic_data %>%
-  mutate(across(start_time, str_pad, width = 6, pad = "0"))
-acoustic_data$start_time <- format(strptime(acoustic_data$start_time,
-  format = "%H%M%S"
-), format = "%H:%M:%S")
-acoustic_data$start_time <- as_hms(acoustic_data$start_time)
-
 # summarize detections of species for every 15-min window
 acoustic_data <- acoustic_data %>%
   group_by(
@@ -126,6 +134,19 @@ acoustic_data <- left_join(acoustic_data, light_data,
   by = c("date", "lon", "lat")
 )
 
+# format the start_time column in the acoustic data to keep it as the same format as light_data
+acoustic_data <- acoustic_data %>%
+  mutate(across(start_time, str_pad, width = 6, pad = "0"))
+acoustic_data$start_time <- format(strptime(acoustic_data$start_time,
+  format = "%H%M%S"
+), format = "%H:%M:%S")
+acoustic_data$start_time <- as_hms(acoustic_data$start_time)
+
+# add end_times for each recording
+acoustic_data <- acoustic_data %>%
+  mutate(end_time = start_time + dminutes(20))
+acoustic_data$end_time <- as_hms(acoustic_data$end_time)
+
 # subtract times from sunrise, sunset, nauticalDawn and nauticalDusk from start_time of acoustic detections
 acoustic_data <- acoustic_data %>%
   mutate(time_from_dawn = as.numeric((start_time - nauticalDawn),
@@ -134,10 +155,10 @@ acoustic_data <- acoustic_data %>%
   mutate(time_from_sunrise = as.numeric((start_time - sunrise),
     units = "hours"
   )) %>%
-  mutate(time_to_dusk = as.numeric((nauticalDusk - start_time),
+  mutate(time_to_dusk = as.numeric((nauticalDusk - end_time),
     units = "hours"
   )) %>%
-  mutate(time_to_sunset = as.numeric((sunset - start_time),
+  mutate(time_to_sunset = as.numeric((sunset - end_time),
     units = "hours"
   ))
 ```
@@ -294,7 +315,6 @@ for (i in 1:length(unique(acoustic_data$common_name))) {
     "6AM to 7AM",
     "7AM to 8AM",
     "8AM to 9AM",
-    "9AM to 10AM",
     "Mid-day",
     "4PM to 5PM",
     "5PM to 6PM",
