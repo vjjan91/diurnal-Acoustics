@@ -68,7 +68,7 @@ species_codes <- read.csv("data/species-annotation-codes.csv")
 
 ## Filtering acoustic data to ensure sampling periods are even across dawn and dusk  
 
-Since our recording schedule was uneven (6am to 10am in the morning and 4pm to 7pm in th evening), we filter acoustic data to retain recordings between 6am and 830am and recordings made between 4pm and 630pm so that the two sampling windows capture a similar amount of time right after dawn and right before dusk. 
+Since our recording schedule was uneven (6am to 10am in the morning and 4pm to 7pm in the evening), we filter acoustic data to retain recordings between 6am and 830am and recordings made between 4pm and 630pm so that the two sampling windows capture a similar amount of time right after dawn and right before dusk. 
 
 ```{r}
 dawn <- acoustic_data %>%
@@ -95,7 +95,7 @@ effort <- acoustic_data %>%
   count(time_of_day) %>%
   rename(., nVisits = n)
 
-# Above, we note that we had sampled ~293 site-date combinations at dawn, while ~245 site-date combinations were sampled at dusk
+# Above, we note that we had sampled ~145 site-date combinations at dawn, while ~230 site-date combinations were sampled at dusk
 
 # total number of acoustic detections summarized across every 10-s audio file
 # here, we estimate % detections at dawn and dusk, while accounting for sampling effort
