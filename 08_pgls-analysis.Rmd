@@ -51,7 +51,7 @@ tree <- mcc(tree)
 
 ## Filtering acoustic data to ensure sampling periods are even across dawn and dusk  
 
-Since our recording schedule was uneven (6am to 10am in the morning and 4pm to 7pm in th evening), we filter acoustic data to retain recordings between 6am and 830am and recordings made between 4pm and 630pm so that the two sampling windows capture a similar amount of time right after dawn and right before dusk. 
+Since our recording schedule was uneven (6am to 10am in the morning and 4pm to 7pm in the evening), we filter acoustic data to retain recordings between 6am and 830am and recordings made between 4pm and 630pm so that the two sampling windows capture a similar amount of time right after dawn and right before dusk. 
 
 ```{r}
 dawn <- acoustic_data %>%
@@ -77,7 +77,7 @@ effort <- acoustic_data %>%
   count(time_of_day) %>%
   rename(., nVisits = n)
 
-# Above, we note that we had sampled ~293 site-date combinations at dawn, while ~245 site-date combinations were sampled at dusk
+# Above, we note that we had sampled ~145 site-date combinations at dawn, while ~230 site-date combinations were sampled at dusk
 
 # total number of acoustic detections summarized across every 10-s audio file
 # here, we estimate % detections at dawn and dusk, while accounting for sampling effort
@@ -377,36 +377,35 @@ model1 <- vocal_act %>%
     correlation = corPagel(1, pruned.tree, form = ~scientific_name)
   )
 
-summary(model1) # AIC = 490.9885
+summary(model1) # AIC = 501.6351
 
 # percent_normalized_detections ~ territoriality only
 model2 <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
   gls(percent_normalized_detections ~ relevel(factor(territory), ref = "Non-territorial"), data = ., correlation = corPagel(1, pruned.tree, form = ~scientific_name))
 
-summary(model2) # AIC = 490.3102
+summary(model2) # AIC = 485.5026
 
 # percent_normalized_detections ~ sociality only
 model3 <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
-  gls(percent_normalized_detections ~ relevel(factor(sociality), ref = "Non-communal signallers"),
-    data = .,
-    correlation = corPagel(1, pruned.tree, form = ~scientific_name)
-  )
+  gls(percent_normalized_detections ~ relevel (factor(sociality), ref = "Non-communal signallers"),
+    data = ., correlation = corPagel(1, pruned.tree, form = ~scientific_name))
 
-summary(model3) # 490.9651
+summary(model3) # 492.8451
 
 # percent_normalized_detections ~ median_peak_freq only
 model4 <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
   gls(percent_normalized_detections ~ scale(median_peak_freq), data = ., correlation = corPagel(1, pruned.tree, form = ~scientific_name))
 
-summary(model4) # AIC = 498.3634
+summary(model4) # AIC = 498.7256
 
 # percent_normalized_detections ~ trophic_niche only
 model5 <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
-  gls(percent_normalized_detections ~ relevel(factor(trophic_niche), ref = 1), data = ., correlation = corPagel(1, pruned.tree, form = ~scientific_name))
+  gls(percent_normalized_detections ~ relevel(factor(trophic_niche), ref = "Frugivore"), 
+      data = ., correlation = corPagel(1, pruned.tree, form = ~scientific_name))
 
 summary(model5) # AIC = 488.6914
 
@@ -424,7 +423,7 @@ model6 <- vocal_act %>%
   )
 
 anova(model6)
-summary(model6) # AIC = 463.691
+summary(model6) # AIC = 465.6234
 
 ## visualization
 pgls_plot <- plot_model (model6, show.values = TRUE, value.offset = 0.3, show.p = TRUE, order.terms = c(7, 6, 5, 4, 3, 2, 1), axis.labels = c('Ambient Light (Median time to darkness)', 'Territoriality (Highly territorial)', 'Territoriality (Weakly territorial)', 'Sociality (Communal signallers)', 'Median Peak frequency', 'Foraging guild (Invertivore)', 'Foraging guild (Omnivore)'), title = "", dot.size = 3, line.size = 1, value.size = 6) +
@@ -435,7 +434,7 @@ pgls_plot <- plot_model (model6, show.values = TRUE, value.offset = 0.3, show.p 
 ggsave(pgls_plot, filename = "figs/fig_pgls.png", width = 15, height = 9, device = png(), units = "in", dpi = 300)
 dev.off()
 
-## Sociality (communal signallers compared to non-communal signallers) and Trophic niche (omnivores compared to frugivores)show a significant positive association with percent_normalized_detections. 
+## Territoriality (Highly territorial compared to Non-territorial) show a significant positive association with percent_normalized_detections. Trophic guild (Omnivores compared to Frugivores) show a marginally significant positive association with percent_normalized_detections.
 
 ## Here we will run a model using dusk data anyway
 model7 <- vocal_act %>%
@@ -453,5 +452,5 @@ model7 <- vocal_act %>%
 summary(model7)
 plot_model(model7)
 
-## No significant association was detected between dusk data and any environmental/social factors (when controlled for phylogeny)
+## No significant association was detected between dusk data and any environmental/social factors (when controlled for phylogeny). 
 ```
