@@ -426,7 +426,7 @@ anova(model6)
 summary(model6) # AIC = 465.6234
 
 ## visualization
-pgls_plot <- plot_model (model6, show.values = TRUE, value.offset = 0.3, show.p = TRUE, order.terms = c(7, 6, 5, 4, 3, 2, 1), axis.labels = c('Ambient Light (Median time to darkness)', 'Territoriality (Highly territorial)', 'Territoriality (Weakly territorial)', 'Sociality (Communal signallers)', 'Median Peak frequency', 'Foraging guild (Invertivore)', 'Foraging guild (Omnivore)'), title = "", dot.size = 3, line.size = 1, value.size = 6) +
+pgls_plot <- plot_model (model6, show.values = TRUE, value.offset = 0.3, show.p = TRUE, p.threshold = c(0.06,0.01,0.001), order.terms = c(7, 6, 5, 4, 3, 2, 1), axis.labels = c('Ambient Light (Median time to darkness)', 'Territoriality (Highly territorial)', 'Territoriality (Weakly territorial)', 'Sociality (Communal signallers)', 'Median Peak frequency', 'Foraging guild (Invertivore)', 'Foraging guild (Omnivore)'), title = "", dot.size = 3, line.size = 1, value.size = 6) +
   theme_bw()+
   theme (axis.title = element_text (size= 20, family= 'Century Gothic', face = 'bold'), axis.text = element_text (size= 16, family= 'Century Gothic', colour = 'black')) +
   scale_color_manual (values = c("#d95f02", "#1b9e77"))
