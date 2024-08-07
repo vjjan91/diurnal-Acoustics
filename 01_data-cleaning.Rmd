@@ -30,7 +30,7 @@ library(colorspace)
 
 ## Loading acoustic data  
 
-The acoustic data consists of annotations of 10-s chunks of audio files across summer and winter months. We will load annotation datasets for both dawn and dusk and process them further to ensure that we can quickly extract measures of vocal activity in future scripts. For the sake of future analysis, we define dawn as periods of acoustic data annotated between 6am and 10am. We define dusk as periods of acoustic data annotated between 4pm to 7pm.    
+The acoustic data consists of annotations of 10-s chunks of audio files across summer and winter months. We will load annotation datasets for both dawn and dusk and process them further to ensure that we can quickly extract measures of vocal activity in future scripts. For the sake of future analysis, we define dawn as periods of acoustic data annotated between 6am and 10am. We define dusk as periods of acoustic data annotated between 4pm to 7pm (Please note that in future scripts, we subsample the data to ensure that uniform sampling periods are being compared across dawn and dusk).
 
 ```{r}
 # These dawn and dusk annotation .csvs are not uploaded to GitHub and can be provided upon request

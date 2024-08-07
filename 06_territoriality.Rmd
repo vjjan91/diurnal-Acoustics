@@ -72,14 +72,14 @@ Since our recording schedule was uneven (6am to 10am in the morning and 4pm to 7
 
 ```{r}
 dawn <- acoustic_data %>%
-  group_by(time_of_day =="dawn") %>%
+  group_by(time_of_day == "dawn") %>%
   filter(start_time >= 060000 & start_time <= 083000)
-  
+
 dusk <- acoustic_data %>%
   group_by(time_of_day == "dusk") %>%
   filter(start_time >= 160000 & start_time <= 183000)
 
-acoustic_data <- bind_rows(dawn[,-10], dusk[,-10])
+acoustic_data <- bind_rows(dawn[, -10], dusk[, -10])
 ```
 
 ## Vocal activity across time periods
@@ -136,9 +136,9 @@ vocal_act <- vocal_act %>%
     total_normalized_detections = 1.4068966
   ) %>%
   add_row(
-    time_of_day = "dusk", eBird_codes = "magrob", detections = 0, scientific_name = "Copsychus saularis", common_name = "Oriental Magpie-Robin", 
+    time_of_day = "dusk", eBird_codes = "magrob", detections = 0, scientific_name = "Copsychus saularis", common_name = "Oriental Magpie-Robin",
     total_detections = 119, percent_detections = 0,
-    normalized_detections = 0, nVisits = 230, 
+    normalized_detections = 0, nVisits = 230,
     percent_normalized_detections = 0,
     total_normalized_detections = 0.6620690
   )
@@ -204,4 +204,3 @@ dev.off()
 ```
 
 ![Weakly territorial species were significantly more dawn shifted than non-territorial species at dawn.](figs/fig_percentDetections_vs_territoriality.png)  
-

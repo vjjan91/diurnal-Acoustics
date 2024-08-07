@@ -55,14 +55,14 @@ Since our recording schedule was uneven (6am to 10am in the morning and 4pm to 7
 
 ```{r}
 dawn <- acoustic_data %>%
-  group_by(time_of_day =="dawn") %>%
+  group_by(time_of_day == "dawn") %>%
   filter(start_time >= 060000 & start_time <= 083000)
-  
+
 dusk <- acoustic_data %>%
   group_by(time_of_day == "dusk") %>%
   filter(start_time >= 160000 & start_time <= 183000)
 
-acoustic_data <- bind_rows(dawn[,-10], dusk[,-10])
+acoustic_data <- bind_rows(dawn[, -10], dusk[, -10])
 ```
 
 ## Vocal Activity
@@ -389,8 +389,9 @@ summary(model2) # AIC = 485.5026
 # percent_normalized_detections ~ sociality only
 model3 <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
-  gls(percent_normalized_detections ~ relevel (factor(sociality), ref = "Non-communal signallers"),
-    data = ., correlation = corPagel(1, pruned.tree, form = ~scientific_name))
+  gls(percent_normalized_detections ~ relevel(factor(sociality), ref = "Non-communal signallers"),
+    data = ., correlation = corPagel(1, pruned.tree, form = ~scientific_name)
+  )
 
 summary(model3) # 492.8451
 
@@ -404,8 +405,9 @@ summary(model4) # AIC = 498.7256
 # percent_normalized_detections ~ trophic_niche only
 model5 <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
-  gls(percent_normalized_detections ~ relevel(factor(trophic_niche), ref = "Frugivore"), 
-      data = ., correlation = corPagel(1, pruned.tree, form = ~scientific_name))
+  gls(percent_normalized_detections ~ relevel(factor(trophic_niche), ref = "Frugivore"),
+    data = ., correlation = corPagel(1, pruned.tree, form = ~scientific_name)
+  )
 
 summary(model5) # AIC = 488.6914
 
@@ -426,10 +428,10 @@ anova(model6)
 summary(model6) # AIC = 465.6234
 
 ## visualization
-pgls_plot <- plot_model (model6, show.values = TRUE, value.offset = 0.3, show.p = TRUE, p.threshold = c(0.06,0.01,0.001), order.terms = c(7, 6, 5, 4, 3, 2, 1), axis.labels = c('Ambient Light (Median time to darkness)', 'Territoriality (Highly territorial)', 'Territoriality (Weakly territorial)', 'Sociality (Communal signallers)', 'Median Peak frequency', 'Foraging guild (Invertivore)', 'Foraging guild (Omnivore)'), title = "", dot.size = 3, line.size = 1, value.size = 6) +
-  theme_bw()+
-  theme (axis.title = element_text (size= 20, family= 'Century Gothic', face = 'bold'), axis.text = element_text (size= 16, family= 'Century Gothic', colour = 'black')) +
-  scale_color_manual (values = c("#d95f02", "#1b9e77"))
+pgls_plot <- plot_model(model6, show.values = TRUE, value.offset = 0.3, show.p = TRUE, p.threshold = c(0.06, 0.01, 0.001), order.terms = c(7, 6, 5, 4, 3, 2, 1), axis.labels = c("Ambient Light (Median time to darkness)", "Territoriality (Highly territorial)", "Territoriality (Weakly territorial)", "Sociality (Communal signallers)", "Median Peak frequency", "Foraging guild (Invertivore)", "Foraging guild (Omnivore)"), title = "", dot.size = 3, line.size = 1, value.size = 6) +
+  theme_bw() +
+  theme(axis.title = element_text(size = 20, family = "Century Gothic", face = "bold"), axis.text = element_text(size = 16, family = "Century Gothic", colour = "black")) +
+  scale_color_manual(values = c("#d95f02", "#1b9e77"))
 
 ggsave(pgls_plot, filename = "figs/fig_pgls.png", width = 15, height = 9, device = png(), units = "in", dpi = 300)
 dev.off()
@@ -442,7 +444,7 @@ model7 <- vocal_act %>%
   gls(
     percent_normalized_detections ~ scale(median_startTime) +
       relevel(factor(territory), ref = "Non-territorial") +
-      relevel (factor(sociality), ref = "Non-communal signallers") +
+      relevel(factor(sociality), ref = "Non-communal signallers") +
       scale(median_peak_freq) +
       relevel(factor(trophic_niche), ref = "Frugivore"),
     data = .,
@@ -452,5 +454,5 @@ model7 <- vocal_act %>%
 summary(model7)
 plot_model(model7)
 
-## No significant association was detected between dusk data and any environmental/social factors (when controlled for phylogeny). 
+## No significant association was detected between dusk data and any environmental/social factors (when controlled for phylogeny).
 ```
