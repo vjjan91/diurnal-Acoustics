@@ -30,6 +30,7 @@ library(ggpubr)
 library(hms)
 library(phyr)
 library(sjPlot)
+library(emmeans)
 ```
 
 ## Loading necessary data
@@ -406,26 +407,32 @@ summary(model4) # AIC = 498.7256
 model5 <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
   gls(percent_normalized_detections ~ relevel(factor(trophic_niche), ref = "Frugivore"),
-    data = ., correlation = corPagel(1, pruned.tree, form = ~scientific_name)
+    data = ., correlation = corPagel(0.9, pruned.tree, form = ~scientific_name)
   )
 
 summary(model5) # AIC = 488.6914
 
 # Multi-variate model with all predictor variables:
-model6 <- vocal_act %>%
-  filter(time_of_day == "dawn") %>%
-  gls(
+
+data <- vocal_act %>%
+  filter(time_of_day == "dawn")
+
+data$territory <- relevel(factor(data$territory), ref = "Non-territorial")
+data$sociality <-relevel(factor(data$sociality), ref = "Non-communal signallers") 
+data$trophic_niche <- relevel(factor(data$trophic_niche), ref = "Frugivore")
+
+model6 <- gls(
     percent_normalized_detections ~ scale(median_startTime) +
-      relevel(factor(territory), ref = "Non-territorial") +
-      relevel(factor(sociality), ref = "Non-communal signallers") +
+      territory +
+       sociality +
       scale(median_peak_freq) +
-      relevel(factor(trophic_niche), ref = "Frugivore"),
-    data = .,
+      trophic_niche,
+    data = data,
     correlation = corPagel(1, pruned.tree, form = ~scientific_name)
   )
 
-anova(model6)
 summary(model6) # AIC = 465.6234
+anova(model6)
 
 ## visualization
 pgls_plot <- plot_model(model6, show.values = TRUE, value.offset = 0.3, show.p = TRUE, p.threshold = c(0.06, 0.01, 0.001), order.terms = c(7, 6, 5, 4, 3, 2, 1), axis.labels = c("Ambient Light (Median time to darkness)", "Territoriality (Highly territorial)", "Territoriality (Weakly territorial)", "Sociality (Communal signallers)", "Median Peak frequency", "Foraging guild (Invertivore)", "Foraging guild (Omnivore)"), title = "", dot.size = 3, line.size = 1, value.size = 6) +
