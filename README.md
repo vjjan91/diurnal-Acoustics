@@ -6,7 +6,9 @@
 
 This repository contains code and analysis for a manuscript that examines the drivers of diurnal variation in vocal activity for a tropical bird community in the Western Ghats.
 
-This manuscript is currently in *progress*. Please reach out to the repository owner if you have questions.
+This manuscript is currently in *review*. Please reach out to the repository owner if you have questions.
+
+![](figs/graphical_abstract.png)  
 
 ### [Readable version](https://vjjan91.github.io/diurnal-Acoustics/)
 
@@ -60,7 +62,7 @@ This folder contains outputs that were obtained by running the above scripts.
 
 ### Figures
 
-The `figs\` folder contains figures accompanying the main text, as well as supplementary material figures. The publication-ready figures are suffixed with numbers (<example:%60fig01>\`).
+The `figs\` folder contains figures accompanying the main text, as well as supplementary material figures.
 
 ### Attribution
 
