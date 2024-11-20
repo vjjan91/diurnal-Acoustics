@@ -361,6 +361,17 @@ diff <- setdiff(tree$tip.label, vocal_act$scientific_name)
 pruned.tree <- drop.tip(tree, diff) # final phylogenetic dataframe
 
 setdiff(vocal_act$scientific_name, pruned.tree$tip.label) # checking if vocal_act and pruned.tree have the same species: result- 'character(0)'
+
+## testing for correlations
+library(psych)
+for_corr <- vocal_act %>%
+  filter(time_of_day == "dawn") %>%
+  mutate(median_startTime_z = scale(median_startTime)) %>%
+  mutate(median_peak_freq_z = scale(median_peak_freq))
+
+pairs.panels(for_corr[,c(13,14,16:18)])
+
+# Territoriality and sociality are correlated to one another, but we leave them in the 
 ```
 
 ## PGLS analysis
