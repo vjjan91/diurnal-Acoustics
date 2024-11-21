@@ -369,7 +369,7 @@ for_corr <- vocal_act %>%
   mutate(median_startTime_z = scale(median_startTime)) %>%
   mutate(median_peak_freq_z = scale(median_peak_freq))
 
-pairs.panels(for_corr[,c(13,14,16:18)])
+pairs.panels(for_corr[,c(13,16:18)])
 
 # Territoriality and sociality are correlated to one another, but we leave them in the 
 ```
@@ -384,7 +384,7 @@ Here we test if the higher rates of acoustic detections at dawn can be explained
 # percent_normalized_detections ~ median_startTime only
 model1 <- vocal_act %>%
   filter(time_of_day == "dawn") %>%
-  gls(percent_normalized_detections ~ scale(median_startTime),
+  gls(percent_normalized_detections ~ median_startTime,
     data = .,
     correlation = corPagel(1, pruned.tree, form = ~scientific_name)
   )
@@ -428,22 +428,64 @@ summary(model5) # AIC = 488.6914
 data <- vocal_act %>%
   filter(time_of_day == "dawn")
 
+# adding a reference category for categorical predictors
 data$territory <- relevel(factor(data$territory), ref = "Non-territorial")
 data$sociality <-relevel(factor(data$sociality), ref = "Non-communal signallers") 
 data$trophic_niche <- relevel(factor(data$trophic_niche), ref = "Frugivore")
 
+# scaling and centering continuous predictors
+data$scaled_median_startTime <- scale(data$median_startTime)
+data$scaled_median_peak_freq <- scale(data$median_peak_freq)
+
 model6 <- gls(
-    percent_normalized_detections ~ scale(median_startTime) +
+    percent_normalized_detections ~ scaled_median_startTime +
       territory +
-       sociality +
-      scale(median_peak_freq) +
+      #sociality +
+      scaled_median_peak_freq +
       trophic_niche,
     data = data,
-    correlation = corPagel(1, pruned.tree, form = ~scientific_name)
-  )
+    correlation = corBrownian(1, pruned.tree, form = ~scientific_name))
 
 summary(model6) # AIC = 465.6234
 anova(model6)
+
+lambda0<-seq(0, 1, 0.005)
+long1<-length(lambda0)
+log.likes<-rep(0,long1)
+for(i in 1:long1){
+model.i<-gls(percent_normalized_detections ~ scaled_median_startTime +
+      territory +
+      sociality +
+      scaled_median_peak_freq +
+      trophic_niche,
+    data = data,,correlation=corPagel(lambda0[i], pruned.tree,form = ~scientific_name))
+log.likes[i]<-logLik(model.i)[1] # y~x is your model, phy.tree your phylogeny
+}
+rel.loglike<-exp(log.likes-(max(log.likes)))
+
+plot(lambda0,rel.loglike, type="l", xlab=paste("Pagel's", expression(lambda),sep=" "),ylab="Relative profile likelihood")
+
+
+
+# R2_lik 
+z.x <- gls(percent_normalized_detections ~ 1, data = data, correlation = corBrownian(1, pruned.tree, form = ~scientific_name))
+
+R2_lik(model6)
+R2_lik(model6, z.x)
+
+terrEff <- emmeans(model6, ~"territory", data = data)
+pairs(terrEff)
+eff_size(terrEff, sigma = sigma(model6), edf = 39)
+plot(terrEff, comparisons = TRUE)
+pwpp(terrEff)
+
+nicheEff <- emmeans(model6, ~"trophic_niche", data = data)
+pairs(nicheEff)
+eff_size(nicheEff, sigma = sigma(model6), edf = 39)
+plot(nicheEff, comparisons = TRUE)
+pwpp(nicheEff)
+
+plot_model(model6, type = "std" )
 
 ## visualization
 pgls_plot <- plot_model(model6, show.values = TRUE, value.offset = 0.3, show.p = TRUE, p.threshold = c(0.06, 0.01, 0.001), order.terms = c(7, 6, 5, 4, 3, 2, 1), axis.labels = c("Ambient Light (Median time to darkness)", "Territoriality (Highly territorial)", "Territoriality (Weakly territorial)", "Sociality (Communal signallers)", "Median Peak frequency", "Foraging guild (Invertivore)", "Foraging guild (Omnivore)"), title = "", dot.size = 3, line.size = 1, value.size = 6) +
