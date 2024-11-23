@@ -409,6 +409,11 @@ model5 <- vocal_act %>%
     data = ., correlation = corPagel(1, pruned.tree, form = ~scientific_name)
   )
 
+vocal_act %>%
+  filter(time_of_day == "dawn") %>%
+  gls(percent_normalized_detections ~ trophic_niche,
+    data = ., correlation = corPagel (1, pruned.tree, form = ~scientific_name))
+
 summary(model5) # AIC = 488.6914
 
 # Multi-variate model with all predictor variables:
