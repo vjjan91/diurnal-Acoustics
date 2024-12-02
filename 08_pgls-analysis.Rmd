@@ -483,7 +483,7 @@ model6 <- vocal_act %>%
   )
 
 summary(model6)
-plot_model(model6, type = "std")
+plot_model(model6, type= "std")
 
 ## No significant association was detected between dusk data and any environmental/social factors (when controlled for phylogeny).
 ```
