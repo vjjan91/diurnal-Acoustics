@@ -371,7 +371,7 @@ for_corr <- vocal_act %>%
 
 pairs.panels(for_corr[, c(13:16)])
 
-# Territoriality and sociality are correlated to one another, but we leave them in the 
+# Territoriality and sociality are correlated to one another (r = 0.66), so we remove sociality from the multivariate model (see below). 
 ```
 
 ## PGLS analysis
@@ -442,13 +442,13 @@ model6 <- gls(
       scaled_median_peak_freq +
       trophic_niche,
     data = data,
-    correlation = corBrownian(1, pruned.tree, form = ~scientific_name))
+    correlation = corBrownian(1, pruned.tree, form = ~scientific_name)) #with sociality removed
 
 summary(model6) # AIC = 469.81
 anova(model6)
 
 # calculation of R2
-rr2::R2_lik(model6)
+rr2::R2_lik(model6) #R2 measures how well the model predicts the outcome of the observed data
 
 # calculating marginal means
 terrEff <- emmeans(model6, ~"territory", data = data)
