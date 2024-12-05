@@ -414,14 +414,6 @@ model4 <- vocal_act %>%
 
 summary(model4) # AIC = 488.58
 
-model15 <- vocal_act %>%
-  filter(time_of_day == "dawn") %>%
-  gls(percent_normalized_detections ~ trophic_niche,
-    data = ., correlation = corPagel (1, pruned.tree, form = ~scientific_name))
-
-summary(model5) # AIC = 488.6914
-
-
 # Multi-variate model with all predictor variables:
 
 data <- vocal_act %>%
@@ -436,7 +428,7 @@ data$trophic_niche <- relevel(factor(data$trophic_niche), ref = "Frugivore")
 data$scaled_median_startTime <- scale(data$median_startTime)
 data$scaled_median_peak_freq <- scale(data$median_peak_freq)
 
-model6 <- gls(
+model5 <- gls(
     percent_normalized_detections ~ scaled_median_startTime +
       territory +
       scaled_median_peak_freq +
@@ -444,27 +436,27 @@ model6 <- gls(
     data = data,
     correlation = corBrownian(1, pruned.tree, form = ~scientific_name)) #with sociality removed
 
-summary(model6) # AIC = 469.81
-anova(model6)
+summary(model5) # AIC = 469.81
+anova(model5)
 
 # calculation of R2
-rr2::R2_lik(model6) #R2 measures how well the model predicts the outcome of the observed data
+rr2::R2_lik(model5) #R2 measures how well the model predicts the outcome of the observed data
 
 # calculating marginal means
-terrEff <- emmeans(model6, ~"territory", data = data)
+terrEff <- emmeans(model5, ~"territory", data = data)
 pairs(terrEff)
 eff_size(terrEff, sigma = sigma(model5), edf = 39)
 plot(terrEff, comparisons = TRUE)
 pwpp(terrEff)
 
-nicheEff <- emmeans(model6, ~"trophic_niche", data = data)
+nicheEff <- emmeans(model5, ~"trophic_niche", data = data)
 pairs(nicheEff)
 eff_size(nicheEff, sigma = sigma(model5), edf = 39)
 plot(nicheEff, comparisons = TRUE)
 pwpp(nicheEff)
 
 ## visualization
-pgls_plot <- plot_model(model6, show.values = TRUE, value.offset = 0.3, show.p = TRUE, p.threshold = c(0.07, 0.01, 0.001), order.terms = c(6, 5, 4, 3, 2, 1), axis.labels = c("Ambient Light (Median time to darkness)", "Territoriality (Highly territorial)", "Territoriality (Weakly territorial)", "Median Peak frequency", "Foraging guild (Invertivore)", "Foraging guild (Omnivore)"), title = "", dot.size = 3, line.size = 1, value.size = 6, type = "std") +
+pgls_plot <- plot_model(model5, show.values = TRUE, value.offset = 0.3, show.p = TRUE, p.threshold = c(0.07, 0.01, 0.001), order.terms = c(6, 5, 4, 3, 2, 1), axis.labels = c("Ambient Light (Median time to darkness)", "Territoriality (Highly territorial)", "Territoriality (Weakly territorial)", "Median Peak frequency", "Foraging guild (Invertivore)", "Foraging guild (Omnivore)"), title = "", dot.size = 3, line.size = 1, value.size = 6, type = "std") +
   theme_bw() +
   theme(axis.title = element_text(size = 20, family = "Century Gothic", face = "bold"), axis.text = element_text(size = 16, family = "Century Gothic", colour = "black")) +
   scale_color_manual(values = c("#d95f02", "#1b9e77"))
@@ -472,13 +464,13 @@ pgls_plot <- plot_model(model6, show.values = TRUE, value.offset = 0.3, show.p =
 ## write the standardized coefficient plots to file
 write.csv(data.frame(pgls_plot[["data"]]), "results/pgls-standardized-estimates.csv")
 
-ggsave(pgls_plot, filename = "figs/fig_pgls.png", width = 15, height = 9, device = png(), units = "in", dpi = 300)
+ggsave(pgls_plot, filename = "figs/fig_pgls.svg", width = 15, height = 9, device = svg(), units = "in", dpi = 300)
 dev.off()
 
 ## Territoriality (Highly territorial compared to Non-territorial) show a significant positive association with percent_normalized_detections. Trophic guild (Omnivores compared to Frugivores) show a marginally significant positive association with percent_normalized_detections.
 
 ## Here we will run a model using dusk data anyway
-model7 <- vocal_act %>%
+model5 <- vocal_act %>%
   filter(time_of_day == "dusk") %>%
   gls(
     percent_normalized_detections ~ scale(median_startTime) +
@@ -491,8 +483,8 @@ model7 <- vocal_act %>%
   )
 
 
-summary(model7)
-plot_model(model7, type = "std")
+summary(model6)
+plot_model(model6, type = "std")
 
 ## No significant association was detected between dusk data and any environmental/social factors (when controlled for phylogeny).
 ```
