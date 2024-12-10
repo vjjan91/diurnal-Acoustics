@@ -8,7 +8,7 @@ This repository contains code and analysis for a manuscript that examines the dr
 
 This manuscript is currently in *review*. Please reach out to the repository owner if you have questions.
 
-![](figs/graphical_abstract.png)  
+![](figs/graphical_abstract.png)
 
 ### [Readable version](https://vjjan91.github.io/diurnal-Acoustics/)
 
