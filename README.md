@@ -2,11 +2,11 @@
 
 <!-- badges: start -->
 
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) <!-- badges: end -->
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![DOI](https://zenodo.org/badge/794134562.svg)](https://doi.org/10.5281/zenodo.14926096)<!-- badges: end -->
 
 This repository contains code and analysis for a manuscript that examines the drivers of diurnal variation in vocal activity for a tropical bird community in the Western Ghats.
 
-This manuscript is currently in *review*. Please reach out to the repository owner if you have questions.
+This manuscript is currently in *press* at the Philosophical Transactions of the Royal Society. Please reach out to the repository owner if you have questions.
 
 ![](figs/graphical_abstract.png)
 
@@ -68,4 +68,4 @@ The `figs\` folder contains figures accompanying the main text, as well as suppl
 
 To cite this repository:
 
-Ramesh, Vijay and Sundar, Pavithra. (2023). Source code and supplementary material for <edit information here>(version xx). Zenodo. [doi to be added].
+Ramesh, Vijay and Sundar, Pavithra. (2025). Source code and supplementary material for "Why is the early bird early? An evaluation of hypotheses for avian dawn-biased vocal activity' (version 1.0). Zenodo. https://doi.org/10.5281/zenodo.14926096
