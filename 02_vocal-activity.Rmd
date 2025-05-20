@@ -122,13 +122,13 @@ fig_percent_detections <- ggplot(vocal_act, aes(
   y = plot_percent,
   fill = time_of_day
 )) +
-  geom_text(aes(label = signif(abs(plot_percent), 3)),
+  geom_text(aes(label = sprintf("%.1f", abs(plot_percent))),
     hjust = ifelse(vocal_act$plot_percent >= 0, 0, 1),
     size = 3
   ) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("#d95f02", "#1b9e77")) +
-  scale_y_continuous(labels = abs) +
+  scale_y_continuous(labels = function(x) sprintf("%.1f", abs(x)))  +
   coord_flip() +
   labs(
     y = "% Vocal Activity",
@@ -172,7 +172,7 @@ fig_overall_vocal_act <- vocal_act %>%
     pairwise.display = "significant",
     violin.args = list(width = 0),
     ggplot.component = list(theme(
-      text = element_text(family = "Century Gothic", size = 14, face = "bold"), plot.title = element_text(
+      text = element_text(family = "Century Gothic", size = 14, face = "bold.italic"), plot.title = element_text(
         family = "Century Gothic",
         size = 15, face = "bold"
       ),
